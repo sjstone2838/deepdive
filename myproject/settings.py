@@ -25,7 +25,7 @@ SECRET_KEY = "!0%hy+&1*3%&jn-@_-(3j)^g1gazb+8^&ds8#3(@^8^nq_7=0u"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+#TEMPLATE_DEBUG = True
 
 
 # Application definition
@@ -57,6 +57,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
+        'TEMPLATE_DEBUG':True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -95,7 +96,7 @@ USE_TZ = True
 DATABASES['default'] = dj_database_url.config()
 
 # Enable Connection Pooling (if desired)
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
+#DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
