@@ -28,7 +28,7 @@ class Completion(models.Model):
 	user = models.ForeignKey(UserProfile)
 	lesson_name = models.ForeignKey(Lesson)
 	score = models.IntegerField(default=0)
-	score2 = models.IntegerField(default=0)
+	score3 = models.IntegerField(default=1)
 	date = models.DateTimeField('date completed')
 	
 	def __unicode__(self):
