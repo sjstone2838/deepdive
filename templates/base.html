@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'mysite/styles.css' %}" type="text/css">	
+    <link rel="stylesheet" href="{% static 'mysite/css/bootstrap.min.css' %}" >
+    <script src="{% static 'mysite/js/bootstrap.min.js' %}"></script>
+    <title> DeepDive </title>
+</head>
+
+<body>
+    <div class="header container-fluid">
+        <div class="row vertical-align" style="padding: 10px;">
+            <div class ="col-md-4">
+                
+                   <img src = "{% static 'mysite/images/deepdivelogo.jpg' %}" alt="diver logo" style="width: 250px; margin: 0px 20px;">                               
+               </div>
+               
+                {% if user.username%}
+            <div class ="col-md-4" style="text-align:center;">    
+                <a class="btn btn-info" role="button" href="/lessons/">Home</a>
+                <a class="btn btn-info" role="button"href="/lessons/profile/"> Profile </a>
+                <a class="btn btn-info" role="button"href="/lessons/login/" > Logout</a>
+            </div> 
+            <div class ="col-md-4" style="text-align:right;"> 
+                <a > Signed in as <code> {{user.username}} </code></a>
+            </div>
+                {% else %}
+                {%endif%}
+        </div>
+    </div>
+
+    <div>
+
+    {% block content %}
+    {% endblock %}
+    </div> 
+
+    <div style = "text-align:center"> 
+        <h6> Copyright 2015 </h6>
+    </div>
+    
+</body>
+</html>
