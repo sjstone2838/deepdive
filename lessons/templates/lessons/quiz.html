@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div style="margin:30px;">
+<h1> Quiz {{lesson.pk}}: {{lesson}} </h1>
+
+<p><a class="btn btn-info" href="{% static dlink %}" download> Download Quiz Data </a></p>
+
+<ol><form action="/lessons/{{lesson.pk}}/result/" method="get">
+{% for question in lesson.question_set.all %}
+	{{ question.question_text }}
+	<li><input id="answer{{forloop.counter}}" type="text" name="answer{{forloop.counter}}"></li>
+{% endfor %}</ol>
+
+<input class='btn btn-info' type="submit" value="Submit">
+</form>
+<a href = '/lessons/{{lesson.pk}}/' class = 'btn btn-info' > Back to Lesson </a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h4 style="margin:30px;"> Available Courses: </h4>
+<ul>
+	{% for lesson in lesson_list %}
+		<p><a class= "btn btn-info" style = "width:200px;" href="/lessons/{{ lesson.id }}/">{{ lesson.lesson_name }}</a></p>
+	{% endfor %}
+</ul>
+
+{% endblock %}

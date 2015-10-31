@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h4> User Details </h4>
+
+<table class="table col-md-6">
+	<tr> 
+		<td> Username: </td> 
+		<td> {{user.username}} </td>
+	</tr>
+	<tr>
+		<td> Name:  </td>
+		<td> {{user.first_name}} {{user.last_name}} </td>
+	</tr>	
+	<tr>
+		<td> Email: </td>
+		<td> {{user.email}} </td>
+	</tr>
+</table>
+<h4> Courses Completed: </h4>
+<table class ="table col-md-6">
+	
+		{% for completion in completions %}
+			<tr><td>You passed {{completion.lesson_name }} with a score of {{completion.score}} on {{completion.date.date}}</td></tr>
+		{% endfor %}
+	
+</table>
+
+{% endblock %}

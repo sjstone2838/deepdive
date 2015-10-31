@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="text-align:left;">
+	<h2 style = "padding-left: 30px; padding-right: 30px; padding-top: 0px; padding-bottom: 0px; background-color: white;"> Investing is changing </h2>
+
+	<h3 style = "padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom: 10px;  background-color: lightgrey;">As finding and evaluating deals becomes more competitive, sophisticated private investors are turning to new markets and new deal types to generate returns. At the same time, the fastest-growing, most innovative companies are waiting longer to tap the public markets, relying instead on ever-larger private financings. At DeepDive, we believe creative growth equity deals will be critical for the next generation of successful investors.</h3>
+
+	<h4 style = "padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom: 10px;   background-color: white;">Investors and entreprenurs need new analytical tools to understand young, rapidly growing, often unprofitable companies and the markets where they play. The classic LBO model is no longer enough. We need to look smaller - for example, using granular customer or transaction-level data to understand a business' true economics. And we need to think bigger - for example, defining and quantifying new markets for game-changing products from the bottom-up, rather than relying on third-party market sizing reports.</h4>
+
+	<h4 style = "padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom: 10px; background-color: lightgrey;">DeepDive provides a dynamic curriculum to teach you due diligence tools that will set you apart. Each lesson walks you through a new type of analysis and a sample model. Each lesson is followed by a quiz, where you'll  analyze sample company and market data. Most of our lessons are drawn from technology investing - but the underlying principles are applicable across industries. Our curriculum was assembled by growth equity veterans who have developed these frameworks while investing over $2B in equity capital.</h4>
+
+	<h4 style = "padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom: 10px; background-color: white;"> If you're interested in learning more, please log in or create an account. </h4>
+<div style="padding: 30px; background-color: white">
+<form action='/lessons/login/' method='post'>{% csrf_token %}
+{{ form.as_p }}
+<input class="btn btn-info" type='submit' value='Login' />
+</form>
+<br/>	
+<p> <a class="btn btn-info" role="button"href = '/lessons/new_user/'> Create new account </a></p>
+<p>{{error}}</p>
+</div>
+
+</div>
+
+
+{% endblock %}
