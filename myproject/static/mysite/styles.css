@@ -1,0 +1,18 @@
+.header{
+	background-color: lightblue;
+}
+
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.blue{
+	background-color: lightblue;
+}
+
+.clearfix {
+    overflow: auto;
+	padding: 15px;
+}

@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{% static 'mysite/styles.css' %}" type="text/css">	
+    <link rel="stylesheet" href="{% static 'mysite/styles.css' %}" type="text/css"> 
     <link rel="stylesheet" href="{% static 'mysite/css/bootstrap.min.css' %}" >
     <script src="{% static 'mysite/js/bootstrap.min.js' %}"></script>
-    <title> DeepDive </title>
+    <title> DeepDive#2 </title>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
                 <a class="btn btn-info" role="button"href="/lessons/login/" > Logout</a>
             </div> 
             <div class ="col-md-4" style="text-align:right;"> 
-                <a > Signed in as <code> {{user.username}} </code></a>
+                <a > Signed in as your new best friend: <code> {{user.username}} </code></a>
             </div>
                 {% else %}
                 {%endif%}
