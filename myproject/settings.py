@@ -126,8 +126,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
     #added - take out?
     os.path.join(BASE_DIR, 'staticfiles'),
-    'myproject/lessons/static',
-    'staticfiles'
 )
 
 # Simplified static file serving.
