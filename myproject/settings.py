@@ -112,7 +112,7 @@ ALLOWED_HOSTS = ['*']
 
 #BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
-STATIC_URL = '/lessons/static/lessons'
+STATIC_URL = '/lessons/static/lessons/'
 #old
 #STATIC_URL = '/static/'
 
