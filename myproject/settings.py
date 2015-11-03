@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "!0%hy+&1*3%&jn-@_-(3j)^g1gazb+8^&ds8#3(@^8^nq_7=0u"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 #TEMPLATE_DEBUG = True
 
@@ -105,8 +105,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 """
 
 # Allow all host headers
-#ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['.grim-crypt-7132.herokuapp.com']
+ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['.herokuapp.com']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
