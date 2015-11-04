@@ -10,6 +10,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^lessons/', include('lessons.urls')),
+    #allow access without url ending in "lessons"
+    url(r'^', include('lessons.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()
