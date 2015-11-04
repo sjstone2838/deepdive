@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div style="text-align: left; padding-top: 10px;">
+<div style="padding:30px;text-align: left;">
 {% if method = "GET" %}	
 	<form action='/lessons/new_user/' method='post'>{% csrf_token %}
 	{{ form.as_p }}
