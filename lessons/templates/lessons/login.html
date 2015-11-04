@@ -13,13 +13,13 @@
 
 	<h4 style = "padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom: 10px; background-color: white;"> If you're interested in learning more, please log in or create an account. </h4>
 <div style="padding: 30px; background-color: white">
+<p style="color:red;">{{error}}</p>
 <form action='/lessons/login/' method='post'>{% csrf_token %}
 {{ form.as_p }}
 <input class="btn btn-info" type='submit' value='Login' />
 </form>
 <br/>	
 <p> <a class="btn btn-info" role="button"href = '/lessons/new_user/'> Create new account </a></p>
-<p>{{error}}</p>
 </div>
 
 </div>
