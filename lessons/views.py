@@ -38,16 +38,26 @@ def index(request):
 @login_required(login_url = '/lessons/login/')
 def lesson(request,lesson_id):
 	user = request.user
-	lesson = get_object_or_404(Lesson, pk=lesson_id)
-	dlink = "mysite/excel/" + str(lesson) + "_lesson.xlsx"
-	return render_to_response('lessons/lesson.html', {'lesson': lesson,'user':user,'dlink':dlink})
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	#verify user has access to lesson
+	if (int(user_profile.points) + 1) < int(lesson_id):
+		return redirect('/lessons/')
+	else:
+		lesson = get_object_or_404(Lesson, pk=lesson_id)
+		dlink = "mysite/excel/" + str(lesson) + "_lesson.xlsx"
+		return render_to_response('lessons/lesson.html', {'lesson': lesson,'user':user,'dlink':dlink})
 
 @login_required(login_url = '/lessons/login/')	
 def quiz(request, lesson_id):
 	user = request.user
-	lesson = get_object_or_404(Lesson, pk=lesson_id)
-	dlink = "mysite/excel/" + str(lesson) + "_quiz.xlsx"
-	return render_to_response('lessons/quiz.html', {'lesson': lesson,'user':user,'dlink':dlink})
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	#verify user has access to lesson
+	if (int(user_profile.points) + 1) < int(lesson_id):
+		return redirect('/lessons/')
+	else:
+		lesson = get_object_or_404(Lesson, pk=lesson_id)
+		dlink = "mysite/excel/" + str(lesson) + "_quiz.xlsx"
+		return render_to_response('lessons/quiz.html', {'lesson': lesson,'user':user,'dlink':dlink})
 
 @login_required(login_url = '/lessons/login/')	
 def result(request, lesson_id):
@@ -166,15 +176,3 @@ def profile(request):
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
 	completions = Completion.objects.filter (user = user_profile)
 	return render_to_response('lessons/profile.html', {'user':user, 'user_profile': user_profile, 'completions':completions})
-
-"""
-from django.shortcuts import render, render_to_response, get_object_or_404, redirect
-from django.http import HttpResponse, HttpRequest
-from django.template import loader
-from django.template.context import RequestContext
-from django.core.context_processors import csrf
-
-
-def index(request):
-	return HttpResponse("Hello world and friends")
-"""
