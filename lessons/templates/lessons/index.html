@@ -2,11 +2,41 @@
 
 {% block content %}
 
+<!--
 <h4 style="margin:30px;"> Available Courses: </h4>
 <ul>
 	{% for lesson in lesson_list %}
 		<p><a class= "btn btn-info" style = "width:200px;" href="/lessons/{{ lesson.id }}/">{{ lesson.lesson_name }}</a></p>
 	{% endfor %}
 </ul>
+-->
+<div class ="container">
+<div class="row row-centered">
+    <div class ="col-xs-4 col-centered">
+		<h4 style="margin:30px;"> Completed lessons </h4>
+		<ul>
+			{% for lesson in completed_lessons %}
+				<p><a class= "btn btn-info " style = "width:200px;" href="/lessons/{{ lesson.id }}/">{{ lesson.lesson_name }}</a></p>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class ="col-xs-4 col-centered">
+		<h4 style="margin:30px;"> My current lesson </h4>
+		<ul>
+			{% for lesson in current_lesson %}
+				<p><a class= "btn btn-success" style = "width:200px;" href="/lessons/{{ lesson.id }}/">{{ lesson.lesson_name }}</a></p>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class ="col-xs-4 col-centered">
+		<h4 style="margin:30px;"> Future lessons </h4>
+		<ul>
+			{% for lesson in future_lessons %}
+				<p><a class= "btn btn-info disabled" style = "width:200px;" >{{ lesson.lesson_name }}</a></p>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+</div>
 
 {% endblock %}

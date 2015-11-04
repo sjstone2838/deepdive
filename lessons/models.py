@@ -18,7 +18,7 @@ class Question(models.Model):
 		return self.question_text
 		
 class UserProfile(models.Model):
-	user = models.ForeignKey(User,unique=True)
+	user = models.OneToOneField(User)
 	points = models.IntegerField(default=0)
 	
 	def __unicode__(self):

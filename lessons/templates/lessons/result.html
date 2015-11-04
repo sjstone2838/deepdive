@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div style="margin:30px;">
+<h1> Quiz {{lesson.pk}}: {{lesson}} </h1>
 
 {% for i, j, k, l in list %}
     <p>Question: {{ i }}</p>  
@@ -11,5 +13,6 @@
 {% endfor %}
 
 <h3> Your score was {{score}}% </h3>
-
+<a href = '{{next_lesson}}' class = 'btn btn-info' > Next Lesson </a>
+</div>
 {% endblock %}

@@ -20,23 +20,34 @@ def index(request):
 	lesson_list = Lesson.objects.all()
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
-	return render_to_response('lessons/index.html', {'lesson_list':lesson_list,'user':user, 'user_profile': user_profile})
+
+	#Divide lessons into completed, current, and future 
+	current_lesson = user_profile.points
+	completed_lessons = Lesson.objects.filter(pk__lte = user_profile.points)
+	current_lesson = Lesson.objects.filter(pk = (user_profile.points + 1))
+	future_lessons = Lesson.objects.filter(pk__gt = (user_profile.points + 1))
+
+	return render_to_response('lessons/index.html', {
+		'lesson_list':lesson_list,
+		'user':user,
+		'completed_lessons': completed_lessons,
+		'current_lesson': current_lesson,
+		'future_lessons': future_lessons,
+	}) 
 
 @login_required(login_url = '/lessons/login/')
 def lesson(request,lesson_id):
 	user = request.user
-	p = get_object_or_404(Lesson, pk=lesson_id)
-	dlink = "mysite/excel/" + str(p) + "_lesson.xlsx"
-	print dlink
-	return render_to_response('lessons/lesson.html', {'lesson': p,'user':user,'dlink':dlink})
+	lesson = get_object_or_404(Lesson, pk=lesson_id)
+	dlink = "mysite/excel/" + str(lesson) + "_lesson.xlsx"
+	return render_to_response('lessons/lesson.html', {'lesson': lesson,'user':user,'dlink':dlink})
 
 @login_required(login_url = '/lessons/login/')	
 def quiz(request, lesson_id):
 	user = request.user
-	p = get_object_or_404(Lesson, pk=lesson_id)
-	dlink = "mysite/excel/" + str(p) + "_quiz.xlsx"
-	print dlink
-	return render_to_response('lessons/quiz.html', {'lesson': p,'user':user,'dlink':dlink})
+	lesson = get_object_or_404(Lesson, pk=lesson_id)
+	dlink = "mysite/excel/" + str(lesson) + "_quiz.xlsx"
+	return render_to_response('lessons/quiz.html', {'lesson': lesson,'user':user,'dlink':dlink})
 
 @login_required(login_url = '/lessons/login/')	
 def result(request, lesson_id):
@@ -78,8 +89,19 @@ def result(request, lesson_id):
 			completion.save()
 	
 	list = zip(questions, answers, selections,feedback)
+
+	if int(lesson_id) == len(Lesson.objects.all()):
+		next_lesson = '/lessons/'
+	else:
+		next_lesson = '/lessons/' + str(int(lesson_id) + 1) + '/'
 		
-	return render_to_response('lessons/result.html', {'list':list, 'score':score,'user':user})
+	return render_to_response('lessons/result.html', {
+		'lesson': lesson,
+		'list':list, 
+		'score':score,
+		'user':user,
+		'next_lesson': next_lesson
+	})
 
 #creates new person entry in database
 def new_user(request):

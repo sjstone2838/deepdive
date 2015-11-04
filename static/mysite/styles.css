@@ -1,5 +1,5 @@
 .header{
-	background-color: lightgreen;
+	background-color: lightblue;
 }
 
 
@@ -15,4 +15,16 @@
 .clearfix {
     overflow: auto;
 	padding: 15px;
+}
+
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:center;
+    /* inline-block space fix */
+    margin-right:-0px;
 }
