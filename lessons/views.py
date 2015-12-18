@@ -471,9 +471,11 @@ def create_course(request):
 			user_profile.courses_managed.add(course)
 			user_profile.save()
 
+			"""
 			courseStatus = CourseStatus.objects.create(
 				user = user_profile,
 				course = course)
+			"""
 
 			jsonResponseMessage = "Success! You have created new course: <a class='btn btn-info' href='/lessons/course/" +str(course.pk)  +"/'>" + course.name + "</a>"
 			return JsonResponse({'jsonResponseMessage': jsonResponseMessage})
@@ -513,6 +515,7 @@ def manage_enrollment(request):
 		# remove specified course
 		if call == "remove":
 			user_profile.courses_enrolled.remove(course)
+			CourseStatus.objects.get(course = course, user = user_profile).delete()
 
 		# remove specified course
 		if call == "enroll":
