@@ -2,54 +2,30 @@
 {% load static %}
 
 {% block content %}
+<script type="text/javascript"> var answerKey = {{answer_key|safe}}; </script>
 
-<div style="margin: 30px;">
-<h1> Lesson {{lesson.pk}}: {{lesson}} </h1>
+<div style = "margin-left: 40%; width: 20%">
+		<a class ='btn btn-default' style = "width: 100%;" href = "/lessons/course/{{course.pk}}/">Course Overview: {{course.name}} </a>
+</div>
+	
+<div class = "statusBar">
+	<div class = "statusText"></div>
+</div>
+<div class = "lessonControl text-center">
+	<div class = "lessonButton Back btn btn-default">Back</div>
+	<div class = "lessonButton Next btn btn-default">Next</div>
+</div>
+	{{ content|safe|escape }}
 
-<p><a class="btn btn-info" href="{% static dlink %}" download> Download Example Analysis </a></p>
-
-{% if lesson.lesson_name != "Customer Lifetime Value" %}
-
-<!-- PLAINTEXT ONLY -->
-{{lesson.lesson_text|safe|escape}}
-
-<!-- HACK FOR DEMO PURPOSES: ADDED IN SPECIAL HTML TEXT FOR CLTV LESSON, SO THAT LESSON LOOKS 
-PRETTIER THAN PLAIN TEXT AND HAS IMAGES -->
-{% else %}
-<h4><strong>
-<p>Customer lifetime value (often referred to as “CLTV” or “LTV) is an important tool to understand the true health of a business and forecast its future profitability. This is especially true when a business is growing rapidly and burning cash to fund that growth. If we find that current customers are likely to generate profit quickly, then we will feel better about that cash burn. On the other hand, if there is a long payback period before a customer becomes profitable, that could be a red flag. </p>
-<p>At it's core, a CLTV analysis is a forecast P&L for an individual customer, over the expected duration of that customer's lifetime. Companies have many ways of defining CLTV, and related terms like CAC (Customer Acquisition Cost). You will want to understand how the company in question calculates CLTV, but you’re best off building your own analysis using data from the P&L, customer database, headcount data, etc. In this lesson, we’ll calculate the CLTV of an average customer using data from HotSaasCo’s P&L, as well as some information about customer counts and sales headcount. Our objectives will be to calculate the following metrics:</p><ol>
-<li>Months to break-even using contribution profit (excluding R&D and G&A) and EBITDA (fully allocating R&D and G&A) </li>
-<li>CAC</li>
-<li>CLTV, assuming a 10-year horizon </li>
-<li>LTV / CAC ratio </li></ol>
-<p> Note: in this example, we do not disaggregate between different products that HotSaasCo (HSC) sells. If we had the data, we could perform a CLTV analysis for different products, which could help us understand which products were most valuable and where we want to invest for growth. </p></strong>
-<p>Take a look through HSC’s P&L. A few initial observations: revenue is growing quickly, as are customers; the company has negative EBITDA, but cash burn has been moderating and the company is moving towards profitability. However, we can see that customer defections are also significant (of the 10 new customer in 2013, only 5 remained in 2015) and customer acquisition costs are growing rapidly (marketing doubled in 2015 and sales was up 70%). </p>
-<p>A CLTV will allow us to understand whether new customers are “high quality” (becoming profitable quickly and sticking around) or “low quality” (taking a long time to become profitable and/or churning frequently). We’ll use annual data from the P&L, but build our CLTV on a monthly basis, so we can derive more detailed insights on payback-period. </p>
-
-<div class="clearfix blue"><img src = "{% static 'mysite/images/cltv1.JPG' %}" alt="cltv image" style="width:400px;float:right;">Let’s start by analyzing HSC’s customer count data. New customer additions are growing, but so is churn. In 2015, we lost 6 customers, out of the 25 we had at the end of 2014, implying a 24% annual churn rate. If we raise that to the (1/12) power, we derive a monthly churn rate of 1.8%, which will be input #1 for our CLTV. </div>
-<div class="clearfix"><img src = "{% static 'mysite/images/cltv2.JPG' %}" alt="cltv image" style="width:400px;float:left;"> <p>Next, let’s analyze revenue. HSC added 25 new customers in 2015, who generated $6.3M in revenue, or $250K / new customer/ year or $21K / new customer / month. That will be input #2. </p>
-<p>In 2015, HSC saw spending from existing customers (vintages 2013 and 2014) decline from $5.8M to $5.3M, a decline of 8%. This is net upsell, as it accounts for both continuing customers who bought more product from HSC and revenue lost from customers who left HSC. Since we already know HSC’s churn rate, we want to go focus on retained customers only and figure out gross upsell, or how much continuing customers changed their spending. To do this, we apply a 24% haircut (annual churn) to the $5.8M to exclude 2014 customer that churned in 2015. Then we divide 5.3 by (5.8 x (1-24%)) to get a 21% gross upsell. This will be input #3. </p></div>
-<div class="clearfix blue"><img src = "{% static 'mysite/images/cltv3.JPG' %}" alt="cltv image" style="width:400px;float:right;">Now let’s look at COGS. HSC has 3 types of COGS: implementation, customer service, and data center. For the sake of simplicity, let’s assume implementation costs are incurred only by new customers, and they are borne by HSC. 25 new customers in 2015 and $1.6M in total implementation COGS implies $65K implementation cost per customer (note the average implementation is 3 months, so $22K/month). For customer support and data center costs, these are ongoing, so we can divide total cost by total number of customers (45 in 2015). These will be input group #4. </div>
-<div class="clearfix"><img src = "{% static 'mysite/images/cltv4.JPG' %}" alt="cltv image" style="width:400px;float:left;"><p>Now let’s turn to OpEx. First, we have marketing expense, which we will assume only applies to new customers, or $3.7M / 25 customers  = $148K in 2015. This will be input #5. </p>
-<p>Next, we want to break down the $1.7M in sales spending into a customer acquisition or “hunter” segment and an ongoing upsell or “farmer” segment. (Hunter and farmer are terms often used to describe sales reps who are focused on winning new customers and growing existing customer, respectively). Based on the headcount data, we will allocate 67% of sales cost in 2015 to hunters (e.g. new logos), implying a $45K one-time sales acquisition cost per customer. We allocate 33% of sales to farmers, implying $2K farmer spend per customer per month - this is an ongoing expense. This will be input group #6.</p>
-<p>Finally, we allocate our remaining OpEx buckets. Generally, it is difficult to trace R&D and G&A to specific customers, so we just divide total spend by total customers to get an estimate of the “fully-loaded” cost per customer (which will allow us to estimate EBITDA per customer). These will be input group #7. </p></div>
-<p>Whew. That was a lot of input gathering. Luckily we’re done with the hard part. Laying out the CLTV analysis is pretty simple now that we have all our key inputs – we’re going to create a monthly P&L for an average customer, starting with revenue, then including COGS, then OpEx, and ending with EBITDA. We’ll start with month 0 – when the sale is made and customer acquisition costs are incurred. Implementation will last for 3 months, and the customer will “go live” at the beginning of month 4, when HSC will start billing and recognizing revenue. </p>
-<ul><li>Revenue: we use $21K/month (input #2) as our starting point, when we finished implementation and begin recognizing revenue at the beginning of month 4. In each subsequent month, 1.8% of our base churns (input #1) – so we reduce revenue by that amount. This is partially offset by gross upsell of 1.6% (input #3). Since churn outweighs gross upsell, revenue declines over time. </li>
-<li>COGS: in months 1-3, we incur $22Kof implementation cost per month (input set #4). Then once the customer is up and running, we incur $2K in customer support and $0.2K in data center costs per month (input set #4). </li>
-<li>Sales & Marketing: we allocate the $148K in marketing acquisition cost (input #5) at the time the customer signs (month zero.) We allocate “hunter” rep cost of $45K at month zero as well, and then $2K of “farmer” rep cost (input set #6) from month 4 onwards (note that the time period of the farmer rep cost matches up with the period for which customer upsell is occurring.)</li></ul>
-<p>At this point we have calculated customer contribution profit, where we’ve linked back all costs that can be directly attributed to the customer. We could stop here, but we’d like to figure out customer EBITDA as well, so we need to allocate R&D and G&A, and then we will have accounted for all OpEx buckets. </p>
-<ul><li>R&D and GA: we allocate $8K in R&D/month and $1K in G&A/month (input set #7), starting in month 1. We could start in month 4, but some R&D and G&A likely goes into supporting the implementation work, so we’ll go with month 1. </li>
-<li>At this point our “customer-level” P&L is done! If we look at the cumulative contribution profit, we see that “break-even” is at month 19 (or 1.6 years). If we think about each customer as an “investment”, payback in 1.6 years seems pretty good. EBITDA payback is longer – 45 months, or 3.8 years. </li></ul>
-<p>To calculate lifetime value, we apply a discount rate to our customer-level EBITDA (we’ve used an annual discount rate of 10%, which we adjusted to be monthly) and take the sum of the discounted EBITDA between month 0 and month 120. (There’s nothing magical about the 10 year period we chose. We could continue to “drag-right” and look at this over an even longer time period, and that would increase our LTV, although at a diminishing rate. Eventually the discount factor would negate any marginal EBITDA.) Right now HotSaasCo has an LTV of $321K, but note that if the monthly churn rate increased from 1.6% to 2.4%, its LTV would be zero (try overriding the churn rate to see this!)</p>
-<p>We can look to the LTV/CAC ratio to see how our customer payoff (adjusted for the time-value of money) compares to customer acquisition cost. The higher the better. HSC has a ratio of 1.7x, but ideally we’d like to see 2.0x or higher. </p>
-<p> Here's what our full CLTV analysis should look like at this point:</p>
-<div class="clearfix blue"><img src = "{% static 'mysite/images/cltv5.JPG' %}" alt="cltv image" style="width:900px;float:center;"></div>
-<p>Play around with the inputs to the CLTV analysis to get a feel for their relative importance and how they impact our key metrics. Below are some frequently asked questions. When you feel comfortable, move on to the quiz!</p>
-</h4>
-{% endif %}
-
-<p><a class="btn btn-info" href = "/lessons/{{lesson.pk}}/quiz/"> Go on to quiz </a></p>
+<div class = "lessonHintsHeader btn">
+	<div class = ""> Lesson Hints </div>
+</div>
+<div class = "lessonHintsContent Hide">
+	{{hints|safe|escape}}
 </div>
 
+<div style="display:none" id="lesson_id"> {{lesson_id}} </div>
+
 {% endblock %}
+
+

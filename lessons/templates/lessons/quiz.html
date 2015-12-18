@@ -8,8 +8,8 @@
 <p><a class="btn btn-info" href="{% static dlink %}" download> Download Quiz Data </a></p>
 
 <ol><form action="/lessons/{{lesson.pk}}/result/" method="get">
-{% for question in lesson.question_set.all %}
-	{{ question.question_text }}
+{% for question in lesson.oldquestion_set.all %}
+	{{ question.text }}
 	<li><input id="answer{{forloop.counter}}" type="text" name="answer{{forloop.counter}}"></li>
 {% endfor %}</ol>
 

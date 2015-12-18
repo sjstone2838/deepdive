@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="{% static 'mysite/js/add_media.js' %}"></script>
+
+<div class = "wideBlock">
+	<h2> Add or Modify Course Logo </h2>
+	<form action="/lessons/add_media/" method="post" enctype="multipart/form-data">
+	    <!--{% csrf_token %}-->
+	    <p> <input type ="hidden" name = "post_type" value = "course"></p>
+	    <p>{{ courseLogoForm.course.label }}{{ courseLogoForm.course }} </p>
+	    <p>{{ courseLogoForm.docfile }} </p>
+		<p> <img class = "Hide" id="preview" src="#" alt="your image" /> <p>
+	    <p><input type="submit" value="Submit"/></p>
+	</form>
+	<p class = "editResponseText"> {{course_success}} </p>
+</div>
+
+<div class = "wideBlock">
+	<h2> Add or Delete Documents Attached to a Module Element </h2>
+	<form action="/lessons/add_media/" method="post" enctype="multipart/form-data">
+	    <!--{% csrf_token %}-->
+	    <p> <input type ="hidden" name = "post_type" value = "module_element"></p>
+	    <p> Action <select name = "action">
+	    	<option value="add" selected>Add new document</option>
+	    	<option value="delete">Delete existing documents</option>
+	    </select></p>
+
+	    <p>{{ documentForm.moduleElement.label }}{{ documentForm.moduleElement }} </p>
+	    <p>{{ documentForm.docfile }} </p>
+	    <p><input type="submit" value="Submit"/></p>
+	</form>
+	<p class = "editResponseText"> {{module_element_success}} </p>
+</div>
+	
+
+{% endblock %}

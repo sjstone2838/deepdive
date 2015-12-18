@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="{% static 'mysite/js/edit.js' %}"></script>
+<!-- links to CKEDITOR and customization of CKEDITOR toolbar -->
+<script src="{% static 'mysite/js/ckeditor.js' %}"></script>
+<script src="{% static 'mysite/js/adapters/jquery.js' %}"></script>
+<script>
+	var ckeditor_toolbar = [
+		{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+		//{ name: 'editing', items: [ 'Scayt' ] },
+		{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+		{ name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },
+		//'/',
+		{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+		{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+		{ name: 'styles', items: [ 'Styles', 'Format' ] },
+		// { name: 'about', items: [ 'About' ] }
+		{ name: 'document', items: [ 'Source' ] },
+		{ name: 'tools', items: [ 'Maximize' ] },
+	];
+</script>
+
+<div>
+	<div class = "editTabs">
+		<div class = "tab btn-row" id = "courseTab" style = "background-color: #f1f1f4;">
+			<div class = "btn btn-link"> Course</div>
+		</div> 
+		<div class = "tab btn-row Hide"  id = "moduleTab">
+			<div class = "btn btn-link"> Module</div>
+		</div> 
+		<div class = "tab btn-row Hide"  id = "moduleElementTab">
+			<div class = "btn btn-link"> Module Element </div>
+		</div> 
+		<div class = "tab btn-row Hide"  id = "questionTab">
+			<div class = "btn btn-link"> Question </div>
+		</div> 
+	</div>
+	<div class = "course editBlock">
+		<div>
+			<select class = 'input roundedInput' type='text' id = 'courseSelect'>
+			   
+		    </select>
+	    </div>
+		<div style="width: 150px; display: inline-block;"> Name: </div> 
+		<input id = "course_name" > <p></p>
+		<div style="width: 150px; display: inline-block;">Genre: </div>
+		<input id = "course_genre"> <p></p>
+		<div>
+			<div style="width: 150px; display: inline-block; vertical-align: top;">Description: </div>
+			<div style="display: inline-block;">
+				<textarea style="display: inline-block;" id="course_description"></textarea>
+		        <script>
+		            CKEDITOR.replace( 'course_description',{
+		            	toolbar: ckeditor_toolbar
+					});
+		        </script>
+	        </div>
+        </div>
+        <div class = 'edit btn btn-link btn-row' id = 'course-Edit'> Save Edits </div>
+        <div class = 'delete btn btn-link btn-row' id = 'course-Delete'> Delete </div>
+        <div class = 'editResponseText btn-row' id = 'course-Response'></div>
+	</div>
+	<div class = "module editBlock Hide">
+		<div>
+			<select class = 'input roundedInput disabled' type='text' id = 'moduleSelect' disabled>
+		   		<option value='' disabled selected>Select module...</option>
+	    	</select>
+    	</div>
+		<div class = "current btn btn-primary btn-row" id = "module-Current"> Edit existing module </div>
+		<div class = "add btn btn-info btn-row" id = "module-New"> Add new module </div><p></p>
+		<div style="width: 90px; display: inline-block;"> Index: </div> 
+		<div class = "btn-row" id = "module_index"> </div><br>
+		<div style="width: 90px; display: inline-block;"> Name: </div> 
+		<input id = "module_name"> <p></p>
+		<div>
+			<div style="width: 90px; display: inline-block; vertical-align: top;">Hints: </div>
+			<div style="display: inline-block;">
+				<textarea style="display: inline-block;" id="module_hints"></textarea>
+		        <script>
+		            CKEDITOR.replace( 'module_hints',{
+		            	toolbar: ckeditor_toolbar
+					});
+		        </script>
+	        </div>
+        </div>
+        <div id = "module-EditButtons">
+	        <div class = 'edit btn btn-link btn-row' id = 'module-Edit'> Save Edits </div>
+	        <div class = 'moveForward btn btn-link btn-row' id = 'module-moveForward'> Move Forward </div>
+	        <div class = 'moveBack btn btn-link btn-row' id = 'module-moveBack'> Move Back </div>
+	        <div class = 'delete btn btn-link btn-row' id = 'module-Delete'> Delete </div>
+        </div>
+        <div class = "Hide" id = "module-CreateButtons">
+	        <div class = 'create btn btn-link btn-row' id = 'module-Create'> Save New Module </div>
+        </div>
+        <div class = 'editResponseText btn-row' id = 'module-Response'></div>
+	</div>
+	<div class = "moduleElement editBlock Hide">
+		<div>
+			<select class = 'input roundedInput disabled' type='text' id = 'moduleElementSelect' disabled>
+			   	<option value="" disabled selected>Select module element...</option>
+		    </select>
+	    </div>
+		<div class = "current btn btn-primary btn-row" id = "moduleElement-Current"> Edit existing module element </div>
+		<div class = "add btn btn-info btn-row" id = "moduleElement-New"> Add new module element </div><p></p>
+		<div style="width: 90px; display: inline-block;"> Index: </div> 
+		<div class = "btn-row" id = "moduleElement_index"></div> <br>
+		<div style="width: 90px; display: inline-block;"> Name: </div> 
+		<input id = "moduleElement_name"> <p></p>
+		<div style="width: 90px; display: inline-block;"> Type: </div> 
+		<select id = "moduleElement_type" style="width: 260px; display: inline-block;">
+			<option value="Content"> Content </option>
+	  		<option value="Quiz"> Quiz </option>
+	  		<option value="Test"> Test </option>
+		</select>
+		<p></p>
+		<div>
+			<div style="width: 90px; display: inline-block; vertical-align: top;">Content: </div>
+			<div style="display: inline-block;">
+				<textarea style="display: inline-block;" id="moduleElement_text"></textarea>
+		        <script>
+		            CKEDITOR.replace( 'moduleElement_text',{
+		            	toolbar: ckeditor_toolbar
+					});
+		        </script>
+	        </div>
+        </div>
+	    <div id = "moduleElement-EditButtons">   
+	        <div class = 'edit btn btn-link btn-row' id = 'moduleElement-Edit'> Save Edits </div>
+	        <div class = 'moveForward btn btn-link btn-row' id = 'moduleElement-moveForward'> Move Forward </div>
+	        <div class = 'moveBack btn btn-link btn-row' id = 'moduleElement-moveBack'> Move Back </div>
+	        <div class = 'delete btn btn-link btn-row' id = 'moduleElement-Delete'> Delete </div>
+        </div>
+        <div class = "Hide" id = "moduleElement-CreateButtons">
+	        <div class = 'create btn btn-link btn-row' id = 'moduleElement-Create'> Save New Module Element </div>
+        </div>
+        <div class = 'editResponseText btn-row' id = 'moduleElement-Response'></div>
+	</div>
+	<div class = "question editBlock Hide">
+		<div>
+			<select class = 'input roundedInput disabled' type='text' id = 'questionSelect' disabled>
+			   	<option value="" disabled selected>Select question...</option>
+		    </select>
+	    </div>
+		<div class = "current btn btn-primary btn-row" id = "question-Current"> Edit existing question </div>
+		<div class = "add btn btn-info btn-row" id = "question-New"> Add new question </div><p></p>
+		<div style="width: 90px; display: inline-block;"> Index: </div> 
+		<div class = "btn-row" id = "question_index"></div><br>
+		<div style="width: 90px; display: inline-block;"> Type: </div> 
+		<select id = "question_type" style="width: 260px; display: inline-block;">
+			<option value="Radio"> Radio </option>
+	  		<option value="Form"> Form </option>
+		</select>
+		<p></p>
+		<div>
+			<div style="width: 90px; display: inline-block; vertical-align: top;">Content: </div>
+			<div style="display: inline-block;">
+				<textarea style="display: inline-block;" id="question_text"></textarea><p></p>
+		        <script>
+		            CKEDITOR.replace( 'question_text',{
+		            	toolbar: ckeditor_toolbar
+					});
+		        </script>
+	        </div>
+        </div>
+        <div style="width: 90px; display: inline-block;"> Answer: </div>
+		<input id = "question_answer"> <p></p>
+        <div id = "answerChoices"></div>
+        <div id = "question-EditButtons">  
+	        <div class = 'edit btn btn-link btn-row' id = 'question-Edit'> Save Edits </div>
+	        <div class = 'moveForward btn btn-link btn-row' id = 'question-moveForward'> Move Forward </div>
+	        <div class = 'moveBack btn btn-link btn-row' id = 'question-moveBack'> Move Back </div>
+	        <div class = 'delete btn btn-link btn-row' id = 'question-Delete'> Delete </div>
+        </div>
+        <div class = "Hide" id = "question-CreateButtons">
+	        <div class = 'create btn btn-link btn-row' id = 'question-Create'> Save New Question </div>
+        </div>
+        <div class = 'editResponseText btn-row' id = 'question-Response'></div>
+	</div>
+</div>
+
+{% endblock %}
+

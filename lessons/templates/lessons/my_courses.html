@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="{% static 'mysite/js/my_courses.js' %}"></script>
+	
+	<div class = "wideBlock">
+		<h2 style="margin:0px 0px 15px 0px;"> My courses </h2>
+		<div class = "courseBlock">
+		    <table class = "styledTable">
+		    <tr>
+		    	<th> Course </th>
+		    	<th> Genre </th>
+		    	<th> Description </th>
+		    	<th></th>
+		    </tr>
+			{% for course in mycourses %}
+		    <tr>
+		        <td> {{course.name}} </td>
+		        <td> {{course.genre}} </td>
+		        <td> <div style = "height: 3em; overflow: hidden;"> {{course.description | safe }} </div> </td>
+		        <td class = "removeCourse btn btn-info" id = "removeCourse.{{course.pk}}" style="margin-left:50%;"> Remove </td>
+		    </tr>
+			{% endfor %}
+		    </table>
+	    </div>
+	</div>
+
+	<div class = "wideBlock">
+		<h2 style="margin:0px 0px 15px 0px;"> Courses Available for Enrollment </h2>
+		<div class = "courseBlock">
+		    <table class = "styledTable">
+		    <tr>
+		    	<th> Course </th>
+		    	<th> Genre </th>
+		    	<th> <div style = "font-size: 12pt !important;"> Description </th>
+		    	<th></th>
+		    </tr>
+			{% for course in othercourses %}
+		    <tr >
+		        <td> {{course.name}} </td>
+		        <td> {{course.genre}} </td>
+		        <td> {{course.description | safe }} </div> </td>
+		        <td class = "addCourse btn btn-info" id = "addCourse.{{course.pk}}" style="margin-left:50%;"> Enroll </td>
+		    </tr>
+			{% endfor %}
+		    </table>
+	    </div>
+	</div>
+
+{% endblock %}

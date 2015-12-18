@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+	<script src="{% static 'mysite/js/create.js' %}"></script>
+	<!-- links to CKEDITOR and customization of CKEDITOR toolbar -->
+	<script src="{% static 'mysite/js/ckeditor.js' %}"></script>
+	<script src="{% static 'mysite/js/adapters/jquery.js' %}"></script>
+	<script>
+		var ckeditor_toolbar = [
+			{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+			//{ name: 'editing', items: [ 'Scayt' ] },
+			{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+			{ name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },
+			//'/',
+			{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+			{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+			{ name: 'styles', items: [ 'Styles', 'Format' ] },
+			// { name: 'about', items: [ 'About' ] }
+			{ name: 'document', items: [ 'Source' ] },
+			{ name: 'tools', items: [ 'Maximize' ] },
+		];
+	</script>
+
+	<datalist id="element_type">
+	  <option value="Content">
+	  <option value="Quiz">
+	  <option value="Test">
+	</datalist>
+	<datalist id="question_type">
+	  <option value="Radio">
+	  <option value="Form">
+	</datalist>
+	
+	<div class = "wideBlock Hide">
+		<div class = "verificationText" id = "jsonResponseMessage"></div>
+	</div>
+	<div class = "wideBlock">
+		<h2 class = "sameLine"> Create New Course </h2> 
+		<div class = "courseFormDetails btn btn-info"> Expand </div>
+		<div class = "courseForm">
+		<form><table>
+			<tr>
+				<td style = "width: 15%;">Course Name</td> 
+				<td><input class = 'input course' type='text' id = 'courseName' name = 'course_name' placeholder = 'Name'> 
+					<p class = "verificationText red-text" id="courseNameError"></p></td>
+			</tr>
+			<tr>
+				<td> Genre </td>
+				<td> <input class = 'input course' type='text' id = 'courseGenre' name = 'course_genre' placeholder = 'Genre'> 
+				<p class = "verificationText red-text" id="courseGenreError"></p></td>
+			</tr>
+			<tr>
+				<td>Description </td>
+				<td> <textarea class = 'input course' type='textarea' id = 'courseDescription' name = 'course_description'style="width: 95%; height: 4em; font-size: 12pt;"></textarea>
+		        <script>
+		            CKEDITOR.replace( 'courseDescription',{
+		            	toolbar: ckeditor_toolbar
+					});
+		        </script>
+				<p class = "verificationText red-text" id="courseDescriptionError"></p> </td>
+			</tr>
+		</table></form>
+		<div class = "submitCourse btn btn-danger" style="margin: 5px;"> Create New Course </div>
+		</div>
+	</div>
+
+	<div class = "wideBlock">
+		<h2 class = "sameLine"> Create New Module </h2> 
+		<div class = "moduleFormDetails btn btn-info"> Expand </div>
+		<div class = "moduleForm">
+			<!--<div class = 'btn-row' style = "width: 200px;"> Module Name </div>-->
+			<input class = 'input moduleName btn-row' style = "width: 500px;" type='text' id = 'moduleName' name = 'module_name' placeholder = 'Module Name'>
+			<p class = "verificationText red-text" id="moduleNameError"></p>
+			<!--<div class = 'btn-row' style = "width: 200px;"> Course </div>-->
+			<select class = 'input btn-row' style = "width: 500px;" type='text' id = 'moduleCourse' name = 'module_course' placeholder = 'Course'>
+			   	<option value="" disabled selected>Select course</option>
+			   	{% for course in courses %}
+			   	<option value="{{course.name}}">{{course.name}}</option>
+			    {% endfor %}
+		  	</select>
+			<p class = "verificationText red-text" id="moduleCourseError"></p>
+			<!--<div class = 'btn-row' style = "width: 200px;"> Hints </div>-->
+			<textarea class = 'input moduleHints btn-row' name = 'module_hints' id = "module_hints"> Fill in Module Hints (or delete to leave blank) </textarea>
+			<script>
+	            CKEDITOR.replace( 'module_hints',{
+	            	toolbar: ckeditor_toolbar
+				});
+	        </script>
+	        <p></p>
+			<div class = "addModuleElements"></div>
+			<div class = "moduleElementFormDetails btn btn-info SameLine"> Add Module Element </div>
+			<div class = "moduleElementFormRemove btn btn-info SameLine"> Remove Last Module Element </div>
+			<p></p>
+			<div class = "submitModule btn btn-danger" style="width: 380px;"> Create New Module </div>
+		</div>
+	</div>
+
+{% endblock %}

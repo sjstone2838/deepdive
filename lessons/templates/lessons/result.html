@@ -1,18 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div style="margin:30px;">
-<h1> Quiz {{lesson.pk}}: {{lesson}} </h1>
 
-{% for i, j, k, l in list %}
-    <p>Question: {{ i }}</p>  
-	<p>Correct Answer: {{ j }}</p>
-	<p>Your Answer: {{ k }}</p>
-	<p> {{l}} </p>
-	<br/>
-{% endfor %}
 
-<h3> Your score was {{score}}% </h3>
-<a href = '{{next_lesson}}' class = 'btn btn-info' > Next Lesson </a>
+{% if message_type == "results" %}
+<div class = "testResult">
+
+	{{content|safe|escape}}
+
+	{% if passed == "yes" %}
+	<a class = "btn btn-info" href='/lessons/course/{{course.pk}}/{{next_module.index}}'> Onwards! </a>
+	{% else %}
+	<a class = "btn btn-info" href='/lessons/course/{{course.pk}}/{{module.index}}'> Try module again </a>
+	{% endif %}
+
 </div>
+
+{% else %}
+
+<div class = "courseComplete wideBlock">
+	<h3> Congratulations, you've finished {{ course.name | safe }}! </h3>
+	<h4 class = "btn-row"> Take a breather, then get cracking on your next course </h4>
+	<a class = "btn btn-info" href = "/lessons/"> My courses </a>
+</div>
+
+{% endif %}
+
 {% endblock %}

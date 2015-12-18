@@ -2,35 +2,31 @@
 
 {% block content %}
 
-<h3 style="margin-left:100px; margin-right:100px; margin-top:20px; margin-bottom:20px; padding:20px; text-align:center; background-color:lightgrey;">  At DeepDive, each lesson builds on the one that comes before it. So read lesson #1, play around with the numbers in the example model, and then take the quiz. When you pass the quiz, you'll unlock lesson #2. Treat yourself to an ice cream... and then repeat! </h3> 
-<br/>
-<div class ="container">
-<div class="row row-centered">
-    <div class ="col-xs-4 col-centered">
-		<h4 style="margin:15x;"> Completed lessons </h4>
-		<ul>
-			{% for lesson in completed_lessons %}
-				<p><a class= "btn btn-info " style = "width:200px; text-align:left;" href="/lessons/{{ lesson.id }}/">{{lesson.id}}. {{ lesson.lesson_name }}</a></p>
-			{% endfor %}
-		</ul>
+	<div class = "veryWideBlock">
+		<h2 class = "btn-row" style="margin:0px 0px 15px 0px;"> My Courses </h2> <a class = 'btn btn-info btn-row' href='/lessons/my_courses'> Add or Drop Courses </a>
+		<div style = "max-height: 50vh; max-width: 100%; overflow: auto;">
+		{% for course in mycourses %}
+	   		<div class = "fullWidthBlock" style = "background-color: darkgrey;">
+		    	<a href='/lessons/course/{{course.pk}}' ><img src = "{{course.logo}}" alt="courselogo" style="padding-left: 5px; width: 200px; display: inline-block;"> </a> 
+		    	<h1 style = "display: inline-block; font-style: italic;"> <a href='/lessons/course/{{course.pk}}'> <strong> {{ course.name | safe }} </strong> </a></h1>
+				<table style = "table-layout: fixed;">
+				    <tr style = "color: black; height: 4em;">
+				    	<td class = "indexTable" style = "padding-left: 10px; width: 10%;"> <a href='/lessons/course/{{course.pk}}'> {{ course.genre | safe }} </a></td>
+				    	<td class = "indexTable" style = "width: 10%;"> <a href='/lessons/course/{{course.pk}}'> By {{ course.instructor | safe }} </a></td>
+				    	<td class = "indexTable" style = "width: 10%;"> <a href='/lessons/course/{{course.pk}}'> {{ course.relationship | safe }}</a></td>
+
+				    	{% if course.status = "Completed" %}
+				    	<td class = "indexTable" style = "width: 10%;"> <a style = "color: green; font-style: italic; padding: 10px;" href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</a></td>
+				    	{% else %}
+				    	<td class = "indexTable" style = "width: 10%;"> <a href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</a></td>
+				    	{% endif %}
+
+				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> {{ course.description | safe }}</a></td>
+				    </tr>
+				</table>
+			</div>
+				{% endfor %}
+		</div>
 	</div>
-	<div class ="col-xs-4 col-centered">
-		<h4 style="margin:15x;"> My current lesson </h4>
-		<ul>
-			{% for lesson in current_lesson %}
-				<p><a class= "btn btn-info" style = "width:200px; text-align:left;" href="/lessons/{{ lesson.id }}/">{{lesson.id}}. {{ lesson.lesson_name }}</a></p>
-			{% endfor %}
-		</ul>
-	</div>
-	<div class ="col-xs-4 col-centered">
-		<h4 style="margin:15x;"> Future lessons </h4>
-		<ul>
-			{% for lesson in future_lessons %}
-				<p><a class= "btn btn-info disabled" style = "width:200px; text-align:left;" >{{lesson.id}}. {{ lesson.lesson_name }}</a></p>
-			{% endfor %}
-		</ul>
-	</div>
-</div>
-</div>
 
 {% endblock %}

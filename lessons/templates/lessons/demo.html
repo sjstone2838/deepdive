@@ -1,0 +1,178 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <link rel="stylesheet" href="{% static 'mysite/css/bootstrap.min.css' %}" >
+	    <link rel="stylesheet" href="{% static 'mysite/styles.css' %}" type="text/css"> 
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	    <script src="{% static 'mysite/js/lesson.js' %}"></script>
+	    <title> DeepDive </title>
+	</head>
+
+	<body>
+		<div class="header container-fluid">
+	        <div class="row vertical-align" style="padding: 10px;" >
+	            <div class ="col-md-4">
+	                   <img src = "{% static 'mysite/images/deepdivelogo.JPG' %}" alt="diver logo" style="width: 250px; margin: 0px 20px;">                               
+	            </div>
+	            <div class ="col-md-4" style="text-align:center;">    
+	                <a class="btn btn-info" role="button" href="/lessons/">Home</a>
+	                <a class="btn btn-info" role="button"href="/lessons/profile/"> Profile </a>
+	                <a class="btn btn-info" role="button"href="/lessons/login/" > Logout</a>
+	            </div> 
+	            <div class ="col-md-4" style="text-align:right;"> 
+	                <a > Signed in as <code> {{user.username}} </code></a>
+	            </div>
+	        </div>
+    	</div>
+    	<div class = "statusBar">
+    		<div class = "statusText"></div>
+    	</div>
+    	<br>
+    	<div class = "lessonControl text-center">
+			<div class = "lessonButton Back btn btn-info">Back</div>
+			<div class = "lessonButton Next btn btn-info">Next</div>
+			<div class = "lessonButton Quiz btn btn-info">On to Quiz</div>
+		</div>
+		<br>
+		<div class = "lessonElement" id="1" > 
+			<h2> Goal: Understand what a leveraged buyout (LBO) model is, and what it is used for </h2>
+		</div>
+		<div class = "lessonElement" id="2" > 
+			<h2> What is a Leveraged Buyout Model? </h2>
+			<ul>
+				<li> Buyout refers to the purchase of a company – more generally, it stands for an investment of money </li>
+				<li> Leveraged refers to the purchase of a company using loans (debt) as well as cash (equity)</li>
+				<ul><li>Similar to purchasing a $100,000 house with $50,000 from the bank as a loan</li></ul>
+				<li>A financial model is a tool used to analyze and project a company’s performance</li>
+			</ul>
+		</div>
+		<div class = "lessonElement" id="3" > 
+			<h2> What does an LBO help me do? </h2>
+			<ul>
+				<li>Simply, determine whether an investment is projected to be a good one, and how good </li>
+				<li>Understand what break points are for decision – what could change the outcome of the investment?</li>
+				<li>LBO can be used to analyze return on any type of investment being made</li>
+				<ul>
+					<li>Private equity industry</li>
+					<li>Film financing</li>
+					<li>Buying a home</li>
+				</ul>
+			</ul>
+		</div>
+		<div class = "lessonElement" id="4" > 
+			<h2> Mini-Quiz  </h2>
+			<h4> A loan used to help pay for the purchase of a company is referred to as </h4>
+			<form class = "Question" type="radio">
+				<input type="radio" name="Question1" value="1">  Equity <br>
+  				<input type="radio" name="Question1" value="2">  Debt <br>
+  				<input type="radio" name="Question1" value="3">  Return <br>
+  				<input type="radio" name="Question1" value="4">  Model <br>
+  				<p class = "verificationText"> </p>
+			</form>
+			<h4> An LBO model can be used to analyze decisions regarding: </h4>
+			<form class = "Question" type="radio">
+				<input type="radio" name="Question2" value="1">  Buying a house <br>
+  				<input type="radio" name="Question2" value="2">  Investing in a company <br>
+  				<input type="radio" name="Question2" value="3">  Financing a film project <br>
+  				<input type="radio" name="Question2" value="4">  All of the above <br>
+  				<p class = "verificationText"> </p>
+			</form>
+			<br/>
+			<div class="submitButton btn btn-info"> Check Answers </div>
+			<br/>
+		</div>
+		<div class = "lessonElement" id="5" > 
+			<h2> Goal: Understand how to pay for a company and where the money from the purchase goes </h2>
+		</div>
+		<div class = "lessonElement" id="6" > 
+			<h2> Sources & Uses </h2>
+			<ul>
+				<li>Sources refers to where the money for a deal is coming from</li>
+				<ul>
+					<li>A $100,000 house can be paid for with $50,000 in your own money and $50,000 from a loan from the bank</li>
+					<li> Example above is 50% equity and 50% debt </li>
+				</ul>
+				<li>Uses refers to where the money from a deal is going to</li>
+				<ul>
+					<li>Person who sold the house might have $40,000 left on her mortgage</li>
+					<li>In that case, the seller herself is getting $60,000 while she is using $40,000 to pay off her remaining mortgage</li>
+				</ul>
+			</ul>
+		</div>
+		<div class = "lessonElement" id="7" > 
+			<h2> Home Example </h2>
+			<ul>
+				<li>Imagine the prior example of buying a house that costs $100,000</li>
+				<ul>
+					<li>You decide to take out a loan for $40,000 to pay for the house</li>
+					<li>The remaining $60,000 is from cash you already have</li>
+				</ul>
+				<li>In this case, “Enterprise Value” of the house is $100,000</li>
+				<ul>
+					<li>“Debt” is $40,000 or 40% of the Enterprise Value</li>
+					<li>“Equity” is $60,000 or 60% of the Enterprise Value</li>
+				</ul>
+			</ul>
+		</div>
+
+		<div class = "lessonElement" id="8" > 
+			<h2> Home Example, Continued</h2>
+			<ul>
+				<li>Now imagine the seller of that $100,000 house</li>
+				<ul>
+					<li>She has $20,000 left on her mortgage</li>
+					<li>She will be able to keep the remaining $80,000</li>
+				</ul>
+				<li>In this example, Enterprise Value of the house is $100,000 (same as before)</li>
+				<ul>
+					<li>Debt is $20,000 or 20% of the Enterprise Value</li>
+					<li>Equity is $80,000 or 80% of the Enterprise Value</li>
+				</ul>
+				<li>Notice that Enterprise Value was the same but the Debt & Equity mix was different between buyer and seller</li>
+			</ul>
+		</div>
+		<div class = "lessonElement" id="9" > 
+			<h2> Mini-Quiz </h2>
+			<h4> A $150,000 house purchased with 50% debt would have a loan of: </h4>
+			<form class="Question" type="text">
+				<input type="text"> 
+				<p class = "verificationText"> </p>
+			</form>
+			<h4> If you paid $20,000 of your own money and borrowed another $15,000 from the bank to pay for a car, the car’s “Enterprise Value” is: </h4>
+			<form class="Question" type="text">
+				<input type="text">
+				<p class = "verificationText"> </p> 
+			</form>
+			<h4> Sources of a deal or transaction refers to: </h4>
+			<form class = "Question" type="radio">
+				<input type="radio" name="Question1" value="1">  Where the money for a deal is coming from <br>
+  				<input type="radio" name="Question1" value="2">  The money the seller of a house keeps after paying the mortgage <br>
+  				<input type="radio" name="Question1" value="3">  Where the money for a deal is going to <br>
+  				<input type="radio" name="Question1" value="4">  The amount of the seller’s mortgage <br>
+  				<p class = "verificationText"> </p>
+			</form>
+			<h4> If a house was paid for with $40,000 in loans and $20,000 in equity, then $60,000 is the amount of the:</h4>
+			<form class = "Question" type="radio">
+				<input type="radio" name="Question2" value="1">  Sources <br>
+  				<input type="radio" name="Question2" value="2">  Uses <br>
+  				<input type="radio" name="Question2" value="3">  Enterprise Value <br>
+  				<input type="radio" name="Question2" value="4">  All of the above <br>
+  				<p class = "verificationText"> </p>
+			</form>
+			<br/>
+			<div class="submitButton btn btn-info"> Check Answers </div>
+			<br/>
+		</div>
+			<br/>
+		
+		<div class = "lessonHintsHeader">Lesson Hints</div>
+		<div class = "lessonHintsContent">
+			<ul>
+				<li> Total Enterprise Value = Equity + Debt - Cash </li>
+				<li> Sources of Cash (from Seller) = Uses of Cash (to Buyer) </li>
+				<li> Buyer Debt + Buyer Equity = Seller Debt (paid down) + Seller Equity (e.g. proceeds from sale) </li>
+			</ul>
+		</div>
+	</body>
+</html>

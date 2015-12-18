@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<div class="wideBlock">
+		<h2> {{course.name}} -- {{course.genre}} </h2>
+		<h3> {{course.description | safe | escape }} </h3>
+		<div class = "row">
+		    <div class ="col-xs-4 col-centered">
+				<h4 style="margin:15x;"> Completed lessons </h4>
+					{% for module in completed_modules %}
+						<p><a class= "btn btn-info " style = "width:250px; text-align:left;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
+					{% endfor %}
+			</div>
+			<div class ="col-xs-4 col-centered">
+				<h4 style="margin:15x;"> My current lesson </h4>
+					{% for module in current_module %}
+						<p><a class= "btn btn-info" style = "width:250px; text-align:left;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
+					{% endfor %}
+			</div>
+			<div class ="col-xs-4 col-centered">
+				<h4 style="margin:15x;"> Future lessons </h4>
+					{% for module in future_modules %}
+						<p><a class= "btn btn-info disabled" style = "width:250px; text-align:left;" >{{module.index}}. {{ module.name }}</a></p>
+					{% endfor %}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
