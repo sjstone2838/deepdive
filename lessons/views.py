@@ -31,7 +31,8 @@ def index(request):
 	for course in courses_enrolled:
 		instructor = UserProfile.objects.get(courses_managed = course).user
 		course.instructor = instructor.first_name + " " + instructor.last_name
-		course.logo = CourseLogo.objects.get(course = course).docfile.url
+		if CourseLogo.objects.get(course = course).count() != 0:
+			course.logo = CourseLogo.objects.get(course = course).docfile.url
 		if course in courses_managed:
 			course.relationship = "Manager"
 		else: 
