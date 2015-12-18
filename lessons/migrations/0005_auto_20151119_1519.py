@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='question',
             name='quiz',
-            field=models.ForeignKey(default=None, to='lessons.Quiz'),
+            field=models.ForeignKey(default=1, to='lessons.Quiz'),
         ),
         migrations.AlterField(
             model_name='content',
