@@ -52,8 +52,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-#X_FRAME_OPTIONS = ALLOW 'http://deepdive.us'
-
 ROOT_URLCONF = 'myproject.urls'
 
 TEMPLATES = [
