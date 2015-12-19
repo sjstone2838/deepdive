@@ -1,7 +1,5 @@
 $(document).ready(function(){
 
-
-
 	$('#login').click(function(){
 		username = $('#username').val();
 		password = $('#password').val();
@@ -25,8 +23,26 @@ $(document).ready(function(){
 		$('#newUserForm').fadeIn("slow");
 	});
 
+	$('#aboutBtn').click(function(){
+		$('#about').fadeIn("slow");
+	});
+
+	$('.aboutHeader').click(function(){
+		if ($(this).hasClass("clicked")){
+			$(this).find(".arrow").html("&#9660"); // down arrow
+			$(this).removeClass("clicked");
+			$(this).parent().find(".aboutText").slideUp("slow");
+		}
+		else{
+			$(this).find(".arrow").html("&#9650"); // up arrow
+			$(this).addClass("clicked");
+			$(this).parent().find(".aboutText").slideDown("slow");	
+		}
+		
+	});
+
 	$('.closeBox').click(function(){
-		$('#newUserForm').fadeOut("slow");
+		$(this).parent().fadeOut("slow");
 	});
 
 	$('#create_account').click(function(){

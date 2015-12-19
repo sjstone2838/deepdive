@@ -10,6 +10,7 @@
     <!--<script src="{% static 'mysite/js/jquery.js' %}"></script>
     <script src="{% static 'mysite/js/jquery.min.js' %}"></script>-->
     <script src="{% static 'mysite/js/lesson.js' %}"></script>
+    <script src="{% static 'mysite/js/about.js' %}"></script>
     <title> DeepDive </title>
 </head>
 
@@ -24,29 +25,36 @@
                
                 {% if user.username%}
             <div class ="col-md-4" style="text-align:center;">    
-                <a class="btn btn-info" role="button" href="/lessons/">Home</a>
+                <div class="dropdown btn-row"><a class="btn btn-info" role="button" href="/lessons/">Home</a></div>
                 <div class="dropdown btn-row">
-                <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">Manage
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li><a href="/lessons/create"> Create New Material </a></li>
-                    <li><a href="/lessons/edit"> Edit Existing Material </a></li>
-                    <li><a href="/lessons/add_media"> Manage Media </a></li>
-                    <li><a href="#"> Analyze Student Data </a></li>
-                </ul>
+                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">Manage
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/lessons/create"> Create New Material </a></li>
+                        <li><a href="/lessons/edit"> Edit Existing Material </a></li>
+                        <li><a href="/lessons/add_media"> Manage Media </a></li>
+                        <li><a href="#"> Analyze Student Data </a></li>
+                    </ul>
                 </div>
-                <a class="btn btn-info" role="button"href="/lessons/profile/">Profile</a>
-                <a class="btn btn-info" role="button"href="#">About</a>
-                <a class="btn btn-info" role="button"href="/lessons/login/" >Logout</a>
+                <div class="dropdown btn-row"><a class="btn btn-info" role="button"href="/lessons/profile/">Profile</a></div>
+                <div class="dropdown btn-row">
+                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">About
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href = "#" id = "overviewBtn"> Overview </a></li>
+                        <li><a href = "#" id = "guideBtn"> Guide </a></li>
+                        <li><a href = "#" id = "designBtn"> Design & Credits</a></li>
+                    </ul>
+                </div>
             </div> 
             <div class ="col-md-4" style="text-align:right;"> 
-                <a style="color:white;"> Signed in as <code> {{user.username}} </code></a>
+                <a style="color:white;"> <code> {{user.username}} </code></a>
+                <a style="color:white;" class="btn btn-link" href="/lessons/login/" >Logout</a>
             </div>
                 {% else %}
                 {%endif%}
         </div>
     </div>
-
     <div>
 
     {% block content %}
@@ -55,6 +63,95 @@
 
     <div style = "position: absolute; bottom: 5px; width: 100%; text-align:center; color: white; font-size: 8pt;"> 
         Copyright 2015
+    </div>
+
+    <div class = "about Hide" id = "overview">
+        <div class = "textBlock">
+            <div class = "aboutHeader">
+                <span> Study </span>
+            </div>
+            <div class = "aboutText">
+                <p>We founded DeepDive on the belief that you learn best when you’re constantly problem-solving. No kicking back and dozing off as you click through dozens of videos – with DeepDive, you’ll be answering questions, working through examples, and getting real-time feedback from the start! </p>
+
+                <p>Get started by trying out a few courses. Learn more about an existing passion or find a new one - courses cover a broad, ever-expanding range of topics. Work on your own schedule - time commitments per course range from a few hours to multiple weeks. Pay attention to the feedback you get along the way to ensure you pass your tests and keep on unlocking new content!</p>
+            </div>
+        </div>
+        <div class = "textBlock">
+            <div class = "aboutHeader">
+                <span> Teach </span>
+            </div>
+            <div class = "aboutText">
+                <p>Have a subject you want to educate the world about? Have a specific group of classmates, employees, or friends you want to teach? Want to verify that students are actually learning your material and easily measure their progress? And you want to do all that for free? DeepDive is for you! </p>
+
+                <p>Use our creator tools to create courses with multiple modules. Fill your modules with a rich set of content – text, videos, documents, quizzes, etc. End each module with a test to gauge your students’ performance and ensure students unlock new material only once they’ve mastered what comes before it.</p>
+            </div>
+        </div>
+        <div class = "textBlock">
+            <div class = "aboutHeader">
+                <span> Analyze – COMING SOON </span>
+            </div>
+            <div class = "aboutText">
+                <p>Track student progress in the aggregate to identify stumbling blocks and refine your curriculum. Drill down into individual performance all the way to the question level. Understand course enrollment – who are your students and where do they come from? </p>
+            </div>
+        </div>
+        <div class= "btn closeBox"> X </div>
+    </div>
+
+    <div class = "about Hide" id = "guide">
+            <div class = "aboutHeader">
+                Courses 
+            </div>
+            <div class = "aboutText">
+                <p> Self-explanatory - a curriculum for a student to learn about a topic. Courses require a name, a genre, and a description - they can also include an image or logo </p>
+            </div>
+            <div class = "aboutHeader">
+                Modules 
+            </div>
+            <div class = "aboutText">
+                <p> Modules are the unit that make up courses. You can think of them as "course sections" or individual lessons for a shorter course. Modules are unlocked by students one after another. So when a student enrolls in a course, he or she will only have access to the first module, but will be able to access all of the elements in that module. </p>
+            </div>
+            <div class = "aboutHeader">
+                Module Elements 
+            </div>
+            <div class = "aboutText">
+                <p> Module elements are the "pages" or "slides" that students will see within a module. We don't like to call them "pages" or "slides" because there is a lot more you can do with a module element than a traditional slide or PDF. In addition to text, tables, and images, you can embed videos and attach documents (including templates for students to fill in). You also can - and should - include questions to provide students with real-time feedback as they progress through the elements of your modules! You can select from 3 kinds of module element: </p>
+                <ul>
+                    <li> <strong><span style = "font-style: italic;">Content:</span></strong> include text, pictures, video, and documents </li>
+                    <li> <strong><span style = "font-style: italic;">Quiz:</span></strong> all the functionality of a Content element, plus questions. Answers are not saved and students can change and submit answers as many times as they like. Multiple quizzes can be embedded throughout a module </li>
+                    <li> <strong><span style = "font-style: italic;">Test:</span></strong> similar to a Quiz, but used as a gating mechanism at the end of a module. Test answers are logged and students unlock access to the next module only if they beat a predefined score. Each module must include one and only one test, as its last element. </li>
+                </ul>
+            </div>
+            <div class = "aboutHeader">
+                Questions
+            </div>
+            <div class = "aboutText">
+                <p> DeepDive currently supports two types of questions: </p>
+                <ul>
+                    <li> <strong><span style = "font-style: italic;">Form:</span></strong> open-response </li>
+                    <li> <strong><span style = "font-style: italic;">Radio:</span></strong> select one from a multiple choice list. Radio questions can have as many answer choices as desired, but only one answer can be correct </li>
+                </ul>
+            </div>
+        <div class= "btn closeBox"> X </div>
+    </div>
+
+    <div class = "about Hide" id = "design">
+        <div class = "textBlock">
+            <div class = "aboutHeader">
+                <span> Design & Credits </span>
+            </div>
+            <div class = "aboutText">
+                <div> DeepDive is built using all open-source software. Special thanks to the contributors to the following projects, upon which DeepDive is built: 
+                <ul>
+                    <li> Python </li>
+                    <li> Django </li>
+                    <li> Javascript & jQuery</li>
+                    <li> Bootstrap </li>
+                    <li> CKEditor </li>
+                </ul>
+                </div>
+            </div>
+        </div>
+        <div class= "btn closeBox"> X </div>
     </div>
     
 </body>

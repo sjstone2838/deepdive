@@ -42,6 +42,35 @@ body.background{
     display: none;
 }
 
+.about{
+    position: absolute;
+    top: 140px;
+    left: 5%;
+    width: 90%;
+    background-color: #e5f2ff;
+    padding: 2% 10% 2% 10%;
+    border-radius: 10px;
+    display: relative;
+    height: 700px;
+    overflow: auto;
+}
+
+.aboutHeader{
+    font-size: 20pt;
+    font-weight: bold;
+    color: darkgrey;
+    border-bottom: 2px darkgrey solid;
+    cursor: pointer; 
+    cursor: hand;
+}
+
+.aboutText{
+    font-size: 14pt;
+    margin: 15px 0px 15px 0px;
+    color: black;
+    font-weight: normal;
+}
+
 .closeBox{
     position: absolute;
     top: 5px;

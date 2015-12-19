@@ -15,9 +15,11 @@
 <body background="{% static 'mysite/images/ocean2.JPG' %}">
 	<div class = "circle">
 		<div class = "logo">
-			<img src = "{% static 'mysite/images/HorizontalLogo.png' %}" alt="diver logo" style="width: 500px; display: inline-block;">
+			<img src = "{% static 'mysite/images/ColorLogo.PNG' %}" alt="diver logo" style="width: 500px; display: inline-block;">
 		</div>
 		<p></p>
+		<a style = "color: white;" class="btn" id = "aboutBtn" tabindex = "5"> About </a>
+		<br><br>
 		<div id = "loginForm">
 			<input class = "loginInput" type = "text" id = 'username' placeholder = "username" tabindex = "1"><p></p>
 			<input class = "loginInput" type = "password" id = 'password' placeholder = "password" tabindex = "2"> <p></p> 
@@ -28,12 +30,12 @@
 	</div>
 
 	<div id = "newUserForm">
-		<input class = "newUserInput" type = "text" id = 'new_first_name' placeholder = "first name" tabindex = "5"><p></p>
-		<input class = "newUserInput" type = "text" id = 'new_last_name' placeholder = "last name" tabindex="6"><p></p>
-		<input class = "newUserInput" type = "text" id = 'new_username' placeholder = "username" tabindex="7"><p></p>
-		<input class = "newUserInput" type = "email" id = 'new_email' placeholder = "email" tabindex="8"><p></p>
-		<input class = "newUserInput" type = "password" id = 'new_password' placeholder = "password" tabindex="9"><p></p> 
-		<input class = "newUserInput" type = "password" id = 'new_confirmation' placeholder = "password" tabindex="10"><p></p> 
+		<input class = "newUserInput" type = "text" id = 'new_first_name' placeholder = "first name" tabindex = "6"><p></p>
+		<input class = "newUserInput" type = "text" id = 'new_last_name' placeholder = "last name" tabindex="7"><p></p>
+		<input class = "newUserInput" type = "text" id = 'new_username' placeholder = "username" tabindex="8"><p></p>
+		<input class = "newUserInput" type = "email" id = 'new_email' placeholder = "email" tabindex="9"><p></p>
+		<input class = "newUserInput" type = "password" id = 'new_password' placeholder = "password" tabindex="10"><p></p> 
+		<input class = "newUserInput" type = "password" id = 'new_confirmation' placeholder = "password" tabindex="11"><p></p> 
 		<div class = "red-text" id = "newUserError"></div> 
 		<button class="btn btn-info" id = "create_account" tabindex = "11"> Create account </button>
 		<div class= "btn closeBox"> X </div>
@@ -42,6 +44,38 @@
 	<div id = "newUserSuccess">
 		<div class = "btn-row" id = "newUserSuccessMsg"></div>
 		<a class="btn btn-info btn-row" href="/lessons/"> Onwards! </a>
+	</div>
+
+	<div class = "about Hide" id = "about">
+		<div class = "textBlock">
+			<div class = "aboutHeader">
+				<span> Study </span><span class = "arrow">&#9660</span>
+			</div>
+			<div class = "aboutText Hide">
+				<p>We founded DeepDive on the belief that you learn best when you’re constantly problem-solving. No kicking back and dozing off as you click through dozens of videos – with DeepDive, you’ll be answering questions, working through examples, and getting real-time feedback from the start! </p>
+
+				<p>Get started by trying out a few courses. Learn more about an existing passion or find a new one - courses cover a broad, ever-expanding range of topics. Work on your own schedule - time commitments per course range from a few hours to multiple weeks. Pay attention to the feedback you get along the way to ensure you pass your tests and keep on unlocking new content!</p>
+			</div>
+		</div>
+		<div class = "textBlock">
+			<div class = "aboutHeader">
+				<span> Teach </span><span class = "arrow">&#9660</span>
+			</div>
+			<div class = "aboutText Hide">
+				<p>Have a subject you want to educate the world about? Have a specific group of classmates, employees, or friends you want to teach? Want to verify that students are actually learning your material and easily measure their progress? And you want to do all that for free? DeepDive is for you! </p>
+
+				<p>Use our creator tools to create courses with multiple modules. Fill your modules with a rich set of content – text, videos, documents, quizzes, etc. End each module with a test to gauge your students’ performance and ensure students unlock new material only once they’ve mastered what comes before it.</p>
+			</div>
+		</div>
+		<div class = "textBlock">
+			<div class = "aboutHeader">
+				<span> Analyze – COMING SOON </span><span class = "arrow"> &#9660 </span>
+			</div>
+			<div class = "aboutText Hide">
+				<p>Track student progress in the aggregate to identify stumbling blocks and refine your curriculum. Drill down into individual performance all the way to the question level. Understand course enrollment – who are your students and where do they come from? </p>
+			</div>
+		</div>
+		<div class= "btn closeBox"> X </div>
 	</div>
 
 	
