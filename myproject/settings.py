@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'deepdive',
         'USER': 'sstone',
         'PASSWORD': 'Philz098',
-        'HOST': 'localhost',
+        'HOST': '',
         'PORT': '',
     }
 }
