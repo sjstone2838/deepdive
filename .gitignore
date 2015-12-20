@@ -2,7 +2,7 @@
 venv
 *.pyc
 staticfiles
-*.sqlite3
+#*.sqlite3
 #ignore all temporary files
 ~*
 
