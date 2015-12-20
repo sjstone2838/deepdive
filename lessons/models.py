@@ -10,7 +10,7 @@ class Course(models.Model):
 		return self.name
 
 class Module(models.Model):
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=201)
 	course = models.ForeignKey(Course, default = 1)
 	index = models.IntegerField(default=0)
 	hints = models.TextField(default="no content text yet")
