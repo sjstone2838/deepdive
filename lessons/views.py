@@ -196,7 +196,7 @@ def new_user(request):
 			user_profile.save()
 			
 			# Add course #1-2 (demo) to all new users' accounts and matching CourseStatus object
-			demo = Course.objects.get(pk =1)
+			demo = Course.objects.get(name ="Tennis Greats")
 			demo.save()
 			
 			courseStatus = CourseStatus.objects.create(
