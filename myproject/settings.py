@@ -78,6 +78,7 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -90,14 +91,13 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'deepdive',
-        'USER': 'sstone',
-        'PASSWORD': 'Philz098',
-        'HOST': '',
-        'PORT': '',
+        'NAME': 'dd2jpdulv63uv3',
+        'USER': 'rzcjfvdwdqgjhu',
+        'PASSWORD': 'znrq_-6uVyOyFkesFa-TbkIyIg',
+        'HOST': 'ec2-75-101-143-150.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
-"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
