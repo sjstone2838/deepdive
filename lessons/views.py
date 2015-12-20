@@ -171,6 +171,8 @@ def module(request,course_pk,module_index):
 
 #creates new user entry in database
 def new_user(request):
+	status = ""
+	message = ""
 	if request.method == 'GET':
 		form = NewUserForm()
 		method = "GET"
