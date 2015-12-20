@@ -50,7 +50,7 @@ body.background{
     background-color: white;
     padding: 2% 10% 2% 5%;
     border-radius: 10px;
-    display: relative;
+    display: relative;  
     height: 700px;
     overflow: auto;
 }
@@ -264,6 +264,8 @@ td.center {
 td.indexTable{
     overflow: hidden;
     height: 3em;
+    padding: 10px;
+    vertical-align: center;
 }
 
 tr:nth-child(odd) {

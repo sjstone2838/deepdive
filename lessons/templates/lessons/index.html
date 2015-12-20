@@ -7,18 +7,19 @@
 		<div style = "max-height: 50vh; max-width: 100%; overflow: auto;">
 		{% for course in mycourses %}
 	   		<div class = "fullWidthBlock" style = "background-color: darkgrey;">
-		    	<a href='/lessons/course/{{course.pk}}' ><img src = "{{course.logo}}" alt="courselogo" style="padding-left: 5px; width: 200px; display: inline-block;"> </a> 
-		    	<h1 style = "display: inline-block; font-style: italic;"> <a href='/lessons/course/{{course.pk}}'> <strong> {{ course.name | safe }} </strong> </a></h1>
-				<table style = "table-layout: fixed;">
+	   			
+				<table style = "table-layout: fixed; display: inline-block;">
 				    <tr style = "color: black; height: 4em;">
-				    	<td class = "indexTable" style = "padding-left: 10px; width: 10%;"> <a href='/lessons/course/{{course.pk}}'> {{ course.genre | safe }} </a></td>
-				    	<td class = "indexTable" style = "width: 10%;"> <a href='/lessons/course/{{course.pk}}'> By {{ course.instructor | safe }} </a></td>
-				    	<td class = "indexTable" style = "width: 10%;"> <a href='/lessons/course/{{course.pk}}'> {{ course.relationship | safe }}</a></td>
+						<td class = "indexTable" style = "padding-left: 10px;"> <a href='/lessons/course/{{course.pk}}' ><img src = "{{course.logo}}" alt="courselogo" style="padding-left: 5px; width: 100px; display: inline-block;"> </a> </td>
+			    		<td class = "indexTable" style = "padding-left: 10px; "><h1 style = "font-style: italic;"> <a href='/lessons/course/{{course.pk}}'> <strong> {{ course.name | safe }} </strong> </a></h1></td>
+				    	<td class = "indexTable" style = "padding-left: 10px; "> <a href='/lessons/course/{{course.pk}}'> {{ course.genre | safe }} </a></td>
+				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> By {{ course.instructor | safe }} </a></td>
+				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> {{ course.relationship | safe }}</a></td>
 
 				    	{% if course.status = "Completed" %}
-				    	<td class = "indexTable" style = "width: 10%;"> <a style = "color: green; font-style: italic; padding: 10px;" href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</a></td>
+				    	<td class = "indexTable" style = ""> <a style = "color: green; font-style: italic; padding: 10px;" href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</a></td>
 				    	{% else %}
-				    	<td class = "indexTable" style = "width: 10%;"> <a href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</a></td>
+				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</a></td>
 				    	{% endif %}
 
 				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> {{ course.description | safe }}</a></td>
