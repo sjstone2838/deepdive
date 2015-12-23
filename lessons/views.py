@@ -860,7 +860,7 @@ def analyze(request):
 				tc = {}
 				tc['name'] = completion.name.name # "name.name" because completion's FK is module, then reference module name
 				tc['score'] = completion.score
-				tc['date'] = completion.date
+				tc['date'] = completion.date.strftime('%b %d, %Y %H:%M')
 				temp['completion_data'].append(tc)
 
 			enrollee_set.append(temp)
@@ -878,7 +878,11 @@ def analyze(request):
 			for  completion in completions:
 				points += completion.score
 
-			temp['avg_score'] = round(float(points / temp['count']), 0)
+			temp['avg_score'] = 0
+			if temp['count'] != 0:
+				temp['avg_score'] = round(float(points / temp['count']), 0)
+			else:
+				temp['avg_score'] = "NA"
 			module_completion_set.append(temp)
 
 		return JsonResponse({'module_completion_set': module_completion_set, 
