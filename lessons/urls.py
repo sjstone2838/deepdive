@@ -22,6 +22,7 @@ urlpatterns = patterns('lessons.views',
 	(r'^/?edit/$','edit'),
 	(r'^/?edit_data/$','edit_data'),
 	(r'^/?add_media/$','add_media'),
+	(r'^/?analyze/$','analyze'),
 
 	#(r'^/?list/$','list'),
 	#(r'^/?demo/$','demo'),

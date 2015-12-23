@@ -5,10 +5,10 @@
 <head>
     <link rel="stylesheet" href="{% static 'mysite/styles.css' %}" type="text/css"> 
     <link rel="stylesheet" href="{% static 'mysite/css/bootstrap.min.css' %}" >
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
     <script src="{% static 'mysite/js/bootstrap.min.js' %}"></script>
-    <!--<script src="{% static 'mysite/js/jquery.js' %}"></script>
-    <script src="{% static 'mysite/js/jquery.min.js' %}"></script>-->
+    <script src="{% static 'mysite/js/jquery.js' %}"></script> <!-- Only for offline dev -->
+    <script src="{% static 'mysite/js/jquery.min.js' %}"></script> <!-- Only for offline dev, not sure if necessary-->
     <script src="{% static 'mysite/js/lesson.js' %}"></script>
     <script src="{% static 'mysite/js/about.js' %}"></script>
     <title> DeepDive </title>
@@ -33,7 +33,7 @@
                         <li><a href="/lessons/create"> Create New Material </a></li>
                         <li><a href="/lessons/edit"> Edit Existing Material </a></li>
                         <li><a href="/lessons/add_media"> Manage Media </a></li>
-                        <li><a href="#"> Analyze Student Data </a></li>
+                        <li><a href="/lessons/analyze"> Analyze Student Data </a></li>
                     </ul>
                 </div>
                 <div class="dropdown btn-row"><a class="btn btn-info" role="button"href="/lessons/profile/">Profile</a></div>
@@ -88,7 +88,7 @@
         </div>
         <div class = "textBlock">
             <div class = "aboutHeader">
-                <span> Analyze – COMING SOON </span>
+                <span> Analyze </span>
             </div>
             <div class = "aboutText">
                 <p>Track aggregated student progress at a summary level to identify stumbling blocks and refine your curriculum. Drill down into individual performance all the way to the question level. Understand course enrollment – who are your students and where do they come from? </p>

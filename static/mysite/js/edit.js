@@ -136,7 +136,8 @@ var questionIndex = "";
 		$('#questionTab').addClass("available").removeClass("Hide");
 		$('#question_index').html("");
 		$('#question_type').val("");
-		CKEDITOR.instances['question_text'].setData("");
+		$('#question_text').val("");
+		//CKEDITOR.instances['question_text'].setData("");
 		$('#question_answer').val("");
 		$('#answerChoices').remove();
 
@@ -155,7 +156,8 @@ var questionIndex = "";
             	//$('#question_name').val(response.question['name']);
             	$('#question_index').html(questionIndex);
             	$('#question_type').val(response.question['type']);
-            	CKEDITOR.instances['question_text'].setData(response.question['text']);
+            	$('#question_text').val(response.question['text']);
+            	//CKEDITOR.instances['question_text'].setData(response.question['text']);
             	$('#question_answer').val(response.question['answer']);
 	            $('#answerChoices').html("");
             	if (response.question['type'] == "Radio"){
@@ -211,7 +213,8 @@ var questionIndex = "";
 		else {
 			$('#question_type').val("");
 			$('#question_index').html("Will be added last");
-			CKEDITOR.instances['question_text'].setData("");
+			$('#question_text').val("");
+			//CKEDITOR.instances['question_text'].setData("");
 			$('#question_answer').val("");
 			$.each($(".answerChoice"), function(i){
 				$(this).val("");
@@ -286,7 +289,8 @@ var questionIndex = "";
 		}
 		else if (object_type == "question"){
 			question['type'] = $('#question_type').val();
-			question['text'] = CKEDITOR.instances['question_text'].getData();
+			question['text'] = $('#question_text').val();
+			//question['text'] = CKEDITOR.instances['question_text'].getData();
 			question['answer'] = $('#question_answer').val();
 			$.each($(".answerChoice"), function(i){
 				answers['choice'+i] = $(this).val();

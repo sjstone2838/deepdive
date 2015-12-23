@@ -170,21 +170,24 @@ body.background{
     margin: auto;
     background-color: #f1f1f4;
     margin-top: 10px;
-    height: 25px; 
+    height: 50px; 
     font-size: 0px;
     border-radius: 10px;
 }
 
 .statusText{
-    width: 200px; 
+    width: 1000px; 
+    height: 50px;
     text-align: center;
+    vertical-align: center;
     position: absolute;
     left: 50%;
-    margin-left: -100px;
+    margin-left: -500px;
+    margin-top: 10px;
     color: black;
     font-size: 18px;
     font-weight: bold;
-    font-style: italic;
+    /*font-style: italic;*/
 }
 
 .statusElement{
@@ -466,4 +469,29 @@ table.editTable{
 .center{
     background-color: red;
     margin-left:auto !important;
+}
+.dataHeader{
+    cursor: pointer; 
+    cursor: hand;
+}
+
+.averageScore{
+    color: grey;
+    font-size: 12pt;
+    font-style: italic;
+}
+
+input{
+    border: none;
+}
+
+.indexRow{
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 0px;
 }

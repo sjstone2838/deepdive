@@ -6,8 +6,7 @@
 		<h2 class = "btn-row" style="margin:0px 0px 15px 0px;"> My Courses </h2> <a class = 'btn btn-info btn-row' href='/lessons/my_courses'> Add or Drop Courses </a>
 		<div style = "max-height: 50vh; max-width: 100%; overflow: auto;">
 		{% for course in mycourses %}
-	   		<div class = "fullWidthBlock" style = "background-color: darkgrey;">
-	   			
+	   		<div class = "indexRow" style = "background-color: darkgrey;">
 				<table style = "table-layout: fixed; display: inline-block;">
 				    <tr style = "color: black; height: 4em;">
 						<td class = "indexTable" style = "padding-left: 10px;"> <a href='/lessons/course/{{course.pk}}' ><img src = "{{course.logo}}" alt="courselogo" style="padding-left: 5px; width: 100px; display: inline-block;"> </a> </td>

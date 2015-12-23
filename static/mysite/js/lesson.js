@@ -103,8 +103,9 @@ $(document).ready(function(){
 			$('.statusBar').append('<div class = "statusElement" id = "' + text_element + '"></div>');
 		}
 		$('.statusElement').css('width',((1/text_element_count)*100) + "%");
-		var percentProgress = Math.round(((1/text_element_count)* text_element * 100)) + "%";
-		$('.statusText').text(percentProgress);
+		//var percentProgress = Math.round(((1/text_element_count)* text_element * 100)) + "%";
+		var percentProgress = "Page " + text_element + " of "  + text_element_count;
+		$('#percentProgress').text(percentProgress);
 	}
 
 	function removeStatusElement(){
@@ -127,7 +128,7 @@ $(document).ready(function(){
 		}
 	});
 
-	// to be run when page is loaded
+	// to be run when Page is loaded
 	displayLessonButtons();
 	showFirstLessonElement();
 	addStatusElement();
@@ -149,8 +150,9 @@ $(document).ready(function(){
 			removeStatusElement();  
 			shiftLessonsRight();
 			displayLessonButtons();
-		var percentProgress = Math.round(((1/text_element_count)* text_element * 100)) + "%";
-		$('.statusText').text(percentProgress);
+		//var percentProgress = Math.round(1/(text_element_count - 1) * text_element * 100) + "% Complete";
+		var percentProgress = "Page " + text_element + " of "  + text_element_count;
+		$('#percentProgress').text(percentProgress);
 	});
 
 	// check Quiz answers submitted 

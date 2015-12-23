@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="{% static 'mysite/js/analyze.js' %}"></script>
+
+
+<div class = "course wideBlock">
+	<div>
+		<select class = 'input roundedInput' type='text' id = 'courseSelect'>
+			<option value='' disabled selected>Select course to view data...</option>
+			{% for course in courses %}
+			<option value='{{course.pk}}'>{{course.name}}</option>
+			{% endfor %}
+	    </select>
+    </div>
+</div>
+
+<div class = "wideBlock Hide" id = "summaryData">
+	<h2> Course Summary Data </h2>
+	<p style = "font-size: 14pt;"> Total Enrolled: <span id = "total_enrolled"></span></p>
+	<table id = "summaryTable">
+		<tr>
+			<th> Module </th>
+			<th> Completions </th>
+			<th> Percent of Total </th>
+			<th> Average Score </th>
+		</tr>	
+	</table>
+</div>	
+<div class = "wideBlock Hide">
+	<h2> Individual Performance Data </h2>
+	<div id = "detailedData"></div>
+<div>		
+	
+
+{% endblock %}

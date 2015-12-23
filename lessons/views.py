@@ -29,7 +29,7 @@ def index(request):
 
 
 	for course in courses_enrolled:
-		instructor = UserProfile.objects.get(courses_managed = course).user
+		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
 		course.instructor = instructor.first_name + " " + instructor.last_name
 		if CourseLogo.objects.filter(course = course).count() == 1:
 			course.logo = CourseLogo.objects.get(course = course).docfile.url
@@ -122,7 +122,7 @@ def module(request,course_pk,module_index):
 					answer_key.append(question.answer)
 					#if form question
 					if question.question_type == "Form":
-						content+= "<h4>" + question.text + "</h4><form class='Question' type='text'><input type='text'><p class = 'verificationText'> </p></form>"
+						content+= "<h4>" + str(i+1) +". " + question.text + "</h4><form class='Question' type='text'><input type='text'><p class = 'verificationText'> </p></form>"
 					#if radio question
 					else:
 						content+="<h4>" + question.text + "</h4><form class='Question' type='radio'>"
@@ -135,7 +135,7 @@ def module(request,course_pk,module_index):
 			# append Test module elements - same as Quiz but no answer key passed to template
 			else:
 				#test header text
-				content+= "<div class = 'lessonElement' id = '" + str(i+1) +"'><h3>" + module_element.text +"</h3><br>"
+				content+= "<div class = 'lessonElement' id = '" + str(i+1) +"'><h3>" + module_element.text +"</h3>"
 				questions= Question.objects.filter(moduleElement=module_element)
 				content+="<form action='/lessons/test_result/" + course_pk + "/" + module_index + "/' method='post'>"
 				for i in range(0,len(questions)):
@@ -163,6 +163,7 @@ def module(request,course_pk,module_index):
 		return render_to_response('lessons/lesson.html', {
 			'user':user,
 			'course':course,
+			'module': module,
 			'content':content,
 			'answer_key': answer_key, 
 			'hints':hints,
@@ -185,10 +186,17 @@ def new_user(request):
 		elif len(User.objects.filter(email__iexact=form['email'])) != 0:
 			status = "This email is taken. Please user another email."
 		else:
+			def capitalize(string):
+				first_letter = string[0].upper()
+				rest_of_string = ""
+				for i in range (0,len(string) - 1):
+					rest_of_string += string[i + 1]
+				return first_letter + rest_of_string
+
 			user = User.objects.create_user(
 				username=form['username'],
-				first_name = form['first_name'],
-				last_name = form['last_name'],
+				first_name = capitalize(form['first_name']),
+				last_name = capitalize(form['last_name']),
 				email=form['email'],
 				password=form['password']
 			)
@@ -196,7 +204,7 @@ def new_user(request):
 			user_profile.save()
 			
 			# Add course #1-2 (demo) to all new users' accounts and matching CourseStatus object
-			demo = Course.objects.get(name ="Tennis Greats")
+			"""demo = Course.objects.get(name ="Tennis Greats")
 			demo.save()
 			
 			courseStatus = CourseStatus.objects.create(
@@ -205,6 +213,7 @@ def new_user(request):
 				points = 0)
 			user_profile.courses_enrolled.add(demo)
 			user_profile.save()
+			"""
 
 			#must call authenticate before login, even though we just created the user 
 			user_login = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -370,12 +379,10 @@ def create_module(request):
 				course = course,
 				index = index)
 			module.save
-			print("line 1")
 	
 			# ensure manager has access to all modules in course
 			courseStatus.points = Module.objects.filter(course=course).count()
 			courseStatus.save()
-			print("line 2")
 			
 			# create module elements until module element name not found, then
 			# set module_element_count for rest of function
@@ -602,7 +609,6 @@ def edit_data(request):
 				temp['name'] = course.name
 				temp['pk'] = course.pk
 				course_set.append(temp)
-			print course_set
 			return JsonResponse({'courses': course_set})
 
 		else: 
@@ -738,7 +744,6 @@ def edit_data(request):
 						index = Module.objects.filter(course = course).count() + 1
 					)
 					success = "Module saved"
-					print "got here"
 				elif post['object_type'] == "moduleElement":
 					course = Course.objects.get(pk = post['coursepk'])
 					module = Module.objects.get(course = course, index = post['moduleIndex'])
@@ -823,6 +828,63 @@ def edit_data(request):
 					success = "Moved back"
 					
 				return JsonResponse({'success': success})	
+
+# manage course editing
+@login_required(login_url = '/lessons/login/')
+def analyze(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	courses = user_profile.courses_managed.all()
+
+	if request.method == 'GET':
+		return render(request, 'lessons/analyze.html', {
+			'user':user, 
+			'courses': courses,
+		})
+
+	else: 
+		course = Course.objects.get(pk = request.POST['coursepk'])
+		enrollees = UserProfile.objects.filter(courses_enrolled = course)
+		total_enrolled = enrollees.count()
+		enrollee_set = []
+		for enrollee in enrollees:
+			temp = {}
+			temp['name'] = enrollee.user.first_name + " " + enrollee.user.last_name
+			temp['completion_data'] = []
+			
+			completions = Completion.objects.filter(
+				user = enrollee,
+				name = Module.objects.filter(course = course)
+			)
+			for completion in completions:
+				tc = {}
+				tc['name'] = completion.name.name # "name.name" because completion's FK is module, then reference module name
+				tc['score'] = completion.score
+				tc['date'] = completion.date
+				temp['completion_data'].append(tc)
+
+			enrollee_set.append(temp)
+
+		module_count = Module.objects.filter(course = course).count()
+		module_completion_set = []
+		for i in range(0,module_count):
+			temp = {}
+			module = Module.objects.get(course = course, index = i + 1)
+			temp['name'] = module.name
+			completions = Completion.objects.filter(name = module)
+			temp['count'] = completions.count()
+			temp ['percent_of_total'] = round(float(temp['count'] / total_enrolled) * 100, 0)
+			points = 0
+			for  completion in completions:
+				points += completion.score
+
+			temp['avg_score'] = round(float(points / temp['count']), 0)
+			module_completion_set.append(temp)
+
+		return JsonResponse({'module_completion_set': module_completion_set, 
+			'enrollees': enrollee_set, 
+			'total_enrolled': total_enrolled,
+		})
 			
 
 """ 
