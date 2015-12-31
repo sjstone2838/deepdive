@@ -64,7 +64,7 @@ class CourseStatusAdmin(admin.ModelAdmin):
 
 class UserAdmin(admin.ModelAdmin):
 	#model = UserProfile
-	list_display =('id','user','points')
+	list_display =('id','user','points','logins2')
 	filter_horizontal = ('courses_enrolled','courses_managed')
 
 class DocumentAdmin(admin.ModelAdmin):
