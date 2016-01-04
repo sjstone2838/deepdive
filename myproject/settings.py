@@ -87,8 +87,7 @@ DATABASES = {
     }
 }
 
-"""
-# for deployment
+# for deployment: learndeepdive
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -99,6 +98,20 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+"""
+
+# for deployment: immense-taiga
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dehj4pksdu060c',
+        'USER': 'uapimyobhggbww',
+        'PASSWORD': 'Lo5jZbbVVgF9prc6bWxvyykISf',
+        'HOST': 'ec2-54-204-8-138.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
