@@ -1,6 +1,6 @@
 
 body.background{
-    width: 100%;
+    width: 80%;
     position: absolute;
     top: 0;
     left: 0;
@@ -32,7 +32,7 @@ body.background{
 
 #newUserSuccess{
     position: absolute;
-    top: 230px;
+    top: 330px;
     left: 35%;
     width: 30%;
     background-color: white;
@@ -58,7 +58,7 @@ body.background{
 .aboutHeader{
     font-size: 20pt;
     font-weight: bold;
-    color: darkgrey;
+    color: grey;
     border-bottom: 2px darkgrey solid;
     cursor: pointer; 
     cursor: hand;
@@ -154,7 +154,7 @@ body.background{
 
 .testResult{
     box-sizing: border-box; 
-    position: absolute;
+    display: block; 
     right: 25%;
     width: 50%;
     top: 175px;
@@ -456,7 +456,6 @@ table.editTable{
     padding: 10px !important;
     color: black;
     font-weight: bold;
-    /*top left, clockwise*/
     border-radius: 10px 10px 0px 0px;
     border: none;
     background-color: lightgrey;
@@ -494,4 +493,172 @@ input{
     padding-right: 15px;
     padding-top: 5px;
     padding-bottom: 0px;
+}
+
+.ratingBar{
+    cursor: pointer; 
+    cursor: hand;
+}
+
+.ratingStar{
+    font-size: 28pt;
+    color: gold;
+}
+
+.courseTile{
+    width: 49%;
+    display: inline-block;
+    font-size: 14pt;
+    margin: 0px 5px 10px 0px;
+    padding: 10px;
+    height: 460px;
+    cursor: pointer; 
+    cursor: hand;
+    text-align: left;
+    border-radius: 15px;
+    background-color: lightblue;
+}
+
+.courseTileHeader{
+    border-bottom: 3px grey solid;
+    margin: 0px 0px 15px 0px;
+    padding: 5px;
+    vertical-align: center;
+}
+
+.courseTileHalf{
+    display: inline-block;
+    margin: 0px;
+    padding: 5px;
+    vertical-align: top;
+    height: 300px;
+    overflow: auto;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.courseTileRow{
+    height: 12px;
+}
+
+.courseTileLeft{
+    width: 33%;
+    padding-left: 10px;
+}
+
+.courseTileRight{
+    width: 64%;
+    margin-left:10px;
+    padding-left: 15px;
+}
+
+.welcomeBackground{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: 0.5;
+    display: none;
+}
+
+.welcomeBlock{
+    position: absolute;
+    top: 140px;
+    left: 32.5%;
+    width: 35%;
+    background-color: white;
+    padding: 5% 0% 0% 0%;
+    border-radius: 10px;
+    height: 700px;
+    cursor: pointer; 
+    cursor: hand;
+    text-align: center;
+    border: 3px grey solid;
+    display: none;
+}
+
+#welcomeCloseBox{
+    position: absolute;
+    top: 150px;
+    right: 33%;
+}
+
+.indexBalls{
+    position: absolute; 
+    bottom: 5%;
+    width: 100%;
+    /*margin-left: 150px;
+    width: 20%;
+    text-align: center;*/
+}
+
+.indexBall{
+    border-radius: 50%;
+    background-color: lightgrey;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+.indexBallHighlight{
+    background-color:darkgrey;
+}
+
+.alertBlock{
+    position: absolute;
+    top: 140px;
+    left: 35%;
+    width: 30%;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    padding: 50px;
+    border: 1px grey solid;
+}
+
+.bubble{
+    box-sizing: border-box; 
+    position: absolute;
+    margin-left: 24%;
+    margin-top: 21%;
+    height: 7px;
+    width: 7px;
+    border-top: 5px solid white;
+    border-radius: 50%;
+    background-color: grey;
+    opacity: .3;
+}
+
+.courseTabs{
+    box-sizing: border-box; 
+    margin-left: 5%;
+    width: 80%;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+.courseTab{
+    margin: 0px;
+    padding: 10px !important;
+    color: black;
+    font-weight: bold;
+    border-radius: 10px 10px 0px 0px;
+    border: none;
+    background-color: lightgrey;
+}
+
+.courseDisplayBlock{
+    box-sizing: border-box; 
+    margin-left: 5%;
+    width: 90%;
+    margin-top: 0px;
+    padding: 30px;
+    font-size: 16pt;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius:  10px;
+    border-top-right-radius:  10px;
+    background-color: #f1f1f4;
 }

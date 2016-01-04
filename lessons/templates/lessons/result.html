@@ -1,10 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
 
 
 {% if message_type == "results" %}
-<div class = "testResult">
+<div class = "wideBlock">
 
 	{{content|safe|escape}}
 
@@ -13,15 +15,23 @@
 	{% else %}
 	<a class = "btn btn-info" href='/lessons/course/{{course.pk}}/{{module.index}}'> Try module again </a>
 	{% endif %}
-
 </div>
 
 {% else %}
-
+<script src="{% static 'mysite/js/rating.js' %}"></script>
+<div class = "Hide" id = "coursepk"> {{course.pk}} </div>
 <div class = "courseComplete wideBlock">
 	<h3> Congratulations, you've finished {{ course.name | safe }}! </h3>
+	<h4 class = "btn-row"> Please rate {{ course.name | safe }} </h4>
+	<div style = "width: 30%;" class = "ratingBar"> 
+		<span class = "ratingStar" id = "ratingStar-1">&#9734</span><span class = "ratingStar" id = "ratingStar-2">&#9734</span><span class = "ratingStar" id = "ratingStar-3">&#9734</span><span class = "ratingStar" id = "ratingStar-4">&#9734</span><span class = "ratingStar" id = "ratingStar-5">&#9734</span>
+	</div>
 	<h4 class = "btn-row"> Take a breather, then get cracking on your next course </h4>
 	<a class = "btn btn-info" href = "/lessons/"> My courses </a>
+</div>
+
+<div class = "wideBlock">
+	{{content|safe|escape}}
 </div>
 
 {% endif %}

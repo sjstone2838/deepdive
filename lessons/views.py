@@ -4,6 +4,7 @@ from numbers import Number
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.template import loader
+from django.db.models import Avg
 from django.template.context import RequestContext
 from django.core.context_processors import csrf
 from django.template.context_processors import csrf
@@ -22,6 +23,7 @@ from .forms import *
 
 @login_required(login_url = '/lessons/login/')
 def index(request):
+	
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
 	courses_enrolled = user_profile.courses_enrolled.all()
@@ -31,20 +33,27 @@ def index(request):
 	for course in courses_enrolled:
 		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
 		course.instructor = instructor.first_name + " " + instructor.last_name
+		ratings = CourseRating.objects.filter(course = course)
+		if ratings.count() != 0:
+			course.rating = round(float(ratings.aggregate(Avg('rating'))['rating__avg']),1)
+		else:
+			course.rating = "Not yet rated"
+		course.enrolled = UserProfile.objects.filter(courses_enrolled = course).count
+
 		if CourseLogo.objects.filter(course = course).count() == 1:
 			course.logo = CourseLogo.objects.get(course = course).docfile.url
-		if course in courses_managed:
-			course.relationship = "Manager"
+		
+		modules = Module.objects.filter(course=course).count()
+		course.modules = modules
+		course.date_created = course.date_created.strftime('%b %d, %Y')
+		points = CourseStatus.objects.get(user = user_profile, course = course).points
+		if points == modules:
+			course.status = "Completed"
 		else: 
-			course.relationship = "Student"
-			modules = Module.objects.filter(course=course).count()
-			points = CourseStatus.objects.get(user = user_profile, course = course).points
-			if points == modules:
-				course.status = "Completed"
-			else: 
-				course.status = "On module " + str(points+1) + " of " + str(modules)
+			course.status = "On module " + str(points+1) + " of " + str(modules)
 	return render_to_response('lessons/index.html', {
 		'user':user,
+		'userProfile':user_profile,
 		'mycourses': courses_enrolled
 	})
 
@@ -56,6 +65,8 @@ def course(request,course_pk):
 	# if user enrolled, go to course
 	if user_profile.courses_enrolled.filter(pk=course_pk).count() == 1:
 		course = Course.objects.get(pk=course_pk)
+		if CourseLogo.objects.filter(course = course).count() == 1:
+			course.logo = CourseLogo.objects.get(course = course).docfile.url
 		modules = Module.objects.filter(course=course)
 		points = CourseStatus.objects.get(course=course,user=user_profile).points
 
@@ -136,6 +147,7 @@ def module(request,course_pk,module_index):
 			else:
 				#test header text
 				content+= "<div class = 'lessonElement' id = '" + str(i+1) +"'><h3>" + module_element.text +"</h3>"
+				content += getDocumentLinks(module_element)
 				questions= Question.objects.filter(moduleElement=module_element)
 				content+="<form action='/lessons/test_result/" + course_pk + "/" + module_index + "/' method='post'>"
 				for i in range(0,len(questions)):
@@ -237,6 +249,9 @@ def validate_user(request):
 		#if valid login
 		if user is not None:
 			login(request,user)
+			user_profile = get_object_or_404(UserProfile, user_id = user.id)
+			user_profile.logins += 1
+			user_profile.save()
 			status = "success"
 		# if invalid login, redirect user to login page with blank UserForm
 		else:
@@ -298,7 +313,7 @@ def test_result(request,course_pk,module_index):
 				content+= ("<td><h4>" + answer_key[i] + "</h4></td>")
 				content += ("<td><h4 class = 'verificationText' style='color: red;'> Incorrect </h4></td></tr>")
 		score = int((correct_count / len(questions)) * 100)
-		content += ("</table><br><h2> <strong> You answered " + str(correct_count) + " out of " + str(len(questions)) + " questions correctly (" +  str(score) + "%) </strong></h2>")
+		content += ("</table><h3> You answered " + str(correct_count) + " out of " + str(len(questions)) + " questions correctly (" +  str(score) + "%) </h3>")
 
 		MINIMUM_SCORE = 50
 
@@ -363,7 +378,6 @@ def create_module(request):
 		hints = post['module[module_hints]']
 		course = post['module[module_course]']
 		course = Course.objects.get(name=course)
-		courseStatus = CourseStatus.objects.get(user=user_profile,course=course)
 
 		# verify module name not taken
 		if Module.objects.filter(name= name).count() != 0:
@@ -381,8 +395,16 @@ def create_module(request):
 			module.save
 	
 			# ensure manager has access to all modules in course
-			courseStatus.points = Module.objects.filter(course=course).count()
-			courseStatus.save()
+			if  CourseStatus.objects.filter(user=user_profile,course=course).count() == 1:
+				courseStatus = CourseStatus.objects.get(user=user_profile,course=course)
+				courseStatus.points = Module.objects.filter(course=course).count()
+				courseStatus.save()
+			else:
+				courseStatus = CourseStatus.objects.create(
+					user=user_profile,
+					course=course,
+					points = Module.objects.filter(course=course).count()
+				)
 			
 			# create module elements until module element name not found, then
 			# set module_element_count for rest of function
@@ -474,7 +496,9 @@ def create_course(request):
 			course = Course.objects.create(
 				name=name, 
 				genre = genre, 
-				description = description)
+				description = description,
+				date_created = datetime.datetime.now()
+			)
 			
 			user_profile = get_object_or_404(UserProfile, user_id = user.id)
 			user_profile.courses_managed.add(course)
@@ -503,6 +527,30 @@ def my_courses(request):
 	for course in Course.objects.all():
 		if mycourses.filter(name=course.name).count() == 0:
 			othercourses.append(course)
+
+	for course in othercourses:
+		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
+		course.instructor = instructor.first_name + " " + instructor.last_name
+		ratings = CourseRating.objects.filter(course = course)
+		if ratings.count() != 0:
+			course.rating = round(float(ratings.aggregate(Avg('rating'))['rating__avg']),1)
+		else:
+			course.rating = "Not yet rated"
+		course.enrolled = UserProfile.objects.filter(courses_enrolled = course).count
+
+		if CourseLogo.objects.filter(course = course).count() == 1:
+			course.logo = CourseLogo.objects.get(course = course).docfile.url
+		
+		modules = Module.objects.filter(course=course).count()
+		course.modules = modules
+		course.date_created = course.date_created.strftime('%b %d, %Y')
+		"""
+		points = CourseStatus.objects.get(user = user_profile, course = course).points
+		if points == modules:
+			course.status = "Completed"
+		else: 
+			course.status = "On module " + str(points+1) + " of " + str(modules)"""
+
 	return render(request, 'lessons/my_courses.html', {
 		'user':user, 
 		'mycourses': mycourses,
@@ -526,13 +574,15 @@ def manage_enrollment(request):
 			user_profile.courses_enrolled.remove(course)
 			CourseStatus.objects.get(course = course, user = user_profile).delete()
 
-		# remove specified course
+		# enroll in specified course
 		if call == "enroll":
 			user_profile.courses_enrolled.add(course)
-			courseStatus = CourseStatus.objects.create(
-				course = course,
-				user = user_profile,
-				points = 0)
+			if CourseStatus.objects.filter(course = course, user = user_profile).count() == 0:
+				CourseStatus.objects.create(
+					course = course,
+					user = user_profile,
+					points = 0
+				)
 
 		success = "success"
 		return JsonResponse({'success': success})
@@ -970,3 +1020,26 @@ def add_media(request):
 		'course_success': course_success,
 		'module_element_success': module_element_success
 	})
+
+# add or edit CourseRating record
+@login_required(login_url = '/lessons/login/')
+def course_rate(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	course = Course.objects.get(pk = request.POST['coursepk'])
+	print course.name
+	if not CourseRating.objects.filter(user = user_profile, course = course):
+		CourseRating.objects.create(
+			user = user_profile,
+			course = course,
+			rating = request.POST['rating']
+		)
+	else: 
+		c = CourseRating.objects.get(user = user_profile, course = course)
+		c.rating = request.POST['rating']
+		c.save()
+	return JsonResponse({
+			'response': "response"
+		})
+
+

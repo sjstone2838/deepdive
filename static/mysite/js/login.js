@@ -1,5 +1,19 @@
 $(document).ready(function(){
 
+	var bottom = 20;
+	var left = 0;
+	for (var i = 0; i < 100; i++){
+		$(".bubble").animate({
+			left: '+='+ left, 
+			bottom: '+='+ bottom},
+			//height: '+='+ 1,
+			//width: '+='+ 1},
+			100, 'linear'
+		);
+		left = Math.sin(i * 5 / Math.PI) * 8;
+		console.log (left);
+	}
+
 	$('#login').click(function(){
 		username = $('#username').val();
 		password = $('#password').val();

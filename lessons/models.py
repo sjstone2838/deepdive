@@ -5,6 +5,7 @@ class Course(models.Model):
 	name = models.CharField(max_length=200)
 	description = models.TextField(max_length=1000)
 	genre = models.CharField(max_length=200)
+	date_created = models.DateTimeField('date created')
 
 	def __unicode__(self):
 		return self.name
@@ -65,8 +66,7 @@ class UserProfile(models.Model):
 	user = models.ForeignKey(User)
 	# Should get ride of points, as it is replicated in ModuleStatus
 	points = models.IntegerField(default=0)
-	#logins = models.IntegerField(default=0)
-	logins2 = models.IntegerField(default=0)
+	logins = models.IntegerField(default=0)
 	courses_enrolled = models.ManyToManyField(Course, related_name='courses_enrolled_in')
 	courses_managed = models.ManyToManyField(Course, related_name='courses_managed')
 	
@@ -103,5 +103,14 @@ class CourseLogo(models.Model):
 
     def __unicode__(self):
 		return str(self.docfile)  
+
+class CourseRating(models.Model):
+	user = models.ForeignKey(UserProfile)
+	course = models.ForeignKey(Course)
+	rating = models.IntegerField(default=0)
+	
+	def __unicode__(self):
+		return str(self.user) + "_" + str(self.course)
+
 """
 """

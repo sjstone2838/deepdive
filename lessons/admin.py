@@ -14,7 +14,7 @@ class ManagerInline(admin.TabularInline):
 	model = UserProfile
 """
 class CourseAdmin(admin.ModelAdmin):
-	list_display = ('name','id','description','genre')
+	list_display = ('name','id','description','genre','date_created')
 #	inlines = [CourseInline,ManagerInline]
 
 class ModuleInline(admin.TabularInline):
@@ -60,11 +60,15 @@ class CompletionAdmin(admin.ModelAdmin):
 
 class CourseStatusAdmin(admin.ModelAdmin):
 	list_display = ('id','user','course','points')
-	list_filter = ['user']
+	list_filter = ['user','course']
+
+class CourseRatingAdmin(admin.ModelAdmin):
+	list_display = ('id','user','course','rating')
+	list_filter = ['user','course']
 
 class UserAdmin(admin.ModelAdmin):
 	#model = UserProfile
-	list_display =('id','user','points','logins2')
+	list_display =('id','user','points','logins')
 	filter_horizontal = ('courses_enrolled','courses_managed')
 
 class DocumentAdmin(admin.ModelAdmin):
@@ -80,5 +84,6 @@ admin.site.register(UserProfile,UserAdmin)
 admin.site.register(Completion,CompletionAdmin)
 admin.site.register(Course,CourseAdmin)
 admin.site.register(CourseStatus,CourseStatusAdmin)
+admin.site.register(CourseRating,CourseRatingAdmin)
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(CourseLogo, CourseLogoAdmin)

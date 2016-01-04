@@ -1,32 +1,153 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<script src="{% static 'mysite/js/my_courses.js' %}"></script>
 
-	<div class = "veryWideBlock">
-		<h2 class = "btn-row" style="margin:0px 0px 15px 0px;"> My Courses </h2> <a class = 'btn btn-info btn-row' href='/lessons/my_courses'> Add or Drop Courses </a>
-		<div style = "max-height: 50vh; max-width: 100%; overflow: auto;">
+	<div class = "courseTabs">
+		<div class = "courseTab btn-row" id = "courseTab" style = "background-color: #f1f1f4;">
+			<div class = "btn btn-link"> My Courses </div>
+		</div> 
+		<div class = "courseTab btn-row"  id = "moduleTab">
+			<a class = "btn btn-link" href='/lessons/my_courses'> Search </a>
+		</div> 
+	</div>
+
+	<div class = "courseDisplayBlock">
+		<div style = "max-height: 70vh; max-width: 100%; overflow: auto;">
 		{% for course in mycourses %}
-	   		<div class = "indexRow" style = "background-color: darkgrey;">
-				<table style = "table-layout: fixed; display: inline-block;">
-				    <tr style = "color: black; height: 4em;">
-						<td class = "indexTable" style = "padding-left: 10px;"> <a href='/lessons/course/{{course.pk}}' ><img src = "{{course.logo}}" alt="courselogo" style="padding-left: 5px; width: 100px; display: inline-block;"> </a> </td>
-			    		<td class = "indexTable" style = "padding-left: 10px; "><h1 style = "font-style: italic;"> <a href='/lessons/course/{{course.pk}}'> <strong> {{ course.name | safe }} </strong> </a></h1></td>
-				    	<td class = "indexTable" style = "padding-left: 10px; "> <a href='/lessons/course/{{course.pk}}'> {{ course.genre | safe }} </a></td>
-				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> By {{ course.instructor | safe }} </a></td>
-				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> {{ course.relationship | safe }}</a></td>
-
-				    	{% if course.status = "Completed" %}
-				    	<td class = "indexTable" style = ""> <a style = "color: green; font-style: italic; padding: 10px;" href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</a></td>
-				    	{% else %}
-				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</a></td>
-				    	{% endif %}
-
-				    	<td class = "indexTable" style = ""> <a href='/lessons/course/{{course.pk}}'> {{ course.description | safe }}</a></td>
-				    </tr>
-				</table>
-			</div>
-				{% endfor %}
+			
+			<div class = "courseTile">
+				<a style = "color: black; text-align: left;" href='/lessons/course/{{course.pk}}' >
+					<div class = "courseTileHeader">
+						<div style = "padding: 0px 30px 0px 0px; font-size: 24pt;height: 50px; overflow: auto;"> {{course.name}} </div>
+						<div style = "height: 40px;">
+						{% if course.rating == "Not yet rated" %}
+							<span style = "font-style: italic;"> {{course.rating}} </span>
+						{% else %}
+							<span style = "font-size: 20pt; color: yellow; background-color: grey; padding: 0px 5px 0px 10px; border-radius: 10px;"> 
+							{% if course.rating > 4.5 %} <!-- show 5 stars -->
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9733</span>
+							{% elif course.rating > 3.5 %} <!-- show 4 stars -->
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9734</span>
+							{% elif course.rating > 2.5 %} <!-- show 3 stars -->
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+							{% elif course.rating > 1.5 %} <!-- show 2 stars -->
+								<span>&#9733</span>
+								<span>&#9733</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+							{% elif course.rating > 0.5 %} <!-- show 1 stars -->
+								<span>&#9733</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+							{% else  %} <!-- show 0 stars -->
+								<span>&#9734</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+								<span>&#9734</span>
+							{% endif  %}
+							</span>
+							<span style = "font-style: italic; margin-left: 5px;"> ({{course.rating}} / 5) </span>
+						{% endif %}
+						</div>
+					</div>
+					<div class = "courseTileHalf courseTileLeft">
+						<p class = "courseTileRow"> Genre: <strong>{{course.genre}} </strong></p>
+						<div style="padding: 10px 0px 10px 0px;">
+							<img src='{{course.logo}}' style = "height: 150px; width: 230px; overflow: none;">
+						</div>
+						<p class = "courseTileRow"> Instructor: <strong>{{course.instructor | safe }} </strong></p>
+						<p class = "courseTileRow"> Published: <strong>{{course.date_created}} </strong></p>
+						<p class = "courseTileRow"> Students: <strong>{{course.enrolled}} </strong></p>
+						<!--<p class = "courseTileRow"> Modules: <strong>{{course.modules}} </strong></p>-->
+						<p class = "courseTileRow">  Status:  <strong>
+							{% if course.status = "Completed" %}
+					    	<span style = "color: green; font-style: italic; padding: 10px;" href='/lessons/course/{{course.pk}}'> {{ course.status | safe }}</span>
+					    	{% else %}
+					    	{{ course.status | safe }}</span>
+					    	{% endif %}
+				    	</strong></p>
+					</div>
+					<div class = "courseTileHalf courseTileRight">
+						{{course.description | safe }}
+					</div>
+				</a>
+			 	<p style = "text-align: right; font-size: 12pt; font-style: italic; font-weight: bold; margin:3px 15px 0px 0px">
+			 		<span class = "removeCourse" id = "removeCourse.{{course.pk}}"> Remove </span>
+			 	</p>
+		 	</div>
+		{% endfor %}
 		</div>
+	</div>
+	{% if userProfile.logins == 0 %}
+		<script src="{% static 'mysite/js/welcome.js' %}"></script>
+		<div class = "welcomeBackground">
+		</div>
+		<div class = "welcomeBlock">
+			<div style = "margin: 0% 5% 0% 5%;">
+				<div id = "welcomeBlock-0">
+					<h1> <strong> Welcome to DeepDive! </strong> </h1>	
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/logo.PNG' %}"></script><br><br>
+					<h2> We're glad you're here! </h2>
+					<h2 style = "color: grey;"> Get started with a quick orientation </h2>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-1">
+					<h1><strong> Step 1: Learn Something New </strong></h1>
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/bookshelf.JPG' %}"></script><br>
+					<h2 style = "text-align: justify;"> Take a look through DeepDive's courses and enroll in one (or two or three) that match your interests </h2> 
+					<h3 style = "color: grey; text-align: justify;"> Courses range from short topical overviews requiring under an hour to 'deep dives' (forgive the pun!) requiring days or weeks </h3>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-2">
+					<h1><strong> Step 2: Teach Something </strong></h1>
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/training.JPG' %}"></script><br>
+					<h2 style = "text-align: justify;"> Create your own course! Include videos, pictures, and documents to spice up your content. Add quizzes and tests to ensure your students are learning </h2>
+					<h3 style = "color: grey; text-align: justify;"> You can find more details on how to create a course at Teach > Glossary </h3>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-3">
+					<h1><strong> Step 3: Analyze Your Data </strong></h1>
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/analyze.PNG' %}"></script><br>
+					<h2 style = "text-align: justify;"> As students enroll in your courses, you'll accumulate performance and satisfaction data. Understand how your students are learning and use data to improve your courses </h2>
+					<h3 style = "color: grey; text-align: justify;"> We've given you access to demo course data so you can see what analysis tools are available </h3>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-4">
+					<h1><strong> That's it for orientation! </strong></h1>
+					<div class = "btn-info endWelcome" style = "font-size: 20pt; border-radius: 15px; padding: 25px; margin: 50px 0px 30px 0px;">  Sounds good - I'm ready to get started </div>
+					<div class = "btn-info" style = "font-size: 20pt; border-radius: 15px; padding: 25px; margin: 50px 0px 30px 0px;">Let's go though orientation one more time </div>
+				</div>
+			</div>
+			<div class = "indexBalls">
+				<div class = "indexBall indexBallHighlight" id = "indexBall-0">  </div>
+				<div class = "indexBall" id = "indexBall-1">  </div>
+				<div class = "indexBall" id = "indexBall-2">  </div>
+				<div class = "indexBall" id = "indexBall-3">  </div>
+				<div class = "indexBall" id = "indexBall-4">  </div>
+			</div>
+		</div>
+		<div class= "btn" id = "welcomeCloseBox"> X </div>
+	{% endif %}
+	
+	<div class = "alertBlock Hide" id = "removeCourseAlert">
+		<h2> Are you sure you want to end your enrollment in this class? </h2>
+		<br> <br>
+		<div class = "btn btn-info btn-row" id = "removeCourseBtn"> Yes, please remove this class </div>
+		<div class = "btn btn-info btn-row" id = "removeCourseClose"> No, cancel </div>
 	</div>
 
 {% endblock %}

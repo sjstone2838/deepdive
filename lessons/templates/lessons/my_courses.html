@@ -2,49 +2,87 @@
 {% load static %}
 
 {% block content %}
-<script src="{% static 'mysite/js/my_courses.js' %}"></script>
+	<script src="{% static 'mysite/js/my_courses.js' %}"></script>
 	
-	<div class = "wideBlock">
-		<h2 style="margin:0px 0px 15px 0px;"> My courses </h2>
-		<div class = "courseBlock">
-		    <table class = "styledTable">
-		    <tr>
-		    	<th> Course </th>
-		    	<th> Genre </th>
-		    	<th> Description </th>
-		    	<th></th>
-		    </tr>
-			{% for course in mycourses %}
-		    <tr>
-		        <td> {{course.name}} </td>
-		        <td> {{course.genre}} </td>
-		        <td> <div style = "height: 3em; overflow: hidden;"> {{course.description | safe }} </div> </td>
-		        <td class = "removeCourse btn btn-info" id = "removeCourse.{{course.pk}}" style="margin-left:50%;"> Remove </td>
-		    </tr>
-			{% endfor %}
-		    </table>
-	    </div>
+	<div class = "courseTabs">
+		<div class = "courseTab btn-row" id = "courseTab">
+			<a class = "btn btn-link" href='/lessons/'> My Courses </a>
+		</div> 
+		<div class = "courseTab btn-row"  id = "moduleTab" style = "background-color: #f1f1f4;">
+			<div class = "btn btn-link"> Search </div>
+		</div> 
 	</div>
-
-	<div class = "wideBlock">
-		<h2 style="margin:0px 0px 15px 0px;"> Courses Available for Enrollment </h2>
-		<div class = "courseBlock">
-		    <table class = "styledTable">
-		    <tr>
-		    	<th> Course </th>
-		    	<th> Genre </th>
-		    	<th> <div style = "font-size: 12pt !important;"> Description </th>
-		    	<th></th>
-		    </tr>
+	<div class = "courseDisplayBlock">
+		<div style = "max-height: 68vh; overflow: auto;">
+		{% if othercourses %}
 			{% for course in othercourses %}
-		    <tr >
-		        <td> {{course.name}} </td>
-		        <td> {{course.genre}} </td>
-		        <td> {{course.description | safe }} </div> </td>
-		        <td class = "addCourse btn btn-info" id = "addCourse.{{course.pk}}" style="margin-left:50%;"> Enroll </td>
-		    </tr>
+					<div class = "courseTile">
+						<div class = "courseTileHeader">
+							<div style = "padding: 0px 30px 0px 0px; font-size: 24pt;height: 50px; overflow: auto;"> {{course.name}} </div>
+							{% if course.rating == "Not yet rated" %}
+								<span style = "font-style: italic;"> {{course.rating}} </span>
+							{% else %}
+								<span style = "font-size: 20pt; color: yellow; background-color: grey; padding: 0px 5px 0px 10px; border-radius: 10px;"> 
+								{% if course.rating > 4.5 %} <!-- show 5 stars -->
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9733</span>
+								{% elif course.rating > 3.5 %} <!-- show 4 stars -->
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9734</span>
+								{% elif course.rating > 2.5 %} <!-- show 3 stars -->
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+								{% elif course.rating > 1.5 %} <!-- show 2 stars -->
+									<span>&#9733</span>
+									<span>&#9733</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+								{% elif course.rating > 0.5 %} <!-- show 1 stars -->
+									<span>&#9733</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+								{% else  %} <!-- show 0 stars -->
+									<span>&#9734</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+									<span>&#9734</span>
+								{% endif  %}
+								</span>
+								<span style = "font-style: italic; margin-left: 5px;"> ({{course.rating}} / 5) </span>
+							{% endif %}
+							<span style = "margin-left: 30px;" class = "btn btn-primary addCourse" id = "addCourse.{{course.pk}}"> Enroll </span>
+						</div>
+						<div class = "courseTileHalf courseTileLeft">
+							<p style = "height: 10px;"> Genre: <strong>{{course.genre}} </strong></p>
+							<div style="padding: 10px 0px 10px 0px;">
+								<img src='{{course.logo}}' style = "height: 150px; width: 230px; overflow: none;">
+							</div>
+							<p style = "height: 10px;"> Instructor: <strong>{{course.instructor | safe }} </strong></p>
+							<p style = "height: 10px;"> Published: <strong>{{course.date_created}} </strong></p>
+							<p style = "height: 10px;"> Students: <strong>{{course.enrolled}} </strong></p>
+							<p style = "height: 10px;"> Modules: <strong>{{course.modules}} </strong></p>
+						</div>
+						<div class = "courseTileHalf courseTileRight">
+							{{course.description | safe }}
+						</div>
+					</div>
 			{% endfor %}
-		    </table>
+		{% else %}
+			<h4> No more courses available - you've signed up for everything! </h4>
+		{% endif %}
 	    </div>
 	</div>
 

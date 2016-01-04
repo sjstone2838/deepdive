@@ -34,6 +34,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200)),
                 ('description', models.TextField(max_length=1000)),
                 ('genre', models.CharField(max_length=200)),
+                ('date', models.DateTimeField(verbose_name=b'date created')),
             ],
         ),
         migrations.CreateModel(
@@ -42,6 +43,14 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('docfile', models.FileField(upload_to=b'documents/logos/%Y/%m/%d')),
                 ('course', models.ForeignKey(default=1, to='lessons.Course')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='CourseRating',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('rating', models.IntegerField(default=0)),
+                ('course', models.ForeignKey(to='lessons.Course')),
             ],
         ),
         migrations.CreateModel(
@@ -109,6 +118,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='coursestatus',
+            name='user',
+            field=models.ForeignKey(to='lessons.UserProfile'),
+        ),
+        migrations.AddField(
+            model_name='courserating',
             name='user',
             field=models.ForeignKey(to='lessons.UserProfile'),
         ),

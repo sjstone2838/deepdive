@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="{% static 'mysite/css/bootstrap.min.css' %}" >
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="{% static 'mysite/js/bootstrap.min.js' %}"></script>
-    <!--<script src="{% static 'mysite/js/jquery.js' %}"></script>
-    <script src="{% static 'mysite/js/jquery.min.js' %}"></script>-->
+    <script src="{% static 'mysite/js/jquery.js' %}"></script>
+    <script src="{% static 'mysite/js/jquery.min.js' %}"></script>
     <script src="{% static 'mysite/js/login.js' %}"></script>
     <title> DeepDive </title>
 </head>
@@ -18,7 +18,7 @@
 			<img src = "{% static 'mysite/images/ColorLogo.PNG' %}" alt="diver logo" style="width: 500px; display: inline-block;">
 		</div>
 		<p></p>
-		<a style = "color: white;" class="btn" id = "aboutBtn" tabindex = "5"> About </a>
+		<a style = "color: white; font-size: 16pt; font-weight: normal;" class="btn" id = "aboutBtn" tabindex = "5"> About </a>
 		<br><br>
 		<div id = "loginForm">
 			<input class = "loginInput" type = "text" id = 'username' placeholder = "username" tabindex = "1"><p></p>
@@ -49,38 +49,44 @@
 	<div class = "about Hide" id = "about">
 		<div class = "textBlock">
 			<div class = "aboutHeader">
-				<span class = "arrow">&#9660</span><span> Study </span>
+				<!--<span class = "arrow">&#9660</span>-->
+				Study
+				<img style = "height: 70px;" src = "{% static 'mysite/images/welcome/bookshelf.JPG' %}">
 			</div>
-			<div class = "aboutText Hide">
-				<p>We founded DeepDive on the belief that you learn best when you’re constantly problem-solving. No kicking back and dozing off as you click through dozens of videos – with DeepDive, you’ll be answering questions, working through examples, and getting real-time feedback from the start! </p>
+			<div class = "aboutText">
+				<p> DeepDive was founded on the belief that you learn best when you’re constantly problem-solving. No kicking back and simply clicking through videos. At DeepDive, you’ll be answering questions, working through examples, and getting real-time feedback from the start </p>
 
-				<p>Get started by trying out a few courses. Learn more about an existing passion or find a new one - courses cover a broad, ever-expanding range of topics. Work on your own schedule - time commitments per course range from a few hours to multiple weeks. Pay attention to the feedback you get along the way to ensure you pass your tests and keep on unlocking new content!</p>
+				<p>You can enroll in as many courses as you like, for free. Learn  about an existing passion or find a new one. Work on your own schedule and at your own pace. Pay attention to the feedback you get along the way to pass your tests and keep on unlocking new content </p>
 			</div>
 		</div>
 		<div class = "textBlock">
 			<div class = "aboutHeader">
-				<span class = "arrow">&#9660</span><span> Teach </span>
+				<!--<span class = "arrow">&#9660</span>-->
+				Teach
+				<img style = "height: 70px; margin-bottom: 10px;" src = "{% static 'mysite/images/welcome/training.JPG' %}">
 			</div>
-			<div class = "aboutText Hide">
-				<p>Have a subject you want to educate the world about? Have a specific group of classmates, employees, or friends you want to teach? Want to verify that students are actually learning your material and easily measure their progress? And you want to do all that for free? DeepDive is for you! </p>
+			<div class = "aboutText">
+				<p>Have a subject you want to teach the world about? Have a group of classmates, employees, or friends you want to teach? Want to verify that students are actually learning your material and gather data on their progress and satisfaction? And want to do all that for free? DeepDive is for you! </p>
 
-				<p>Use our creator tools to create courses with multiple modules. Fill your modules with a rich set of content – text, videos, documents, quizzes, etc. End each module with a test to gauge your students’ performance and ensure students unlock new material only once they’ve mastered what comes before it.</p>
+				<p>Use our creator tools to create courses with multiple modules. Fill your modules with a rich set of content – text, videos, documents, quizzes, etc. End each module with a test to gauge your students’ performance and ensure students unlock new material only once they’ve mastered what comes before it </p>
 			</div>
 		</div>
 		<div class = "textBlock">
 			<div class = "aboutHeader">
-				<span class = "arrow"> &#9660 </span><span> Analyze </span>
+				<!--<span class = "arrow"> &#9660 </span>-->
+				Analyze
+				<img style = "height: 70px;" src = "{% static 'mysite/images/welcome/analyze.PNG' %}">
 			</div>
-			<div class = "aboutText Hide">
-				<p>Track student progress in the aggregate to identify stumbling blocks and refine your curriculum. Drill down into individual performance all the way to the question level. Understand course enrollment – who are your students and where do they come from? </p>
+			<div class = "aboutText">
+				<p> As students enroll in courses you have published, you'll accumulate performance and satisfaction data. DeepDive provides you a number of ways to synthesize this data. Understand how your students are learning and take a data-driven approach to improving your courses </p>
 			</div>
 		</div>
 		<div class= "btn closeBox"> X </div>
 	</div>
-
-	
 	<div style = "position: absolute; bottom: 5px; width: 100%; text-align:center"> 
-        <h6> Copyright 2015 </h6>
+        <h6> Copyright 2016 </h6>
     </div>
+	<div class = "bubble"> </div>
+	<div id = "dummy"> </div>
 </body>
 </html>
