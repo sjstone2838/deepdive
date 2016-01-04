@@ -139,7 +139,7 @@ var questionIndex = "";
 		$('#question_text').val("");
 		//CKEDITOR.instances['question_text'].setData("");
 		$('#question_answer').val("");
-		$('#answerChoices').remove();
+		$('#answerChoices').html("");
 
 		show('moduleElement');
 	}
@@ -219,6 +219,18 @@ var questionIndex = "";
 			$.each($(".answerChoice"), function(i){
 				$(this).val("");
 			});
+		}
+	});
+
+	// Append 4 answer choices if Radio question selected
+	$('#question_type').change(function(){
+		console.log("line1");
+		if ($(this).val() == "Radio"){
+			for (var i = 0; i < 4; i++){
+				$('#answerChoices').append('<p></p><div style="width: 90px; display: inline-block;"> Choice '+ (i+1)+ "</div><input class = 'answerChoice' style='width: 260px; display: inline-block;'>");
+			}
+		} else {
+			$('#answerChoices').html("");
 		}
 	});
 

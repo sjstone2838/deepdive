@@ -1,4 +1,10 @@
 $(document).ready(function(){
+	// increment login count to 1 in views.py, so that welcome does not reappear on refresh
+	$.ajax({
+        type: 'POST',
+        url: '/lessons/increment_logins/',
+	});
+
 	var welcomeIndex = 0;
 
 	$(".welcomeBackground").fadeIn(2000);
@@ -19,16 +25,16 @@ $(document).ready(function(){
 	});
 
 	function showHighlights(welcomeIndex){
-		$(".highlight").css("border","none");
+		$(".highlight").css("box-shadow","none");
 		if (welcomeIndex == 1){
-			$("#enrollBtn").css("border","15px yellow solid");
-			$("#learnBtn").css("border","15px yellow solid");
+			$(".addCourse").css("box-shadow", "0px 0px 30px 15px yellow");
+			$("#learnBtn").css("box-shadow", "0px 0px 30px 15px yellow");
 		}
 		else if (welcomeIndex == 2){
-			$("#teachBtn").css("border","15px yellow solid");
+			$("#teachBtn").css("box-shadow", "0px 0px 30px 15px yellow");
 		}
 		else if (welcomeIndex == 3){
-			$("#analyzeBtn").css("border","15px yellow solid");
+			$("#analyzeBtn").css("box-shadow", "0px 0px 30px 15px yellow");
 		}
 		else {}
 	}

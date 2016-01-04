@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'lessons',
     'bootstrap3',
     'storages', #new
+    'chartit',
 )
 
 MIDDLEWARE_CLASSES = (

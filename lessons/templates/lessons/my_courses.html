@@ -6,10 +6,10 @@
 	
 	<div class = "courseTabs">
 		<div class = "courseTab btn-row" id = "courseTab">
-			<a class = "btn btn-link" href='/lessons/'> My Courses </a>
+			<a class = "btn btn-link" style = "font-size: 16pt; font-weight: bold;" href='/lessons/'> My Courses </a>
 		</div> 
 		<div class = "courseTab btn-row"  id = "moduleTab" style = "background-color: #f1f1f4;">
-			<div class = "btn btn-link"> Search </div>
+			<div class = "btn btn-link" style = "font-size: 16pt; font-weight: bold;"> Search Courses </div>
 		</div> 
 	</div>
 	<div class = "courseDisplayBlock">
@@ -63,7 +63,7 @@
 								</span>
 								<span style = "font-style: italic; margin-left: 5px;"> ({{course.rating}} / 5) </span>
 							{% endif %}
-							<span style = "margin-left: 30px;" class = "btn btn-primary addCourse" id = "addCourse.{{course.pk}}"> Enroll </span>
+							<span style = "margin-left: 30px; position: relative; z-index: 1;" class = "btn btn-primary addCourse highlight" id = "addCourse.{{course.pk}}"> Enroll </span>
 						</div>
 						<div class = "courseTileHalf courseTileLeft">
 							<p style = "height: 10px;"> Genre: <strong>{{course.genre}} </strong></p>
@@ -85,5 +85,52 @@
 		{% endif %}
 	    </div>
 	</div>
+
+	{% if userProfile.logins == 0 %}
+		<script src="{% static 'mysite/js/welcome.js' %}"></script>
+		<div class = "welcomeBackground">
+		</div>
+		<div class = "welcomeBlock">
+			<div style = "margin: 0% 5% 0% 5%;">
+				<div id = "welcomeBlock-0">
+					<h1> <strong> Welcome to DeepDive! </strong> </h1>	
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/logo.PNG' %}"></script><br><br>
+					<h2> We're glad you're here! </h2>
+					<h2 style = "color: grey;"> Get started with a quick orientation </h2>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-1">
+					<h1><strong> Step 1: Learn Something New </strong></h1>
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/bookshelf.JPG' %}"></script><br>
+					<h2 style = "text-align: justify;"> Take a look through DeepDive's courses and enroll in one (or two or three) that match your interests </h2> 
+					<h3 style = "color: grey; text-align: justify;"> Courses range from short topical overviews requiring under an hour to 'deep dives' (forgive the pun!) requiring days or weeks </h3>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-2">
+					<h1><strong> Step 2: Teach Something </strong></h1>
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/training.JPG' %}"></script><br>
+					<h2 style = "text-align: justify;"> Create your own course! Include videos, pictures, and documents to spice up your content. Add quizzes and tests to ensure your students are learning </h2>
+					<h3 style = "color: grey; text-align: justify;"> You can find more details on how to create a course at Teach > Glossary </h3>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-3">
+					<h1><strong> Step 3: Analyze Your Data </strong></h1>
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/analyze.PNG' %}"></script><br>
+					<h2 style = "text-align: justify;"> As students enroll in your courses, you'll accumulate performance and satisfaction data. Understand how your students are learning and use data to improve your courses </h2>
+					<h3 style = "color: grey; text-align: justify;"> We've given you access to demo course data so you can see what analysis tools are available </h3>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-4">
+					<h1><strong> You've finished DeepDive orientation </strong></h1>
+					<div class = "btn-info endWelcome" style = "font-size: 20pt; border-radius: 15px; padding: 25px; margin: 50px 0px 30px 0px;">  Sounds good - let's get started </div>
+					<div class = "btn-info" style = "font-size: 20pt; border-radius: 15px; padding: 25px; margin: 50px 0px 30px 0px;">Take me through orientation one more time </div>
+				</div>
+			</div>
+			<div class = "indexBalls">
+				<div class = "indexBall indexBallHighlight" id = "indexBall-0">  </div>
+				<div class = "indexBall" id = "indexBall-1">  </div>
+				<div class = "indexBall" id = "indexBall-2">  </div>
+				<div class = "indexBall" id = "indexBall-3">  </div>
+				<div class = "indexBall" id = "indexBall-4">  </div>
+			</div>
+		</div>
+		<div class= "btn" id = "welcomeCloseBox" style = "z-index: 3;" > X </div>
+	{% endif %}
 
 {% endblock %}

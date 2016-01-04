@@ -4,37 +4,39 @@
 {% block content %}
 <script src="{% static 'mysite/js/edit.js' %}"></script>
 <!-- links to CKEDITOR and customization of CKEDITOR toolbar -->
-<script src="{% static 'mysite/js/ckeditor.js' %}"></script>
-<script src="{% static 'mysite/js/adapters/jquery.js' %}"></script>
+<script src="{% static 'mysite/js/CKEditor/ckeditor.js' %}"></script>
+<script src="{% static 'mysite/js/CKEditor/adapters/jquery.js' %}"></script>
 <script>
 	var ckeditor_toolbar = [
-		{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-		//{ name: 'editing', items: [ 'Scayt' ] },
-		{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-		{ name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },
-		//'/',
-		{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
-		{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-		{ name: 'styles', items: [ 'Styles', 'Format' ] },
-		// { name: 'about', items: [ 'About' ] }
-		{ name: 'document', items: [ 'Source' ] },
-		{ name: 'tools', items: [ 'Maximize' ] },
+		{ name: 'document', items: [ 'Source', '-', /*'Save', 'NewPage',*/ 'Preview', 'Print', '-', 'Templates' ] },
+	{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+	{ name: 'editing', items: [ 'Find', 'Replace'/*, '-', 'SelectAll', '-', 'Scayt' */] },
+	/*{ name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+	'/',*/
+	{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+	{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'/*, 'Language'*/ ] },
+	{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+	{ name: 'insert', items: [ 'Image', 'Iframe','Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar' /*, 'PageBreak'*/ ] },
+	{ name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+	{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+	{ name: 'tools', items: [ 'Maximize' /*,'ShowBlocks'*/ ] },
+	/*{ name: 'about', items: [ 'About' ] }*/
 	];
 </script>
 
 <div>
 	<div class = "editTabs">
 		<div class = "tab btn-row" id = "courseTab" style = "background-color: #f1f1f4;">
-			<div class = "btn btn-link"> Course</div>
+			<div class = "btn btn-link" style = "font-size: 16pt; font-weight: bold;"> Course</div>
 		</div> 
 		<div class = "tab btn-row Hide"  id = "moduleTab">
-			<div class = "btn btn-link"> Module</div>
+			<div class = "btn btn-link" style = "font-size: 16pt; font-weight: bold;"> Module</div>
 		</div> 
 		<div class = "tab btn-row Hide"  id = "moduleElementTab">
-			<div class = "btn btn-link"> Module Element </div>
+			<div class = "btn btn-link" style = "font-size: 16pt; font-weight: bold;"> Module Element </div>
 		</div> 
 		<div class = "tab btn-row Hide"  id = "questionTab">
-			<div class = "btn btn-link"> Question </div>
+			<div class = "btn btn-link" style = "font-size: 16pt; font-weight: bold;"> Question </div>
 		</div> 
 	</div>
 	<div class = "course editBlock">

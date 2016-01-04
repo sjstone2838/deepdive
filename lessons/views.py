@@ -19,11 +19,12 @@ import datetime
 import json
 
 from lessons.models import *
+from django.db.models import Count
 from .forms import *
+from chartit import DataPool, PivotDataPool, Chart, PivotChart
 
 @login_required(login_url = '/lessons/login/')
 def index(request):
-	
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
 	courses_enrolled = user_profile.courses_enrolled.all()
@@ -56,6 +57,54 @@ def index(request):
 		'userProfile':user_profile,
 		'mycourses': courses_enrolled
 	})
+
+
+@login_required(login_url = '/lessons/login/')
+def my_courses(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	mycourses = user_profile.courses_enrolled.all()
+	othercourses = []
+	for course in Course.objects.all():
+		if mycourses.filter(name=course.name).count() == 0:
+			othercourses.append(course)
+
+	for course in othercourses:
+		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
+		course.instructor = instructor.first_name + " " + instructor.last_name
+		ratings = CourseRating.objects.filter(course = course)
+		if ratings.count() != 0:
+			course.rating = round(float(ratings.aggregate(Avg('rating'))['rating__avg']),1)
+		else:
+			course.rating = "Not yet rated"
+		course.enrolled = UserProfile.objects.filter(courses_enrolled = course).count
+
+		if CourseLogo.objects.filter(course = course).count() == 1:
+			course.logo = CourseLogo.objects.get(course = course).docfile.url
+		
+		modules = Module.objects.filter(course=course).count()
+		course.modules = modules
+		course.date_created = course.date_created.strftime('%b %d, %Y')
+		"""
+		points = CourseStatus.objects.get(user = user_profile, course = course).points
+		if points == modules:
+			course.status = "Completed"
+		else: 
+			course.status = "On module " + str(points+1) + " of " + str(modules)"""
+
+	return render(request, 'lessons/my_courses.html', {
+		'user':user, 
+		'userProfile':user_profile,
+		'othercourses': othercourses
+	})
+
+
+def increment_logins(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	user_profile.logins += 1
+	user_profile.save()
+	print "line1"
 
 @login_required(login_url = '/lessons/login/')
 def course(request,course_pk):
@@ -518,45 +567,6 @@ def create_course(request):
 		jsonResponseMessage = "Error: no course created"
 		return JsonResponse({'jsonResponseMessage': jsonResponseMessage})
 
-@login_required(login_url = '/lessons/login/')
-def my_courses(request):
-	user = request.user
-	user_profile = get_object_or_404(UserProfile, user_id = user.id)
-	mycourses = user_profile.courses_enrolled.all()
-	othercourses = []
-	for course in Course.objects.all():
-		if mycourses.filter(name=course.name).count() == 0:
-			othercourses.append(course)
-
-	for course in othercourses:
-		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
-		course.instructor = instructor.first_name + " " + instructor.last_name
-		ratings = CourseRating.objects.filter(course = course)
-		if ratings.count() != 0:
-			course.rating = round(float(ratings.aggregate(Avg('rating'))['rating__avg']),1)
-		else:
-			course.rating = "Not yet rated"
-		course.enrolled = UserProfile.objects.filter(courses_enrolled = course).count
-
-		if CourseLogo.objects.filter(course = course).count() == 1:
-			course.logo = CourseLogo.objects.get(course = course).docfile.url
-		
-		modules = Module.objects.filter(course=course).count()
-		course.modules = modules
-		course.date_created = course.date_created.strftime('%b %d, %Y')
-		"""
-		points = CourseStatus.objects.get(user = user_profile, course = course).points
-		if points == modules:
-			course.status = "Completed"
-		else: 
-			course.status = "On module " + str(points+1) + " of " + str(modules)"""
-
-	return render(request, 'lessons/my_courses.html', {
-		'user':user, 
-		'mycourses': mycourses,
-		'othercourses': othercourses
-	})
-
 # manage enrollment
 @login_required(login_url = '/lessons/login/')
 def manage_enrollment(request):
@@ -889,55 +899,63 @@ def analyze(request):
 	if request.method == 'GET':
 		return render(request, 'lessons/analyze.html', {
 			'user':user, 
-			'courses': courses,
+			'courses': courses, #to be removed
 		})
-
 	else: 
 		course = Course.objects.get(pk = request.POST['coursepk'])
 		enrollees = UserProfile.objects.filter(courses_enrolled = course)
 		total_enrolled = enrollees.count()
-		enrollee_set = []
+		modules = Module.objects.filter(course = course)
+		for module in modules:
+			module.completions = Completion.objects.filter(name = module).count()
+			module.percent_of_total = round(float((module.completions / total_enrolled) * 100),1)
+			module.avg_score = 0
+			for completion in Completion.objects.filter(name = module):
+				module.avg_score += completion.score
+			module.avg_score = round(float(module.avg_score / module.completions),1)
+
+		#enrollee_set = []
 		for enrollee in enrollees:
-			temp = {}
-			temp['name'] = enrollee.user.first_name + " " + enrollee.user.last_name
-			temp['completion_data'] = []
+			enrollee.completions = Completion.objects.filter(user = enrollee, name = Module.objects.filter(course = course))
 			
-			completions = Completion.objects.filter(
-				user = enrollee,
-				name = Module.objects.filter(course = course)
-			)
-			for completion in completions:
-				tc = {}
-				tc['name'] = completion.name.name # "name.name" because completion's FK is module, then reference module name
-				tc['score'] = completion.score
-				tc['date'] = completion.date.strftime('%b %d, %Y %H:%M')
-				temp['completion_data'].append(tc)
+		#http://chartit.shutupandship.com/docs/
+		def modulename(x):
+			print x[0]
+			module =  Module.objects.get(pk = x[0])
+			return ("Module " + str(module.index) + ": " + module.name,)
 
-			enrollee_set.append(temp)
+		pivotdata = \
+			PivotDataPool(
+				series =
+				[{'options': {
+					'source': Completion.objects.filter(name = Module.objects.filter(course = course)), 
+					'categories': ['name']
+					},
+					'terms': {
+					'completions': Count('score'),
+					}}],
+				sortf_mapf_mts = (lambda *x: (x[0],), modulename, True))
 
-		module_count = Module.objects.filter(course = course).count()
-		module_completion_set = []
-		for i in range(0,module_count):
-			temp = {}
-			module = Module.objects.get(course = course, index = i + 1)
-			temp['name'] = module.name
-			completions = Completion.objects.filter(name = module)
-			temp['count'] = completions.count()
-			temp ['percent_of_total'] = round(float(temp['count'] / total_enrolled) * 100, 0)
-			points = 0
-			for  completion in completions:
-				points += completion.score
+		cht = \
+			PivotChart(
+				datasource = pivotdata,
+				series_options =
+	              [{'options':{
+					'type': 'column',
+					'stacking': True},
+					'terms':[
+					'completions']}],
+				chart_options =
+					{'title': {'text': 'Completions by Module'},})
 
-			temp['avg_score'] = 0
-			if temp['count'] != 0:
-				temp['avg_score'] = round(float(points / temp['count']), 0)
-			else:
-				temp['avg_score'] = "NA"
-			module_completion_set.append(temp)
-
-		return JsonResponse({'module_completion_set': module_completion_set, 
-			'enrollees': enrollee_set, 
-			'total_enrolled': total_enrolled,
+		return render(request, 'lessons/analyze.html', {
+			'user':user, 
+			'courses': courses,
+			'modules': modules,
+			'enrollees':enrollees,
+			'chart': cht,
+			'selection': request.POST['coursepk'],
+			'total_enrolled': total_enrolled
 		})
 			
 

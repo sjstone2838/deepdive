@@ -27,9 +27,9 @@
                
                 {% if user.username%}
             <div class ="col-md-4" style="text-align:center;">    
-                <div class="dropdown btn-row"><a class="btn btn-info highlight" id = "learnBtn" role="button" href="/lessons/">Learn</a></div>
-                <div class="dropdown btn-row">
-                    <button class="btn btn-info dropdown-toggle highlight" id = "teachBtn" type="button" data-toggle="dropdown">Teach
+                <div class="dropdown btn-row" style = "position: relative; z-index: 1;"><a class="btn btn-primary highlight" id = "learnBtn" role="button" href="/lessons/">Learn</a></div>
+                <div class="dropdown btn-row" style = "position: relative; z-index: 1;">
+                    <button class="btn btn-primary dropdown-toggle highlight" id = "teachBtn" type="button" data-toggle="dropdown">Teach
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu">
                         <li><a href="/lessons/create"> Create New Material </a></li>
@@ -39,7 +39,7 @@
                         <li><a </li>
                     </ul>
                 </div>
-                <div class="dropdown btn-row"><a class="btn btn-info highlight" id = "analyzeBtn" role="button" href="/lessons/analyze"> Analyze </a></div>
+                <div class="dropdown btn-row" style = "position: relative; z-index: 1;"><a class="btn btn-primary highlight" id = "analyzeBtn" role="button" href="/lessons/analyze"> Analyze </a></div>
                 <div class="dropdown btn-row"><a class="btn btn-default" role="button"href="/lessons/profile/">Profile</a></div>
                 <div class="dropdown btn-row">
                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">About
@@ -64,7 +64,7 @@
     {% endblock %}
     </div> 
 
-    <div style = "position: absolute; bottom: 5px; width: 100%; text-align:center; color: white; font-size: 8pt;"> 
+    <div style = "position: absolute; bottom: 5px; width: 100%; text-align:center; color: grey; font-size: 8pt;"> 
         Copyright 2016
     </div>
 

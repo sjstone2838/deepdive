@@ -24,6 +24,7 @@ urlpatterns = patterns('lessons.views',
 	(r'^/?add_media/$','add_media'),
 	(r'^/?analyze/$','analyze'),
 	(r'^/?course_rate/$','course_rate'),
+	(r'^/?increment_logins/$','increment_logins'),
 
 	#(r'^/?list/$','list'),
 	#(r'^/?demo/$','demo'),
