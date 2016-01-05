@@ -80,6 +80,7 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 """
+for development
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -87,20 +88,8 @@ DATABASES = {
     }
 }
 
-# for deployment: learndeepdive
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dd2jpdulv63uv3',
-        'USER': 'rzcjfvdwdqgjhu',
-        'PASSWORD': 'znrq_-6uVyOyFkesFa-TbkIyIg',
-        'HOST': 'ec2-75-101-143-150.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
-}
 """
-
-# for deployment: immense-taiga
+# for deployment: learndeepdive
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -111,7 +100,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

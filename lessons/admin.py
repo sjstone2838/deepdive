@@ -14,7 +14,7 @@ class ManagerInline(admin.TabularInline):
 	model = UserProfile
 """
 class CourseAdmin(admin.ModelAdmin):
-	list_display = ('name','id','description','genre','date_created')
+	list_display = ('name','id','description','genre','date_created','privacy')
 #	inlines = [CourseInline,ManagerInline]
 
 class ModuleInline(admin.TabularInline):
@@ -23,7 +23,7 @@ class ModuleInline(admin.TabularInline):
 	extra = 1
 
 class ModuleAdmin(admin.ModelAdmin):
-	list_display = ('name','course','id','index')
+	list_display = ('name','course','id','index','passing_score')
 	inlines = [ModuleInline]
 
 class QuestionInline(admin.TabularInline):

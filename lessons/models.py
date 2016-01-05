@@ -25,6 +25,7 @@ class Module(models.Model):
 	course = models.ForeignKey(Course, default = 1)
 	index = models.IntegerField(default=0)
 	hints = models.TextField(default="no content text yet")
+	passing_score = models.IntegerField(default=50)
 
 	def __unicode__(self):
 		return self.name
