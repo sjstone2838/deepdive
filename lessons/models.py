@@ -1,11 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+PRIVACY_CHOICES = (
+	('Public','Public'),
+	('Private','Private'),
+	('Development','Development')
+)
+
 class Course(models.Model):
 	name = models.CharField(max_length=200)
 	description = models.TextField(max_length=1000)
 	genre = models.CharField(max_length=200)
 	date_created = models.DateTimeField('date created')
+	privacy = models.CharField(max_length=200,
+		choices=PRIVACY_CHOICES,
+		default='Development'
+	)
 
 	def __unicode__(self):
 		return self.name
