@@ -11,7 +11,6 @@ $(document).ready(function(){
 			100, 'linear'
 		);
 		left = Math.sin(i * 5 / Math.PI) * 8;
-		console.log (left);
 	}
 
 	$('#login').click(function(){

@@ -899,63 +899,56 @@ def analyze(request):
 	if request.method == 'GET':
 		return render(request, 'lessons/analyze.html', {
 			'user':user, 
-			'courses': courses, #to be removed
+			'courses': courses,
 		})
+
 	else: 
 		course = Course.objects.get(pk = request.POST['coursepk'])
 		enrollees = UserProfile.objects.filter(courses_enrolled = course)
 		total_enrolled = enrollees.count()
-		modules = Module.objects.filter(course = course)
-		for module in modules:
-			module.completions = Completion.objects.filter(name = module).count()
-			module.percent_of_total = round(float((module.completions / total_enrolled) * 100),1)
-			module.avg_score = 0
-			for completion in Completion.objects.filter(name = module):
-				module.avg_score += completion.score
-			module.avg_score = round(float(module.avg_score / module.completions),1)
-
-		#enrollee_set = []
+		enrollee_set = []
 		for enrollee in enrollees:
-			enrollee.completions = Completion.objects.filter(user = enrollee, name = Module.objects.filter(course = course))
+			temp = {}
+			temp['name'] = enrollee.user.first_name + " " + enrollee.user.last_name
+			temp['completion_data'] = []
 			
-		#http://chartit.shutupandship.com/docs/
-		def modulename(x):
-			print x[0]
-			module =  Module.objects.get(pk = x[0])
-			return ("Module " + str(module.index) + ": " + module.name,)
+			completions = Completion.objects.filter(
+				user = enrollee,
+				name = Module.objects.filter(course = course)
+			)
+			for completion in completions:
+				tc = {}
+				tc['name'] = completion.name.name # "name.name" because completion's FK is module, then reference module name
+				tc['score'] = completion.score
+				tc['date'] = completion.date.strftime('%b %d, %Y %H:%M')
+				temp['completion_data'].append(tc)
 
-		pivotdata = \
-			PivotDataPool(
-				series =
-				[{'options': {
-					'source': Completion.objects.filter(name = Module.objects.filter(course = course)), 
-					'categories': ['name']
-					},
-					'terms': {
-					'completions': Count('score'),
-					}}],
-				sortf_mapf_mts = (lambda *x: (x[0],), modulename, True))
+			enrollee_set.append(temp)
 
-		cht = \
-			PivotChart(
-				datasource = pivotdata,
-				series_options =
-	              [{'options':{
-					'type': 'column',
-					'stacking': True},
-					'terms':[
-					'completions']}],
-				chart_options =
-					{'title': {'text': 'Completions by Module'},})
+		module_count = Module.objects.filter(course = course).count()
+		module_completion_set = []
+		for i in range(0,module_count):
+			temp = {}
+			module = Module.objects.get(course = course, index = i + 1)
+			temp['name'] = module.name
+			completions = Completion.objects.filter(name = module)
+			temp['count'] = completions.count()
+			temp ['percent_of_total'] = round(float(temp['count'] / total_enrolled) * 100, 0)
+			points = 0
+			for  completion in completions:
+				points += completion.score
 
-		return render(request, 'lessons/analyze.html', {
-			'user':user, 
-			'courses': courses,
-			'modules': modules,
-			'enrollees':enrollees,
-			'chart': cht,
-			'selection': request.POST['coursepk'],
-			'total_enrolled': total_enrolled
+			temp['avg_score'] = 0
+			if temp['count'] != 0:
+				temp['avg_score'] = round(float(points / temp['count']), 0)
+			else:
+				temp['avg_score'] = "NA"
+			module_completion_set.append(temp)
+
+		return JsonResponse({
+			'module_completion_set': module_completion_set, 
+			'enrollees': enrollee_set, 
+			'total_enrolled': total_enrolled,
 		})
 			
 

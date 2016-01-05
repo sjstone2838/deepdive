@@ -5,77 +5,35 @@
 <script src="{% static 'mysite/js/analyze.js' %}"></script>
 
 <div class = "wideBlock">
-	<form action="/lessons/analyze/" method="post" >
-	    <select name = "coursepk" id = 'courseSelect' onChange="form.submit();">
-	    	{% if selection %}
-	    		{% for course in courses %}
-					{% if course.pk == selection %}
-					<option selected value='{{course.pk}}'>{{course.name}}</option>
-					{% else %}
-					<option value='{{course.pk}}'>{{course.name}}</option>
-					{% endif %}
-				{% endfor %}
-			{% else %}	
-		    	<option value='' disabled selected>Select course to view data...</option>
-		    	{% for course in courses %}
-				<option value='{{course.pk}}'>{{course.name}}</option>
-				{% endfor %}
-			{% endif %}
-		</select>
-	</form>
+    <select name = "coursepk" id = 'courseSelect'>
+    	<option value='' disabled selected>Select course to view data...</option>
+    	{% for course in courses %}
+		<option value='{{course.pk}}'>{{course.name}}</option>
+		{% endfor %}
+	</select>
 </div>
 
-{% if chart %}
-<div class = "analyzeBlock">
-    <h2 class = "analyzeHeader"> Summary Data </h2>
-    
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-    <p style = "font-size: 14pt;"> Total Enrolled: {{total_enrolled}}<span id = "total_enrolled"></span></p>
-	<table id = "summaryTable">
-		<tr>
-			<th> Module </th>
-			<th> Completions </th>
-			<th> Percent of Total </th>
-			<th> Average Score </th>
-		</tr>
-		{% for module in modules %}	
-		<tr>
-			<td> {{module.name }}</td>
-			<td> {{module.completions }}</td>
-			<td> {{module.percent_of_total }}%</td>
-			<td> {{module.avg_score }}%</td>
-		</tr>
-		{% endfor %}
-	</table>
-	<br>
-	<h2 class = "analyzeHeader"> Individual Performance Data </h2>
-	{% for enrollee in enrollees %}
-	<div>	
-		<div class = 'dataHeader'> <span class = 'arrow'> &#9660 </span> {{enrollee.user.first_name}} {{enrollee.user.last_name}}</div>
-
-		{% if enrollee.completions %}
-		<table class = 'dataDetails Hide' style = 'table-layout: fixed'>
+	<div class = "analyzeBlock Hide" id = "summaryData">
+		<h2 class = "analyzeHeader"> Summary Data </h2>
+	    <script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+		<br> <br>
+		<p style = "font-size: 14pt;"> Total Enrolled: <span id = "total_enrolled"></span></p>
+		<table id = "summaryTable">
 			<tr>
 				<th> Module </th>
-				<th> Score </th>
-				<th> Date </th>
-			</tr>
-			{% for completion in enrollee.completions %}
-			<tr>
-				<td> {{completion.name.index}}. {{ completion.name}} </td>
-				<td>{{ completion.score}} % </td>
-				<td>{{ completion.date}} </td>
-			</tr>
-			{% endfor %}
+				<th> Completions </th>
+				<th> Percent of Total </th>
+				<th> Average Score </th>
+			</tr>	
 		</table>
-		{% else %}
-		<p class = 'dataDetails Hide' style = "font-size: 14pt; font-style: italic;" > Yet to complete first module </p>
-		{% endif %}
 	</div>
-	{% endfor %}
-<div>
-{% endif %}		
+
+	<div class = "wideBlock Hide">
+		<h2 class = "analyzeHeader"> Individual Performance Data </h2>
+		<div id = "detailedData"></div>
+	</div>		
+	
 {% endblock %}
