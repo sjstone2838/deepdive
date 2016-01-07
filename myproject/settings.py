@@ -80,8 +80,7 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-"""
-for development
+#for development
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -101,6 +100,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

@@ -59,7 +59,7 @@ class CompletionAdmin(admin.ModelAdmin):
 	list_display = ('id','user','name','score','date')
 
 class CourseStatusAdmin(admin.ModelAdmin):
-	list_display = ('id','user','course','points')
+	list_display = ('id','user','course','points','date_enrolled','date_dropped')
 	list_filter = ['user','course']
 
 class CourseRatingAdmin(admin.ModelAdmin):

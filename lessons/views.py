@@ -934,21 +934,40 @@ def analyze(request):
 			completions = Completion.objects.filter(name = module)
 			temp['count'] = completions.count()
 			temp ['percent_of_total'] = round(float(temp['count'] / total_enrolled) * 100, 0)
-			points = 0
-			for  completion in completions:
-				points += completion.score
-
-			temp['avg_score'] = 0
+			
 			if temp['count'] != 0:
-				temp['avg_score'] = round(float(points / temp['count']), 0)
+				temp['avg_score'] = round(float(completions.aggregate(Avg('score'))['score__avg']),0)
 			else:
 				temp['avg_score'] = "NA"
+
 			module_completion_set.append(temp)
+
+		module_chart = {}
+		module_chart['y-values'] = [total_enrolled]
+		module_chart['x-values'] = ["Total Enrolled"]
+		running_sum = 0
+		for i in range(0,module_count):
+			module_chart['y-values'].append(Completion.objects.filter(name = Module.objects.get(course = course, index = i + 1)).count())
+			module_chart['x-values'].append("Completed Module " + str(i + 1) + ": " + Module.objects.get(course = course, index = i + 1).name)
+		#Adjust last x-label
+		module_chart['x-values'][-1] = ("Completed Module " + str(i + 1) + ": " + Module.objects.get(course = course, index = module_count).name + " & Passed Course")
+
+		average_chart = {}
+		average_chart['x-values'] = ["All Module Completions (Weighted Average)"]
+		average_chart['y-values'] = [Completion.objects.filter(name = Module.objects.filter(course = course)).aggregate(Avg('score'))['score__avg']]
+
+		for i in range(0,module_count):
+			average_chart['y-values'].append(Completion.objects.filter(name = Module.objects.get(course = course,index = i + 1)).aggregate(Avg('score'))['score__avg'])
+			average_chart['x-values'].append("Module " + str(i + 1) + ": " + Module.objects.get(course = course, index = i + 1).name)
+
+
 
 		return JsonResponse({
 			'module_completion_set': module_completion_set, 
 			'enrollees': enrollee_set, 
 			'total_enrolled': total_enrolled,
+			'module_chart': module_chart,
+			'average_chart': average_chart
 		})
 			
 

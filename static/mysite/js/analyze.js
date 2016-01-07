@@ -1,21 +1,4 @@
 $(document).ready(function(){
-	/*
-	$('.dataHeader').click(function(){
-		if ($(this).hasClass("clicked")){
-			$(this).find(".arrow").html("&#9660"); // down arrow
-			$(this).removeClass("clicked");
-			$(this).parent().find(".dataDetails").slideUp("slow");
-		}
-		else{
-			$(this).find(".arrow").html("&#9650"); // up arrow
-			$(this).addClass("clicked");
-			$(this).parent().find(".dataDetails").slideDown("slow");	
-		}
-	});
-	*/
-
-	var module_category_names = ['module 1', 'module 2', 'module 3'];
-	var module_completion_values = [3,6,9];
 
 	function showSummaryData(response){
 		$('.dynamic').remove();
@@ -66,15 +49,15 @@ $(document).ready(function(){
 		})
 	}
 	function showModuleChart(response){
-		$('#container').highcharts({
+		$('#moduleChart').highcharts({
 	        chart: {
 	            type: 'column'
 	        },
 	        title: {
-	            text: 'Stacked column chart'
+	            text: 'Student Progress: Completions by Module'
 	        },
 	        xAxis: {
-	            categories: module_category_names
+	            categories: response.module_chart['x-values']
 	        },
 	        yAxis: {
 	            min: 0,
@@ -99,16 +82,16 @@ $(document).ready(function(){
 	            borderColor: '#CCC',
 	            borderWidth: 1,
 	            shadow: false
-	        },*/
+	        },
 	        tooltip: {
 	            headerFormat: '<b>{point.x}</b><br/>',
 	            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-	        },
+	        },*/
 	        plotOptions: {
 	            column: {
 	                stacking: 'normal',
 	                dataLabels: {
-	                    enabled: true,
+	                    enabled: false,
 	                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
 	                    style: {
 	                        textShadow: '0 0 3px black'
@@ -117,11 +100,73 @@ $(document).ready(function(){
 	            }
 	        },
 	        series: [{
-	            name: 'Completions',
-	            data: module_completion_values
+	            name: "to be removed",
+	            data: response.module_chart['y-values']
 	        }]
 	    });
 		$(document).find("text:contains('Highcharts')").remove()
+		$(document).find("text:contains('to be removed')").parent().parent().remove()
+	}
+	
+	function showAverageChart(response){
+		$('#averageChart').highcharts({
+	        chart: {
+	            type: 'column'
+	        },
+	        title: {
+	            text: 'Average Score by Module'
+	        },
+	        xAxis: {
+	            categories: response.average_chart['x-values']
+	        },
+	        yAxis: {
+	            min: 0,
+	            title: {
+	                text: 'Average Score (0-100%)'
+	            },
+	            stackLabels: {
+	                enabled: false,
+	                style: {
+	                    fontWeight: 'bold',
+	                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+	                },
+	            }
+	        },
+	        /*legend: {
+	            align: 'right',
+	            x: -30,
+	            verticalAlign: 'top',
+	            y: 25,
+	            floating: true,
+	            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+	            borderColor: '#CCC',
+	            borderWidth: 1,
+	            shadow: false
+	        },
+	        tooltip: {
+	            headerFormat: '<b>{point.x}</b><br/>',
+	            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+	        },*/
+	        plotOptions: {
+	            column: {
+	                stacking: 'normal',
+	                dataLabels: {
+	                    enabled: true,
+	                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+	                    style: {
+	                        textShadow: '0 0 3px black'
+	                    },
+	                    format: "{point.y:.1f} %"
+	                }
+	            }
+	        },
+	        series: [{
+	            name: "to be removed",
+	            data: response.average_chart['y-values']
+	        }]
+	    });
+		$(document).find("text:contains('Highcharts')").remove()
+		$(document).find("text:contains('to be removed')").parent().parent().remove()
 	}
 
 	function getCourseData(coursepk){
@@ -130,10 +175,10 @@ $(document).ready(function(){
 	        url: '/lessons/analyze/',
 	        data: {'coursepk': coursepk},
 	        success: function(response) {
-	        	console.log(response);
 	        	showSummaryData(response);
 	        	showDetailedData(response);
 	        	showModuleChart(response);
+	        	showAverageChart(response);
 			}
 		});
 	}

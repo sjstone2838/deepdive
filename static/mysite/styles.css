@@ -100,10 +100,6 @@ body.background{
     font-weight: none;
 }
 
-.header{
-	background-color: none;
-}
-
 .vertical-align {
     display: flex;
     align-items: center;

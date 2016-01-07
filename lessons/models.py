@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 PRIVACY_CHOICES = (
 	('Public','Public'),
@@ -97,6 +98,8 @@ class CourseStatus(models.Model):
 	user = models.ForeignKey(UserProfile)
 	course = models.ForeignKey(Course)
 	points = models.IntegerField(default=0)
+	date_enrolled = models.DateTimeField(default = datetime.datetime(2016,1,1,12,0,0))
+	date_dropped = models.DateTimeField(default = datetime.datetime(2016,1,1,12,0,0))
 	
 	def __unicode__(self):
 		return str(self.user) + "_" + str(self.course)
