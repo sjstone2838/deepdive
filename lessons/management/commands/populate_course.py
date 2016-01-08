@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from lessons.models import *
 from sys import argv
 import datetime
+from datetime import timedelta
 from random import randint
 
 class Command(BaseCommand):
@@ -51,11 +52,15 @@ class Command(BaseCommand):
 				userProfile.courses_enrolled.add(course)
 
 				#if test CourseStatus does not already exist, create
+				# date assignment requires one week for each module
+				completion_time_per_module = randint(10,30)
 				if CourseStatus.objects.filter(user = userProfile, course = course) != 0:
 					courseStatus = CourseStatus.objects.create(
 						course = course,
 						user = userProfile,
-						points = i)
+						points = i,
+						date_enrolled = datetime.datetime.now() - timedelta(days = completion_time_per_module) * (module_count)
+						)
 
 				#populate completions
 				for k in range(0,i):
@@ -63,7 +68,7 @@ class Command(BaseCommand):
 						user = userProfile,
 						name = Module.objects.get(course = course, index = k + 1),
 						score = randint(0,9) * 3 + 70,
-						date = datetime.datetime.now()
+						date = datetime.datetime.now() - timedelta(days = completion_time_per_module) * (i - k)
 					)
 				
 				#print "Group: "+str(i+1)+" User: " + str(j + 1) + " User Index: " + str(user_index)

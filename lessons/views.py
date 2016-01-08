@@ -16,6 +16,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import datetime
+from datetime import timedelta, date
+from django.utils import timezone
 import json
 
 from lessons.models import *
@@ -960,14 +962,43 @@ def analyze(request):
 			average_chart['y-values'].append(Completion.objects.filter(name = Module.objects.get(course = course,index = i + 1)).aggregate(Avg('score'))['score__avg'])
 			average_chart['x-values'].append("Module " + str(i + 1) + ": " + Module.objects.get(course = course, index = i + 1).name)
 
+		time_chart = {}
+		time_chart['module_count'] = module_count
+		time_chart['x-origin-year'] = [course.date_created.year]
+		time_chart['x-origin-month'] = [course.date_created.month]
+		time_chart['x-origin-day'] = [course.date_created.day]
+		
+		pub_date = date(course.date_created.year, course.date_created.month, course.date_created.day)
+		now = date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
+		days_since_publication = (now - pub_date).days
+		#total_sum = 0
+		#time_chart['y-values-0'] = [0]
+		#mod_sum = [0]
 
+		# cycle through each module, start with i = 0 for total enrolled
+		for k in range(0,module_count + 1):
+			module = Module.objects.filter(course = course, index = k)
+			running_sum = 0
+			time_chart['y-values-' + str(k)] = [0]
+
+			# cycle through each day between course publication and current date
+			for i in range(0, days_since_publication):
+				d = course.date_created + timedelta(days = i)
+				if k == 0:
+					running_sum += CourseStatus.objects.filter(course = course, date_enrolled__year = d.year, date_enrolled__month = d.month, date_enrolled__day = d.day).count()
+				else:
+					running_sum += Completion.objects.filter(name = module, date__year = d.year, date__month = d.month, date__day = d.day).count()
+				time_chart['y-values-' + str(k)].append(running_sum)
+				#print time_chart['y-values-' + str(k)]
+				
 
 		return JsonResponse({
 			'module_completion_set': module_completion_set, 
 			'enrollees': enrollee_set, 
 			'total_enrolled': total_enrolled,
 			'module_chart': module_chart,
-			'average_chart': average_chart
+			'average_chart': average_chart,
+			'time_chart': time_chart
 		})
 			
 

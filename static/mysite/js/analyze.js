@@ -1,5 +1,12 @@
 $(document).ready(function(){
 
+	function resetData(){
+    	$(".analyzeBlock").fadeOut("fast");	
+    	$(".editTabs").fadeOut("fast");	
+    	$(".tab").css("backgroundColor","lightgrey");
+		$("#chartBtn").css("backgroundColor","#f1f1f4");
+    }
+
 	function showSummaryData(response){
 		$('.dynamic').remove();
 		var content = "";
@@ -7,7 +14,7 @@ $(document).ready(function(){
 		$.each(response.module_completion_set, function(i){
 				content += "<tr class = 'dynamic'><td> Completed Module " + (i+1) + ": " + $(this)[0].name+ "</td><td>" + $(this)[0].count + "</td><td>" + $(this)[0].percent_of_total + "%</td><td>" + $(this)[0].avg_score + "%</td></tr>";
 			});
-		$("#summaryTable").append(content).parent().fadeIn("fast");
+		$("#summaryTable").append(content);//.parent().fadeIn("fast");
 	}
 
 	function showDetailedData(response){
@@ -48,6 +55,7 @@ $(document).ready(function(){
 			}
 		})
 	}
+
 	function showModuleChart(response){
 		$('#moduleChart').highcharts({
 	        chart: {
@@ -169,16 +177,110 @@ $(document).ready(function(){
 		$(document).find("text:contains('to be removed')").parent().parent().remove()
 	}
 
+	function showTimeChart(response){
+		series = []
+		for (var i = 0; i < response.time_chart['module_count'] + 1; i++){
+			
+			series_name = "";
+			if (i == 0){
+				series_name = "All Enrollees";
+			} else if (i == response.time_chart['module_count']){
+				series_name = "Passed Module " + i +" (Finished Course)";
+			} else {
+				series_name = "Passed Module " + i;
+			}
+			//series_name "=Passed Module " + i
+			series[i] = {
+				name: series_name,
+	            data: response.time_chart['y-values-' + i],
+	            pointInterval: 1 * 24 * 36e5,
+	            pointStart: Date.UTC(
+	            	response.time_chart['x-origin-year'],
+	            	response.time_chart['x-origin-month'] - 1,
+	            	response.time_chart['x-origin-day']
+	            )
+			}
+		}
+			
+		$('#timeChart').highcharts({
+		    title: {
+	            text: 'Enrollee Status by Date',
+	            x: -20 //center
+	        },
+	        xAxis: {
+		        type: 'datetime',
+	            tickInterval: 7 * 24 * 36e5, // one week
+	            labels: {
+	                  format: '{value: %b %d, %Y}',
+	                align: 'right',
+	                rotation: -30
+	            }
+	        },
+	       	//categories: response.time_chart['x-values'],
+	        /*yAxis: {
+	            title: {
+	                text: 'Enrollee Count'
+	            },
+	            plotLines: [{
+	                value: 0,
+	                width: 1,
+	                color: '#808080'
+	            }]
+	        },
+	        tooltip: {
+	            valueSuffix: '°C'
+	        },
+	        legend: {
+	            layout: 'vertical',
+	            align: 'right',
+	            verticalAlign: 'middle',
+	            borderWidth: 0
+	        },*/
+	        series: series
+	        /*[
+	        	{
+		            name: 'Enrollees',
+		            data: response.time_chart['y-values-0'],
+		            pointInterval: 1 * 24 * 36e5,
+		            //pointStart: Date.UTC(2013,0,7)
+		            pointStart: Date.UTC(
+		            	response.time_chart['x-origin-year'],
+		            	response.time_chart['x-origin-month'] -1,
+		            	response.time_chart['x-origin-day']
+		            )
+		    	},{
+		    		name: 'Passed Module ' + 1,
+		            data: response.time_chart['y-values-1'],
+		            pointInterval: 1 * 24 * 36e5,
+		            //pointStart: Date.UTC(2013,0,7)
+		            pointStart: Date.UTC(
+		            	response.time_chart['x-origin-year'],
+		            	response.time_chart['x-origin-month'] -1,
+		            	response.time_chart['x-origin-day']
+		            )	
+		    	}
+		    ]*/
+	    });
+
+
+		$(document).find("text:contains('Highcharts')").remove()
+		$(document).find("text:contains('to be removed')").parent().parent().remove()
+	}
+
 	function getCourseData(coursepk){
+	    resetData();
 		$.ajax({
 	        type: 'POST',
 	        url: '/lessons/analyze/',
 	        data: {'coursepk': coursepk},
 	        success: function(response) {
-	        	showSummaryData(response);
-	        	showDetailedData(response);
+	        	$("#chartData").fadeIn("fast");
+	        	$(".editTabs").fadeIn("fast");
 	        	showModuleChart(response);
 	        	showAverageChart(response);
+	        	showTimeChart(response);
+				showSummaryData(response);
+			    showDetailedData(response);
 			}
 		});
 	}
@@ -186,4 +288,26 @@ $(document).ready(function(){
 	$("#courseSelect").change(function(){
 		getCourseData($(this).val());
 	});
+
+	$("#tableBtn").click(function(){
+		$(".analyzeBlock").fadeOut("fast");
+		$(".tab").css("backgroundColor","lightgrey");
+		$(this).css("backgroundColor","#f1f1f4");
+		$("#tableData").fadeIn("fast");
+	});
+
+	$("#chartBtn").click(function(){
+		$(".analyzeBlock").fadeOut("fast");
+		$(".tab").css("backgroundColor","lightgrey");
+		$(this).css("backgroundColor","#f1f1f4");
+		$("#chartData").fadeIn("fast");
+	});
+
+	$("#detailsBtn").click(function(){
+		$(".analyzeBlock").fadeOut("fast");
+		$(".tab").css("backgroundColor","lightgrey");
+		$(this).css("backgroundColor","#f1f1f4");
+		$("#detailedData").fadeIn("fast");
+    });
+
 });

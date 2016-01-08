@@ -4,38 +4,48 @@
 {% block content %}
 <script src="{% static 'mysite/js/analyze.js' %}"></script>
 
-<div class = "wideBlock">
-    <select name = "coursepk" id = 'courseSelect'>
-    	<option value='' disabled selected>Select course to view data...</option>
-    	{% for course in courses %}
-		<option value='{{course.pk}}'>{{course.name}}</option>
-		{% endfor %}
-	</select>
+<select class = "courseSelectBlock" name = "coursepk" id = 'courseSelect'>
+	<option value='' disabled selected style="text-align: center;">Select course to view data...</option>
+	{% for course in courses %}
+	<option value='{{course.pk}}' style="text-align: center;">Course: {{course.name}}</option>
+	{% endfor %}
+</select>
+
+<div class = "editTabs Hide" style = "margin-top: 10px;">
+	<div class = "tab btn-row" id = "chartBtn" style = "background-color: #f1f1f4;">
+		<div class = "btn btn-link" style = "font-size: 14pt; font-weight: bold;"> Chart Format </div>
+	</div> 
+	<div class = "tab btn-row"  id = "tableBtn">
+		<div class = "btn btn-link" style = "font-size: 14pt; font-weight: bold;"> Table Format</div>
+	</div> 
+	<div class = "tab btn-row"  id = "detailsBtn">
+		<div class = "btn btn-link" style = "font-size: 14pt; font-weight: bold;"> Detailed User Data </div>
+	</div> 
+</div>
+
+<div class = "analyzeBlock Hide" id = "chartData">
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<div id="timeChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<p></p>
+	<div id="moduleChart" style="min-width: 50%; height: 400px; margin: 0 auto; display: inline-block;"></div>
+	<div id="averageChart" style="min-width: 49%; height: 400px; margin-left: 5px; display: inline-block;"></div>
+	<br> <br>
+</div>
+
+<div class = "analyzeBlock Hide" id = "tableData">
+	<p style = "font-size: 14pt;"> Total Enrolled: <span id = "total_enrolled"></span></p>
+	<table id = "summaryTable">
+		<tr>
+			<th> Module </th>
+			<th> Completions </th>
+			<th> Percent of Total </th>
+			<th> Average Score </th>
+		</tr>	
+	</table>
 </div>
 
 
-	<div class = "analyzeBlock Hide" id = "summaryData">
-		<h2 class = "analyzeHeader"> Summary Data </h2>
-	    <script src="http://code.highcharts.com/highcharts.js"></script>
-		<script src="https://code.highcharts.com/modules/exporting.js"></script>
-		<div id="moduleChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-		<p></p>
-		<div id="averageChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-		<br> <br>
-		<p style = "font-size: 14pt;"> Total Enrolled: <span id = "total_enrolled"></span></p>
-		<table id = "summaryTable">
-			<tr>
-				<th> Module </th>
-				<th> Completions </th>
-				<th> Percent of Total </th>
-				<th> Average Score </th>
-			</tr>	
-		</table>
-	</div>
-
-	<div class = "wideBlock Hide">
-		<h2 class = "analyzeHeader"> Individual Performance Data </h2>
-		<div id = "detailedData"></div>
-	</div>		
+<div class = "analyzeBlock Hide" id = "detailedData"></div>
 	
 {% endblock %}

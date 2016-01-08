@@ -99,7 +99,7 @@ class CourseStatus(models.Model):
 	course = models.ForeignKey(Course)
 	points = models.IntegerField(default=0)
 	date_enrolled = models.DateTimeField(default = datetime.datetime(2016,1,1,12,0,0))
-	date_dropped = models.DateTimeField(default = datetime.datetime(2016,1,1,12,0,0))
+	date_dropped = models.DateTimeField(blank = True, null = True)
 	
 	def __unicode__(self):
 		return str(self.user) + "_" + str(self.course)
