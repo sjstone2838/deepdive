@@ -28,13 +28,18 @@
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 	<div id="timeChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 	<p></p>
-	<div id="moduleChart" style="min-width: 50%; height: 400px; margin: 0 auto; display: inline-block;"></div>
-	<div id="averageChart" style="min-width: 49%; height: 400px; margin-left: 5px; display: inline-block;"></div>
+	<div id="averageChart" style="min-width: 50%; height: 400px; margin: 0 auto; display: inline-block;"></div>
+	<div id="ratingChart" style="min-width: 49%; height: 400px; margin-left: 5px; display: inline-block;"></div>
+	<!--<div id="moduleChart" style="min-width: 50%; height: 400px; margin: 0 auto; display: inline-block;"></div>-->
 	<br> <br>
 </div>
 
 <div class = "analyzeBlock Hide" id = "tableData">
-	<p style = "font-size: 14pt;"> Total Enrolled: <span id = "total_enrolled"></span></p>
+	<div style = "width: 30%; margin: 0px 0px 20x 0px; border: 1px black solid; border-radius: 10px; padding: 10px">
+		<div style = "font-size: 12pt;"> Total Enrolled: <span id = "total_enrolled"></span></div>
+		<div style = "font-size: 12pt; border-bottom: 1px black solid;"> Less: Total Dropped: <span id = "total_dropped"></span></div>
+		<div style = "font-size: 12pt;"> Equals: Currently Enrolled: <span id = "currently_enrolled"></span></div>
+	</div>
 	<table id = "summaryTable">
 		<tr>
 			<th> Module </th>
@@ -46,6 +51,8 @@
 </div>
 
 
-<div class = "analyzeBlock Hide" id = "detailedData"></div>
+<div class = "analyzeBlock Hide" id = "detailedData">
+	<table style = 'table-layout: fixed;'> <tr> <td style = 'width: 25%;'> Enrollee </td><td style = 'width: 25%;'> Date Enrolled</td><td style = 'width: 25%;'> Status </td><td> Average Score </td></tr></table>
+</div>
 	
 {% endblock %}

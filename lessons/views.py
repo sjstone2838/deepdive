@@ -584,7 +584,9 @@ def manage_enrollment(request):
 		# remove specified course
 		if call == "remove":
 			user_profile.courses_enrolled.remove(course)
-			CourseStatus.objects.get(course = course, user = user_profile).delete()
+			courseStatus = CourseStatus.objects.get(course = course, user = user_profile)
+			courseStatus.date_dropped = datetime.datetime.now()
+			courseStatus.save()
 
 		# enroll in specified course
 		if call == "enroll":
@@ -593,7 +595,8 @@ def manage_enrollment(request):
 				CourseStatus.objects.create(
 					course = course,
 					user = user_profile,
-					points = 0
+					points = 0,
+					date_enrolled = datetime.datetime.now()
 				)
 
 		success = "success"
@@ -908,10 +911,16 @@ def analyze(request):
 		course = Course.objects.get(pk = request.POST['coursepk'])
 		enrollees = UserProfile.objects.filter(courses_enrolled = course)
 		total_enrolled = enrollees.count()
+		total_dropped = CourseStatus.objects.filter(course = course).exclude(date_dropped__isnull = True).count()
 		enrollee_set = []
 		for enrollee in enrollees:
 			temp = {}
 			temp['name'] = enrollee.user.first_name + " " + enrollee.user.last_name
+			temp['date_enrolled'] = "Enrolled on " + CourseStatus.objects.get(course = course, user = enrollee).date_enrolled.strftime('%b %d, %Y')
+			if CourseStatus.objects.get(course = course, user = enrollee).date_dropped == None:
+				temp['date_dropped'] = "Currently enrolled"	
+			else: 
+				temp['date_dropped'] = "Dropped course on " + CourseStatus.objects.get(course = course, user = enrollee).date_dropped.strftime('%b %d, %Y')
 			temp['completion_data'] = []
 			
 			completions = Completion.objects.filter(
@@ -940,7 +949,7 @@ def analyze(request):
 			if temp['count'] != 0:
 				temp['avg_score'] = round(float(completions.aggregate(Avg('score'))['score__avg']),0)
 			else:
-				temp['avg_score'] = "NA"
+				temp['avg_score'] = "Yet to pass first"
 
 			module_completion_set.append(temp)
 
@@ -971,9 +980,6 @@ def analyze(request):
 		pub_date = date(course.date_created.year, course.date_created.month, course.date_created.day)
 		now = date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
 		days_since_publication = (now - pub_date).days
-		#total_sum = 0
-		#time_chart['y-values-0'] = [0]
-		#mod_sum = [0]
 
 		# cycle through each module, start with i = 0 for total enrolled
 		for k in range(0,module_count + 1):
@@ -990,15 +996,21 @@ def analyze(request):
 					running_sum += Completion.objects.filter(name = module, date__year = d.year, date__month = d.month, date__day = d.day).count()
 				time_chart['y-values-' + str(k)].append(running_sum)
 				#print time_chart['y-values-' + str(k)]
-				
 
+		#ratingsChart
+		rating_chart = []
+		for i in range(0,6):
+			rating_chart.append(CourseRating.objects.filter(course = course, rating = i).count())
+				
 		return JsonResponse({
 			'module_completion_set': module_completion_set, 
 			'enrollees': enrollee_set, 
 			'total_enrolled': total_enrolled,
+			'total_dropped': total_dropped,
 			'module_chart': module_chart,
 			'average_chart': average_chart,
-			'time_chart': time_chart
+			'time_chart': time_chart,
+			'rating_chart': rating_chart,
 		})
 			
 

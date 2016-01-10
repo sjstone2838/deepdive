@@ -11,6 +11,8 @@ $(document).ready(function(){
 		$('.dynamic').remove();
 		var content = "";
 		$("#total_enrolled").html(response.total_enrolled);
+		$("#total_dropped").html(response.total_dropped);
+		$("#currently_enrolled").html(response.total_enrolled - response.total_dropped);
 		$.each(response.module_completion_set, function(i){
 				content += "<tr class = 'dynamic'><td> Completed Module " + (i+1) + ": " + $(this)[0].name+ "</td><td>" + $(this)[0].count + "</td><td>" + $(this)[0].percent_of_total + "%</td><td>" + $(this)[0].avg_score + "%</td></tr>";
 			});
@@ -18,11 +20,14 @@ $(document).ready(function(){
 	}
 
 	function showDetailedData(response){
-		var content = "";
+		var content = "<table class = 'dataHeader' style = 'table-layout: fixed; margin: 0px;'> <tr> <th style = 'width: 25%;'> Enrollee </th><th style = 'width: 25%;'> Date Enrolled</th><th style = 'width: 25%;'> Status </th><th> Average Score </th></tr></table>";
 		$.each(response.enrollees, function(i){
 			var header = "";
 			var details = "";
-			header += "<div><div class = 'dataHeader'> <span class = 'arrow'> &#9660</span>" + $(this)[0].name;
+			header += "<div><table class = 'dataHeader' style = 'table-layout: fixed; margin: 0px;'> <tr style = 'margin: 0px'> <td style = 'width: 25%;'> <span class = 'arrow'> &#9660</span>" + $(this)[0].name + "</td>";
+			header += "<td style = 'width: 25%;'>" + $(this)[0].date_enrolled+ "</td>";
+			header += "<td style = 'width: 25%;'>" + $(this)[0].date_dropped+ "</td>";
+
 			var enrollee_score_sum = 0;
 			details += "<table class = 'dataDetails Hide' style = 'table-layout: fixed'><tr><th> Module </th><th> Score </th><th> Date </th></tr>" 
 			$.each($(this)[0].completion_data, function (j){
@@ -38,7 +43,7 @@ $(document).ready(function(){
 			} else {
 				average_score = "NA";
 			}
-			header += "<span class = 'averageScore'> Average Score: " + average_score + "</span></div>";
+			header += "<td><span class = 'averageScore'> Average Score: " + average_score + "</span></td></tr></table>";
 			content += header + details;
 		});
 		$("#detailedData").html(content).parent().fadeIn("fast");
@@ -189,7 +194,6 @@ $(document).ready(function(){
 			} else {
 				series_name = "Passed Module " + i;
 			}
-			//series_name "=Passed Module " + i
 			series[i] = {
 				name: series_name,
 	            data: response.time_chart['y-values-' + i],
@@ -216,50 +220,7 @@ $(document).ready(function(){
 	                rotation: -30
 	            }
 	        },
-	       	//categories: response.time_chart['x-values'],
-	        /*yAxis: {
-	            title: {
-	                text: 'Enrollee Count'
-	            },
-	            plotLines: [{
-	                value: 0,
-	                width: 1,
-	                color: '#808080'
-	            }]
-	        },
-	        tooltip: {
-	            valueSuffix: '°C'
-	        },
-	        legend: {
-	            layout: 'vertical',
-	            align: 'right',
-	            verticalAlign: 'middle',
-	            borderWidth: 0
-	        },*/
 	        series: series
-	        /*[
-	        	{
-		            name: 'Enrollees',
-		            data: response.time_chart['y-values-0'],
-		            pointInterval: 1 * 24 * 36e5,
-		            //pointStart: Date.UTC(2013,0,7)
-		            pointStart: Date.UTC(
-		            	response.time_chart['x-origin-year'],
-		            	response.time_chart['x-origin-month'] -1,
-		            	response.time_chart['x-origin-day']
-		            )
-		    	},{
-		    		name: 'Passed Module ' + 1,
-		            data: response.time_chart['y-values-1'],
-		            pointInterval: 1 * 24 * 36e5,
-		            //pointStart: Date.UTC(2013,0,7)
-		            pointStart: Date.UTC(
-		            	response.time_chart['x-origin-year'],
-		            	response.time_chart['x-origin-month'] -1,
-		            	response.time_chart['x-origin-day']
-		            )	
-		    	}
-		    ]*/
 	    });
 
 
@@ -267,7 +228,80 @@ $(document).ready(function(){
 		$(document).find("text:contains('to be removed')").parent().parent().remove()
 	}
 
-	function getCourseData(coursepk){
+	function showRatingChart(response, course_name){
+		ratings_array = response.rating_chart
+
+		// Make monochrome colors and set them as default for all pies
+	    Highcharts.getOptions().plotOptions.pie.colors = (function () {
+	        var colors = [],
+	            base = Highcharts.getOptions().colors[0],
+	            i;
+
+	        for (i = 0; i < 10; i += 1) {
+	            // Start out with a darkened base color (negative brighten), and end
+	            // up with a much brighter color
+	            colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+	        }
+	        return colors;
+	    }());
+
+		$('#ratingChart').highcharts({
+	        chart: {
+	            plotBackgroundColor: null,
+	            plotBorderWidth: null,
+	            plotShadow: false,
+	            type: 'pie'
+	        },
+	        title: {
+	            text: 'Rating (0-5 stars) by % of Votes'
+	        },
+	        tooltip: {
+	            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	        },
+	        plotOptions: {
+	            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                dataLabels: {
+	                    enabled: true,
+	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                    style: {
+	                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+	                    }
+	                }
+	            }
+	        },
+	        series: [{
+	            name: course_name,
+	            colorByPoint: true,
+	            data: [{
+	                name: '0 stars',
+	                y: 101
+	            }, {
+	                name: '1 star',
+	                y: 101,
+	            }, {
+	                name: '2 stars',
+	                y: 101
+	            }, {
+	                name: '3 stars',
+	                y: 101
+	            }, {
+	                name: '4 stars',
+	                y: 101
+	            }, {
+	                name: '5 stars',
+	                y: 101,
+	                sliced: true,
+	                selected: true
+	            }]
+	        }]
+	    });
+
+		$(document).find("text:contains('Highcharts')").remove()
+	}
+
+	function getCourseData(coursepk, course_name){
 	    resetData();
 		$.ajax({
 	        type: 'POST',
@@ -280,13 +314,14 @@ $(document).ready(function(){
 	        	showAverageChart(response);
 	        	showTimeChart(response);
 				showSummaryData(response);
+				showRatingChart(response, course_name);
 			    showDetailedData(response);
 			}
 		});
 	}
 
 	$("#courseSelect").change(function(){
-		getCourseData($(this).val());
+		getCourseData($(this).val(),$("option:selected").text());
 	});
 
 	$("#tableBtn").click(function(){

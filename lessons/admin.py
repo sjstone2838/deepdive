@@ -24,6 +24,7 @@ class ModuleInline(admin.TabularInline):
 
 class ModuleAdmin(admin.ModelAdmin):
 	list_display = ('name','course','id','index','passing_score')
+	list_filter =['course']
 	inlines = [ModuleInline]
 
 class QuestionInline(admin.TabularInline):

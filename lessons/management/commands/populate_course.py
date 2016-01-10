@@ -25,15 +25,15 @@ class Command(BaseCommand):
 			else:
 				user_count_array.append(user_count - ((module_count-1) * module_count_low))
 
-		print user_count_array
-
 		user_index = 1
 		user = {}
 		userProfile = {}
 
 		for i in range(0,module_count):
+			# create users, CourseStatus, Completions, and Ratings for users advancing only to module i 
 			for j in range(0, user_count_array[i]):
 				#if test user does not already exist, create
+				userProfile = ""
 				if User.objects.filter(last_name = "Smith " + str(user_index)).count() == 0:
 					user = User.objects.create(
 						first_name = "John",
@@ -48,6 +48,13 @@ class Command(BaseCommand):
 				else:
 					user = User.objects.get(last_name = "Smith " + str(user_index))
 					userProfile = UserProfile.objects.get(user = user)
+
+				if i == (module_count - 1):
+					CourseRating.objects.create(
+						user = userProfile,
+						course = course,
+						rating = randint(0,5)
+					)
 
 				userProfile.courses_enrolled.add(course)
 
@@ -71,7 +78,6 @@ class Command(BaseCommand):
 						date = datetime.datetime.now() - timedelta(days = completion_time_per_module) * (i - k)
 					)
 				
-				#print "Group: "+str(i+1)+" User: " + str(j + 1) + " User Index: " + str(user_index)
 				user_index += 1
 
 	def handle(self, *args, **options):
