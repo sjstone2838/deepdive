@@ -32,7 +32,6 @@ def index(request):
 	courses_enrolled = user_profile.courses_enrolled.all()
 	courses_managed = user_profile.courses_managed.all()
 
-
 	for course in courses_enrolled:
 		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
 		course.instructor = instructor.first_name + " " + instructor.last_name
@@ -60,16 +59,13 @@ def index(request):
 		'mycourses': courses_enrolled
 	})
 
-
+#render course search page "my_courses.html"
 @login_required(login_url = '/lessons/login/')
 def my_courses(request):
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
 	mycourses = user_profile.courses_enrolled.all()
-	othercourses = []
-	for course in Course.objects.all():
-		if mycourses.filter(name=course.name).count() == 0:
-			othercourses.append(course)
+	othercourses = Course.objects.exclude (id__in = mycourses.values_list('id', flat=True)).filter(privacy = "Public")
 
 	for course in othercourses:
 		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
@@ -87,19 +83,12 @@ def my_courses(request):
 		modules = Module.objects.filter(course=course).count()
 		course.modules = modules
 		course.date_created = course.date_created.strftime('%b %d, %Y')
-		"""
-		points = CourseStatus.objects.get(user = user_profile, course = course).points
-		if points == modules:
-			course.status = "Completed"
-		else: 
-			course.status = "On module " + str(points+1) + " of " + str(modules)"""
 
 	return render(request, 'lessons/my_courses.html', {
 		'user':user, 
 		'userProfile':user_profile,
 		'othercourses': othercourses
 	})
-
 
 def increment_logins(request):
 	user = request.user
@@ -317,13 +306,6 @@ def profile(request):
 	completions = Completion.objects.filter (user = user_profile)
 	return render_to_response('lessons/profile.html', {'user':user, 'user_profile': user_profile, 'completions':completions})
 
-# NOT FOR DEPLOYMENT
-#link to demo page with jQuery elements
-@login_required(login_url = '/lessons/login/')
-def demo(request):
-	user = request.user
-	return render_to_response('lessons/demo.html', {'user':user})
-
 #displays test results
 @login_required(login_url = '/lessons/login/')	
 def test_result(request,course_pk,module_index):
@@ -335,7 +317,6 @@ def test_result(request,course_pk,module_index):
 	passed = ""
 	correct_count = 0
 	next_module ={}
-
 
 	course = Course.objects.get(pk=course_pk)
 	module = Module.objects.get(course = course, index = module_index)
@@ -366,9 +347,7 @@ def test_result(request,course_pk,module_index):
 		score = int((correct_count / len(questions)) * 100)
 		content += ("</table><h3> You answered " + str(correct_count) + " out of " + str(len(questions)) + " questions correctly (" +  str(score) + "%) </h3>")
 
-		MINIMUM_SCORE = 50
-
-		if score >= MINIMUM_SCORE:
+		if score >= module.passing_score:
 			passed = "yes"
 			user_profile = get_object_or_404(UserProfile, user_id = user.id)
 			courseStatus = CourseStatus.objects.get(user = user_profile, course = course)
@@ -387,7 +366,6 @@ def test_result(request,course_pk,module_index):
 				courseStatus.save()
 				message_type = "results"
 				
-
 			#check if completion object already exists for this course; if not create one
 			if not Completion.objects.filter(user = user_profile, name = module):
 				completion = Completion(user = user_profile, name = module, score = score, date = datetime.datetime.now())
@@ -426,6 +404,7 @@ def create_module(request):
 	if request.method == 'POST':
 		post = request.POST 
 		name = post['module[module_name]']
+		passing_score = post['module[module_passing_score]']
 		hints = post['module[module_hints]']
 		course = post['module[module_course]']
 		course = Course.objects.get(name=course)
@@ -441,6 +420,7 @@ def create_module(request):
 			module = Module.objects.create(
 				name=name, 
 				hints = hints,
+				passing_score = passing_score,
 				course = course,
 				index = index)
 			module.save
@@ -547,6 +527,7 @@ def create_course(request):
 			course = Course.objects.create(
 				name=name, 
 				genre = genre, 
+				privacy = "Development", 
 				description = description,
 				date_created = datetime.datetime.now()
 			)
@@ -555,11 +536,15 @@ def create_course(request):
 			user_profile.courses_managed.add(course)
 			user_profile.save()
 
-			"""
+			# enroll creator in course with access to all modules
 			courseStatus = CourseStatus.objects.create(
 				user = user_profile,
-				course = course)
-			"""
+				course = course,
+				points = Module.objects.filter(course=course).count(),
+				date_enrolled = datetime.datetime.now(),
+				date_dropped = None
+			)
+			user_profile.courses_enrolled.add(course)
 
 			jsonResponseMessage = "Success! You have created new course: <a class='btn btn-info' href='/lessons/course/" +str(course.pk)  +"/'>" + course.name + "</a>"
 			return JsonResponse({'jsonResponseMessage': jsonResponseMessage})
@@ -596,8 +581,13 @@ def manage_enrollment(request):
 					course = course,
 					user = user_profile,
 					points = 0,
-					date_enrolled = datetime.datetime.now()
+					date_enrolled = datetime.datetime.now(),
+					date_dropped = None
 				)
+			else: 
+				c = CourseStatus.objects.get(course = course, user = user_profile)
+				c.date_dropped = None
+				c.save()
 
 		success = "success"
 		return JsonResponse({'success': success})
@@ -682,6 +672,7 @@ def edit_data(request):
 			courseobj = {}
 			courseobj['name'] = course.name
 			courseobj['genre'] = course.genre
+			courseobj['privacy'] = course.privacy
 			courseobj['description'] = course.description
 			success = ""
 
@@ -691,6 +682,7 @@ def edit_data(request):
 				for module in module_set:
 					temp = {}
 					temp['name'] = module.name
+					temp['passing_score'] = module.passing_score
 					modules.append(temp)
 				return JsonResponse({'courseobj': courseobj, 'modules': modules})
 
@@ -701,6 +693,7 @@ def edit_data(request):
 				
 				module = {}
 				module['name'] = moduleobj.name
+				module['passing_score'] = moduleobj.passing_score
 				module['index'] = moduleobj.index
 				module['hints'] = moduleobj.hints
 
@@ -755,15 +748,21 @@ def edit_data(request):
 				if obj.__class__.__name__ == "Course":
 					obj.name = post['course[name]']
 					obj.genre = post['course[genre]']
+					obj.privacy = post['course[privacy]']
 					obj.description = post['course[description]']
 					obj.save()
 					success = "Course saved"
 
 				elif obj.__class__.__name__ == "Module":
-					obj.name = post['module[name]']
-					obj.hints = post['module[hints]']
-					obj.save()
-					success = "Module saved"
+					passing_score = post['module[passing_score]']
+					if isinstance(passing_score,int) and passing_score > 0 and passing_score < 101:
+						obj.name = post['module[name]']
+						obj.passing_score = post['module[passing_score]']
+						obj.hints = post['module[hints]']
+						obj.save()
+						success = "Module saved"
+					else: 
+						success = "Minimum passing score must be an integer 1-100"
 
 				elif obj.__class__.__name__ == "ModuleElement":
 					obj.name = post['moduleElement[name]']
@@ -894,12 +893,20 @@ def edit_data(request):
 					
 				return JsonResponse({'success': success})	
 
-# manage course editing
+# display analysis page
 @login_required(login_url = '/lessons/login/')
 def analyze(request):
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
-	courses = user_profile.courses_managed.all()
+	own_courses = user_profile.courses_managed.all()
+
+	courses = []
+	for course in own_courses:
+		courses.append(course)
+
+	DEMO_ID = 1
+	if own_courses.filter(id = DEMO_ID).count() != 1:
+		courses.append(Course.objects.get(id = 1))
 
 	if request.method == 'GET':
 		return render(request, 'lessons/analyze.html', {
@@ -1012,33 +1019,8 @@ def analyze(request):
 			'time_chart': time_chart,
 			'rating_chart': rating_chart,
 		})
-			
 
-""" 
-TO BE DELETED
-def list(request):
-	# Handle file upload
-	if request.method == 'POST':
-		form = DocumentForm(request.POST, request.FILES)
-		if form.is_valid():
-			newdoc = Document(docfile=request.FILES['docfile'])
-			newdoc.save()		
-			# Redirect to the document list after POST
-			return HttpResponseRedirect(reverse('lessons.views.list'))
-		else:
-			form = DocumentForm()  # A empty, unbound form
-
-	# Load documents for the list page
-	documents = Document.objects.all()
-
-	# Render list page with the documents and the form
-	return render_to_response(
-		'lessons/list.html',
-		{'documents': documents, 'form': form},
-		context_instance=RequestContext(request)
-	)
-"""
-
+# allow user to add files to be saved on S3
 @login_required(login_url = '/lessons/login/')
 def add_media(request):
 	user = request.user
@@ -1114,5 +1096,3 @@ def course_rate(request):
 	return JsonResponse({
 			'response': "response"
 		})
-
-

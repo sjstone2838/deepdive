@@ -23,7 +23,6 @@
 		/*{ name: 'about', items: [ 'About' ] }*/
 		];
 	</script>
-
 	<datalist id="element_type">
 	  <option value="Content">
 	  <option value="Quiz">
@@ -72,16 +71,18 @@
 		<div class = "moduleFormDetails btn btn-info"> Expand </div>
 		<div class = "moduleForm">
 			<!--<div class = 'btn-row' style = "width: 200px;"> Module Name </div>-->
-			<input class = 'input moduleName btn-row' style = "width: 500px;" type='text' id = 'moduleName' name = 'module_name' placeholder = 'Module Name'>
-			<p class = "verificationText red-text" id="moduleNameError"></p>
+			<input class = 'input moduleName btn-row' style = "width: 34%;" type='text' id = 'moduleName' name = 'module_name' placeholder = 'Module Name'>
 			<!--<div class = 'btn-row' style = "width: 200px;"> Course </div>-->
-			<select class = 'input btn-row' style = "width: 500px;" type='text' id = 'moduleCourse' name = 'module_course' placeholder = 'Course'>
+			<select class = 'input btn-row' style = "width: 34%;" type='text' id = 'moduleCourse' name = 'module_course' placeholder = 'Course'>
 			   	<option value="" disabled selected>Select course</option>
 			   	{% for course in courses %}
 			   	<option value="{{course.name}}">{{course.name}}</option>
 			    {% endfor %}
 		  	</select>
+	        <input class = 'input modulePassingScore btn-row' style = "width: 29%;" type='text' id = 'modulePassingScore' name = 'module_passing_score' placeholder = 'Minimum Passing Score (1-100)'>
+			<p class = "verificationText red-text" id="moduleNameError"></p>
 			<p class = "verificationText red-text" id="moduleCourseError"></p>
+			<p class = "verificationText red-text" id="modulePassingScoreError"></p>
 			<!--<div class = 'btn-row' style = "width: 200px;"> Hints </div>-->
 			<textarea class = 'input moduleHints btn-row' name = 'module_hints' id = "module_hints"> Fill in Module Hints (or delete to leave blank) </textarea>
 			<script>

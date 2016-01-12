@@ -148,16 +148,12 @@ var answerChoiceArray = [];
     	for (i = 0; i < moduleElementCount; i++) {
     		module['module_element_text.'+ (i+1)] = CKEDITOR.instances['module_element_text.'+ (i+1)].getData();
     	}
-
-    	if ($('[name="module_name"]').val() == ""){
+    	var passing_score = $('[name="module_passing_score"]').val();
+    	if ($('[name="module_name"]').val() == "") {
             $('#moduleNameError').html("<p>You must fill in a module name</p>");
-    	}
-
-    	/*else if ($('[name="module_element_text.1"]').val() == undefined | $('[name="module_element_text.1"]').val() == ""){
-    		$('#moduleNameError').html("<p>You must create at least one module element</p>");
-    	}*/
-
-	    else{
+    	} else if (Math.floor(passing_score) != passing_score || passing_score == "" || passing_score > 101 || passing_score < 1){
+            $('#modulePassingScoreError').html("<p> Minimum passing score must be an integer 1-100 </p>");
+    	} else {
 		    $.ajax({
 		        type: 'POST',
 		        url: '/lessons/create_module/',

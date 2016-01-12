@@ -41,14 +41,19 @@
 	</div>
 	<div class = "course editBlock">
 		<div>
-			<select class = 'input roundedInput' type='text' id = 'courseSelect'>
-			   
-		    </select>
+			<select class = 'input roundedInput' type='text' id = 'courseSelect'></select>
 	    </div>
 		<div style="width: 150px; display: inline-block;"> Name: </div> 
 		<input id = "course_name" > <p></p>
 		<div style="width: 150px; display: inline-block;">Genre: </div>
 		<input id = "course_genre"> <p></p>
+		<div style="width: 150px; display: inline-block;"> Public: </div>
+		<div class = 'btn-row'>
+			<select type='text' id = 'course_privacy'>
+				<option value="Public"> Yes </option>
+				<option value="Development"> No  </option>
+			</select>
+	    </div>
 		<div>
 			<div style="width: 150px; display: inline-block; vertical-align: top;">Description: </div>
 			<div style="display: inline-block;">
@@ -74,10 +79,12 @@
 		<div class = "add btn btn-info btn-row" id = "module-New"> Add new module </div><p></p>
 		<div style="width: 90px; display: inline-block;"> Index: </div> 
 		<div class = "btn-row" id = "module_index"> </div><br>
-		<div style="width: 90px; display: inline-block;"> Name: </div> 
-		<input id = "module_name"> <p></p>
+		<div style="width: 90x; display: inline-block;"> Name: </div> 
+		<input style="width: 320px;" id = "module_name"> <p></p>
+		<div style="width: 320px; display: inline-block;"> Minimum Passing Score (1-100): </div> 
+		<input style="width: 60px;" id = "module_passing_score"> <p></p>
 		<div>
-			<div style="width: 90px; display: inline-block; vertical-align: top;">Hints: </div>
+			<!--<div style="width: 90px; display: inline-block; vertical-align: top;">Hints: </div>-->
 			<div style="display: inline-block;">
 				<textarea style="display: inline-block;" id="module_hints"></textarea>
 		        <script>

@@ -57,6 +57,7 @@ var questionIndex = "";
             	$('#moduleSelect').prop('disabled', false).css("background-color","white").html(dropdowns);
             	$('#course_name').val(response.courseobj['name']);
             	$('#course_genre').val(response.courseobj['genre']);
+            	$('#course_privacy').val(response.courseobj['privacy']);
             	CKEDITOR.instances['course_description'].setData(response.courseobj['description']);
 			}
 		});
@@ -91,6 +92,7 @@ var questionIndex = "";
 
             	$('#moduleElementSelect').prop('disabled', false).css("background-color","white").html(dropdowns);
             	$('#module_name').val(response.module['name']);
+            	$('#module_passing_score').val(response.module['passing_score']);
             	$('#module_index').html(moduleIndex);
             	CKEDITOR.instances['module_hints'].setData(response.module['hints']);
         		$('select[id="moduleSelect"]').find('option[value=' + moduleIndex+ ']').attr("selected",true);
@@ -288,10 +290,12 @@ var questionIndex = "";
 		if (object_type == "course"){
 			course['name'] = $('#course_name').val();
 			course['genre'] = $('#course_genre').val();
+			course['privacy'] = $('#course_privacy').val();
 			course['description'] = CKEDITOR.instances['course_description'].getData();
 		}
 		else if (object_type == "module"){
 			module['name'] = $('#module_name').val();
+			module['passing_score'] = $('#module_passing_score').val();
 			module['hints'] = CKEDITOR.instances['module_hints'].getData();
 		}
 		else if (object_type == "moduleElement"){
