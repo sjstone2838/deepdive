@@ -755,13 +755,15 @@ def edit_data(request):
 
 				elif obj.__class__.__name__ == "Module":
 					passing_score = post['module[passing_score]']
-					if isinstance(passing_score,int) and passing_score > 0 and passing_score < 101:
-						obj.name = post['module[name]']
-						obj.passing_score = post['module[passing_score]']
-						obj.hints = post['module[hints]']
-						obj.save()
-						success = "Module saved"
-					else: 
+					try: 
+						int(passing_score)
+						if int(passing_score) > 0 and int(passing_score) < 101:
+							obj.name = post['module[name]']
+							obj.passing_score = post['module[passing_score]']
+							obj.hints = post['module[hints]']
+							obj.save()
+							success = "Module saved"
+					except: 
 						success = "Minimum passing score must be an integer 1-100"
 
 				elif obj.__class__.__name__ == "ModuleElement":

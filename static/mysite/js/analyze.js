@@ -229,7 +229,7 @@ $(document).ready(function(){
 	}
 
 	function showRatingChart(response, course_name){
-		ratings_array = response.rating_chart
+		ratings_array = response.rating_chart;
 
 		// Make monochrome colors and set them as default for all pies
 	    Highcharts.getOptions().plotOptions.pie.colors = (function () {
@@ -276,22 +276,22 @@ $(document).ready(function(){
 	            colorByPoint: true,
 	            data: [{
 	                name: '0 stars',
-	                y: 101
+	                y: ratings_array[0]
 	            }, {
 	                name: '1 star',
-	                y: 101,
+	                y: ratings_array[1],
 	            }, {
 	                name: '2 stars',
-	                y: 101
+	                y: ratings_array[2]
 	            }, {
 	                name: '3 stars',
-	                y: 101
+	                y: ratings_array[3]
 	            }, {
 	                name: '4 stars',
-	                y: 101
+	                y: ratings_array[4]
 	            }, {
 	                name: '5 stars',
-	                y: 101,
+	                y: ratings_array[5],
 	                sliced: true,
 	                selected: true
 	            }]

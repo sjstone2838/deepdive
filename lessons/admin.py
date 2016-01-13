@@ -65,7 +65,7 @@ class CourseStatusAdmin(admin.ModelAdmin):
 
 class CourseRatingAdmin(admin.ModelAdmin):
 	list_display = ('id','user','course','rating')
-	list_filter = ['user','course']
+	list_filter = ['course','user',]
 
 class UserAdmin(admin.ModelAdmin):
 	#model = UserProfile
