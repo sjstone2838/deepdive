@@ -19,18 +19,19 @@ import datetime
 from datetime import timedelta, date
 from django.utils import timezone
 import json
+import re
 
 from lessons.models import *
 from django.db.models import Count
 from .forms import *
-from chartit import DataPool, PivotDataPool, Chart, PivotChart
+#from chartit import DataPool, PivotDataPool, Chart, PivotChart
 
 @login_required(login_url = '/lessons/login/')
 def index(request):
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
-	courses_enrolled = user_profile.courses_enrolled.all()
-	courses_managed = user_profile.courses_managed.all()
+	courses_enrolled = user_profile.courses_enrolled.all().order_by('name')
+	#courses_managed = user_profile.courses_managed.all()
 
 	for course in courses_enrolled:
 		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
@@ -59,15 +60,8 @@ def index(request):
 		'mycourses': courses_enrolled
 	})
 
-#render course search page "my_courses.html"
-@login_required(login_url = '/lessons/login/')
-def my_courses(request):
-	user = request.user
-	user_profile = get_object_or_404(UserProfile, user_id = user.id)
-	mycourses = user_profile.courses_enrolled.all()
-	othercourses = Course.objects.exclude (id__in = mycourses.values_list('id', flat=True)).filter(privacy = "Public")
-
-	for course in othercourses:
+def appendCourseData(courses,user_profile):
+	for course in courses:
 		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
 		course.instructor = instructor.first_name + " " + instructor.last_name
 		ratings = CourseRating.objects.filter(course = course)
@@ -84,10 +78,61 @@ def my_courses(request):
 		course.modules = modules
 		course.date_created = course.date_created.strftime('%b %d, %Y')
 
+		enrolledcourses = user_profile.courses_enrolled.all()
+		if course in enrolledcourses:
+			course.status = "Currently enrolled"
+		else: 
+			course.status = "Not enrolled"
+
+#render course search page "my_courses.html"
+@login_required(login_url = '/lessons/login/')
+def my_courses(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	#mycourses = user_profile.courses_enrolled.all()
+	#othercourses = Course.objects.exclude (id__in = mycourses.values_list('id', flat=True)).filter(privacy = "Public")
+	courses = Course.objects.filter(privacy = "Public").order_by('name')
+	appendCourseData(courses,user_profile)
+	search = "Showing all courses"
 	return render(request, 'lessons/my_courses.html', {
 		'user':user, 
 		'userProfile':user_profile,
-		'othercourses': othercourses
+		'courses': courses,
+		'search': search
+	})
+
+# search for courses by title, description, genre
+@login_required(login_url = '/lessons/login/')
+def search(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	search = request.POST['search_input'].upper()
+	courses = Course.objects.filter(privacy = "Public")
+	selected_courses = []
+
+	# Super simple search algorithm for course.name, genre, description
+	# Only searches for literal strings, no "+" functionality
+	for course in courses:
+		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
+		course.instructor = instructor.first_name + " " + instructor.last_name
+		if re.search(search, course.name.upper()) is not None:
+			selected_courses.append(course)
+		else: 
+			if re.search(search, course.genre.upper()) is not None:
+				selected_courses.append(course)
+			else:
+				if re.search(search, course.description.upper()) is not None:
+					selected_courses.append(course)
+				else:
+					if re.search(search, course.instructor.upper()) is not None:
+						selected_courses.append(course)
+	
+	appendCourseData(selected_courses, user_profile)
+	return render(request, 'lessons/my_courses.html', {
+		'user':user, 
+		'userProfile':user_profile,
+		'courses': selected_courses,
+		'search': request.POST['search_input']
 	})
 
 def increment_logins(request):
@@ -222,6 +267,15 @@ def module(request,course_pk,module_index):
 			'module_index': module_index,
 		})
 
+INVITE_CODES = ["nemo20", "snorkel23","kraken45"]
+#check invite code
+def check_invite_code(request):
+	if request.POST['invite_code'] in INVITE_CODES:
+		status = "verified"
+	else:
+		status = "failed"
+	return JsonResponse({'status': status})	
+
 #creates new user entry in database
 def new_user(request):
 	status = ""
@@ -231,47 +285,50 @@ def new_user(request):
 		method = "GET"
 		return render(request, 'lessons/new_user.html', {'form': form, 'method':method})
 	else:
-		#create new user
-		form = request.POST
-		if len(User.objects.filter(username__iexact=form['username'])) != 0:
-			status = "This username is taken. Please choose another username."
-		elif len(User.objects.filter(email__iexact=form['email'])) != 0:
-			status = "This email is taken. Please user another email."
+		if request.POST['invite_code'] in INVITE_CODES:
+			#create new user
+			form = request.POST
+			if len(User.objects.filter(username__iexact=form['username'])) != 0:
+				status = "This username is taken. Please choose another username."
+			elif len(User.objects.filter(email__iexact=form['email'])) != 0:
+				status = "This email is taken. Please user another email."
+			else:
+				def capitalize(string):
+					first_letter = string[0].upper()
+					rest_of_string = ""
+					for i in range (0,len(string) - 1):
+						rest_of_string += string[i + 1]
+					return first_letter + rest_of_string
+
+				user = User.objects.create_user(
+					username=form['username'],
+					first_name = capitalize(form['first_name']),
+					last_name = capitalize(form['last_name']),
+					email=form['email'],
+					password=form['password']
+				)
+				user_profile = UserProfile(user = user, points = 0)
+				user_profile.save()
+				
+				# Add course #1-2 (demo) to all new users' accounts and matching CourseStatus object
+				"""demo = Course.objects.get(name ="Tennis Greats")
+				demo.save()
+				
+				courseStatus = CourseStatus.objects.create(
+					course = demo,
+					user = user_profile,
+					points = 0)
+				user_profile.courses_enrolled.add(demo)
+				user_profile.save()
+				"""
+
+				#must call authenticate before login, even though we just created the user 
+				user_login = authenticate(username=request.POST['username'], password=request.POST['password'])
+				login(request,user_login)
+				status = "success"
+				message = "Hi " + user.first_name + ", thanks for registering!"
 		else:
-			def capitalize(string):
-				first_letter = string[0].upper()
-				rest_of_string = ""
-				for i in range (0,len(string) - 1):
-					rest_of_string += string[i + 1]
-				return first_letter + rest_of_string
-
-			user = User.objects.create_user(
-				username=form['username'],
-				first_name = capitalize(form['first_name']),
-				last_name = capitalize(form['last_name']),
-				email=form['email'],
-				password=form['password']
-			)
-			user_profile = UserProfile(user = user, points = 0)
-			user_profile.save()
-			
-			# Add course #1-2 (demo) to all new users' accounts and matching CourseStatus object
-			"""demo = Course.objects.get(name ="Tennis Greats")
-			demo.save()
-			
-			courseStatus = CourseStatus.objects.create(
-				course = demo,
-				user = user_profile,
-				points = 0)
-			user_profile.courses_enrolled.add(demo)
-			user_profile.save()
-			"""
-
-			#must call authenticate before login, even though we just created the user 
-			user_login = authenticate(username=request.POST['username'], password=request.POST['password'])
-			login(request,user_login)
-			status = "success"
-			message = "Hi " + user.first_name + ", thanks for registering!"
+			status = "Invalid invite code"
 		return JsonResponse({'status': status, 'message': message})	
 
 #login function; redirects to log-in page and also logs-out user
@@ -1098,3 +1155,8 @@ def course_rate(request):
 	return JsonResponse({
 			'response': "response"
 		})
+
+
+
+
+

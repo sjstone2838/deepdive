@@ -19,14 +19,14 @@
     <div class="header container-fluid">
         <div class="row vertical-align" style="padding: 10px;" >
         <img src ="{% static 'mysite/images/ocean2bar.JPG' %}" style = "position: absolute; top:0px; left: 0px; width: 100%; height: 112px;"> 
-            <div class ="col-md-4">
+            <div class ="col-md-3">
                <div class = "logo">
                     <img src = "{% static 'mysite/images/ColorLogo.PNG' %}" alt="diver logo" style="width: 400px; display: inline-block;">
                 </div>                             
            </div>
                
                 {% if user.username%}
-            <div class ="col-md-4" style="text-align:center;">    
+            <div class ="col-md-6" style="text-align:center;">    
                 <div class="dropdown btn-row" style = "position: relative; z-index: 1;"><a class="btn btn-primary highlight" id = "learnBtn" role="button" href="/lessons/">Learn</a></div>
                 <div class="dropdown btn-row" style = "position: relative; z-index: 1;">
                     <button class="btn btn-primary dropdown-toggle highlight" id = "teachBtn" type="button" data-toggle="dropdown">Teach
@@ -49,8 +49,14 @@
                         <li><a href = "#" id = "designBtn"> Design </a></li>
                     </ul>
                 </div>
+                <script>
+                    function send() {document.search.submit()}
+                </script>
+                <form style = "display: inline-block;" name = "search" action="/lessons/search/" method="post">
+                    <input class = "searchInput" type = "text" name = "search_input" placeholder = "&#128270 Search courses" onUnfocus="send()">
+                </form>
             </div> 
-            <div class ="col-md-4" style="text-align:right;"> 
+            <div class ="col-md-3" style="text-align:right;"> 
                 <a style="color:white;"> <code> {{user.username}} </code></a>
                 <a style="color:white;" class="btn btn-link" href="/lessons/login/" >Logout</a>
             </div>

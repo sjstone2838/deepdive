@@ -1,7 +1,5 @@
 $(document).ready(function(){
 
-	
-
 	$('#overviewBtn').click(function(){
 		$(".about").css("display","none");
 		$('#overview').fadeIn("fast");

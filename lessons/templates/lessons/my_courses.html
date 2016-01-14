@@ -14,8 +14,12 @@
 	</div>
 	<div class = "courseDisplayBlock">
 		<div style = "max-height: 68vh; overflow: auto;">
-		{% if othercourses %}
-			{% for course in othercourses %}
+		<script> function send() {document.search.submit()} </script>
+        <form name = "search" action="/lessons/search/" method="post">
+            <input class = "searchInput" style = "border: 1px grey solid; margin: -5px 0px 15px 0px; width: 300px;" type = "text" name = "search_input" placeholder = "&#128270 {{search}}" onUnfocus="send()">
+        </form>
+		{% if courses %}
+			{% for course in courses %}
 					<div class = "courseTile">
 						<div class = "courseTileHeader">
 							<div style = "padding: 0px 30px 0px 0px; font-size: 24pt;height: 50px; overflow: auto;"> {{course.name}} </div>
@@ -63,7 +67,11 @@
 								</span>
 								<span style = "font-style: italic; margin-left: 5px;"> ({{course.rating}} / 5) </span>
 							{% endif %}
+							{% if course.status = "Not enrolled" %}
 							<span style = "margin-left: 30px; position: relative; z-index: 1;" class = "btn btn-primary addCourse highlight" id = "addCourse.{{course.pk}}"> Enroll </span>
+							{% else %}
+							<div style = "margin-left: 30px; position: relative; z-index: 1; width: 250px; display: inline-block; background-color: lightgreen; border-radius: 5px; padding: 5px; text-align: center;"> You are currently enrolled </div>
+							{% endif %}
 						</div>
 						<div class = "courseTileHalf courseTileLeft">
 							<p style = "height: 10px;"> Genre: <strong>{{course.genre}} </strong></p>
@@ -81,7 +89,7 @@
 					</div>
 			{% endfor %}
 		{% else %}
-			<h4> No more courses available - you've signed up for everything! </h4>
+			<h4> No results. Please try a different search! </h4>
 		{% endif %}
 	    </div>
 	</div>

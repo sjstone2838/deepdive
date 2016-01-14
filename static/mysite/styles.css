@@ -20,7 +20,7 @@ body.background{
 
 #newUserForm{
     position: absolute;
-    top: 100px;
+    top: 275px;
     left: 35%;
     width: 30%;
     background-color: white;
@@ -28,11 +28,13 @@ body.background{
     border-radius: 10px;
     font-size: 16pt;
     display: none;
+    min-height: 200px;
 }
 
 #newUserSuccess{
     position: absolute;
-    top: 330px;
+    min-height: 200px;
+    top: 275px;
     left: 35%;
     width: 30%;
     background-color: white;
@@ -40,6 +42,7 @@ body.background{
     border-radius: 10px;
     font-size: 16pt;
     display: none;
+    text-align: center;
 }
 
 .about{
@@ -415,6 +418,16 @@ table.styledTable{
     border-radius: 5px;
     width: 300px;
     height: 2em;
+}
+
+.searchInput{
+    font-size: 12pt;
+    border-radius: 5px;
+    width: 200px;
+    height: 2em;
+    opacity: 0.8;
+    display: inline-block;
+    padding-left: 15px;
 }
 
 .disabled{

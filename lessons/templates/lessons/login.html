@@ -30,20 +30,31 @@
 	</div>
 
 	<div id = "newUserForm">
-		<input class = "newUserInput" type = "text" id = 'new_first_name' placeholder = "first name" tabindex = "6"><p></p>
-		<input class = "newUserInput" type = "text" id = 'new_last_name' placeholder = "last name" tabindex="7"><p></p>
-		<input class = "newUserInput" type = "text" id = 'new_username' placeholder = "username" tabindex="8"><p></p>
-		<input class = "newUserInput" type = "email" id = 'new_email' placeholder = "email" tabindex="9"><p></p>
-		<input class = "newUserInput" type = "password" id = 'new_password' placeholder = "password" tabindex="10"><p></p> 
-		<input class = "newUserInput" type = "password" id = 'new_confirmation' placeholder = "password" tabindex="11"><p></p> 
-		<div class = "red-text" id = "newUserError"></div> 
-		<button class="btn btn-info" id = "create_account" tabindex = "11"> Create account </button>
+		<div id = "newUserBlock-0" style = "top: 500px;">
+			<p style = "text-align: center;"> DeepDive's alpha version is currently invite-only </p>
+			<p style = "text-align: center;"> Please enter your invite code to proceed </p>
+			<input style = "width: 200px; margin-left: 100px; text-align: center;" class = "newUserInput" type = "text" id = 'invite_code' placeholder = "Invite Code">
+			<button style = "width: 80px;"class="btn btn-info btn-row" id = "check_invite_code"> Next </button>
+			<p id = "codeError" class = "Hide" style = "color: red; font-style: italic; font-size: 14pt;"></p>
+		</div>
+		
+		<div id = "newUserBlock-1" class = "Hide">
+			<input class = "newUserInput" type = "text" id = 'new_first_name' placeholder = "first name" tabindex = "6"><p></p>
+			<input class = "newUserInput" type = "text" id = 'new_last_name' placeholder = "last name" tabindex="7"><p></p>
+			<input class = "newUserInput" type = "text" id = 'new_username' placeholder = "username" tabindex="8"><p></p>
+			<input class = "newUserInput" type = "email" id = 'new_email' placeholder = "email" tabindex="9"><p></p>
+			<input class = "newUserInput" type = "password" id = 'new_password' placeholder = "password" tabindex="10"><p></p> 
+			<input class = "newUserInput" type = "password" id = 'new_confirmation' placeholder = "password" tabindex="11"><p></p> 
+			<div class = "red-text" id = "newUserError"></div> 
+			<button class="btn btn-info" id = "create_account" tabindex = "11"> Create account </button>
+		</div>
 		<div class= "btn closeBox"> X </div>
 	</div>
 
 	<div id = "newUserSuccess">
-		<div class = "btn-row" id = "newUserSuccessMsg"></div>
-		<a class="btn btn-info btn-row" href="/lessons/my_courses/"> Onwards! </a>
+		<div style = "text-align: center;" id = "newUserSuccessMsg"></div>
+		<div style = "border: 1pt dotted grey; text-align: center; background-color: #f1f1f4; margin: 15px 0px 15px 0px;"> <code> Our alpha is not (yet) mobile-friendly - for a good experience, please view DeepDive on a large(ish) screen  </code> </div>
+		<div> <a class="btn btn-info btn-row" href="/lessons/my_courses/"> Onwards! </a></div>
 	</div>
 
 	<div class = "about Hide" id = "about">

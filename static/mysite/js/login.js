@@ -35,6 +35,25 @@ $(document).ready(function(){
 		$('#newUserForm').fadeIn("slow");
 	});
 
+	$('#check_invite_code').click(function(){
+		var invite_code = $("#invite_code").val();
+		$.ajax({
+	        type: 'POST',
+	        url: '/lessons/check_invite_code/',
+	        data: {'invite_code': invite_code},
+	        success: function(response) {
+        		if (response.status == "verified"){
+		        	$("#newUserBlock-0").addClass("Hide");//.toggle("slide", {direction:'left'});
+		        	$("#newUserBlock-1").removeClass("Hide");//delay(300).toggle("slide", {direction:'right'});
+    			}
+    			else {
+    				$("#codeError").text("Invalid code. Please try again").removeClass("Hide");
+    				console.log()
+    			}
+    		}	
+		});
+	});
+
 	$('#aboutBtn').click(function(){
 		$('#about').fadeIn("slow");
 	});
@@ -58,6 +77,7 @@ $(document).ready(function(){
 	});
 
 	$('#create_account').click(function(){
+		invite_code = $("#invite_code").val();
 		first_name = $('#new_first_name').val();
 		last_name = $('#new_last_name').val();
 		username = $('#new_username').val();
@@ -88,6 +108,7 @@ $(document).ready(function(){
 		        type: 'POST',
 		        url: '/lessons/new_user/',
 		        data: {
+		        	'invite_code': invite_code,
 		        	'first_name': first_name,
 		        	'last_name': last_name,
 		        	'email': email,
