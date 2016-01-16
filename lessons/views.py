@@ -152,7 +152,7 @@ def course(request,course_pk):
 		course = Course.objects.get(pk=course_pk)
 		if CourseLogo.objects.filter(course = course).count() == 1:
 			course.logo = CourseLogo.objects.get(course = course).docfile.url
-		modules = Module.objects.filter(course=course)
+		modules = Module.objects.filter(course=course).order_by("index")
 		points = CourseStatus.objects.get(course=course,user=user_profile).points
 
 		#Divide lessons into completed, current, and future 
