@@ -2,28 +2,31 @@
 
 {% block content %}
 
-	<div class="wideBlock">
+	<div class="wideBlock" style = "max-height: 89vh; margin-top: 5px; overflow: auto;">
 		<h1> {{course.name}} </h1>
 		<h2 style = "color: grey; font-weight; italic; margin-top: -10px;"> {{course.genre}} </h2>
-		<img src = "{{course.logo}}" alt="courselogo" style="padding-left: 5px; height: 200px; display: inline-block;">
-		<h3> {{course.description | safe | escape }} </h3>
+		<img src = "{{course.logo}}" alt="courselogo" style="padding-left: 5px; padding-right: 10px; width: 35%;">
+		<div style = "width: 63%; display: inline-block; vertical-align: top;"> 
+			{{course.description | safe | escape }} 
+		</div>
+		<hr style = "border: 1px grey solid">
 		<div class = "row">
 		    <div class ="col-xs-4 col-centered">
-				<h4 style="margin:15x;"> Completed lessons </h4>
+				<div style="margin:15x;"> Completed modules </div>
 					{% for module in completed_modules %}
-						<p><a class= "btn btn-info " style = "width:250px; text-align:left;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
+						<p><a class= "btn btn-info " style = "white-space: normal !important; width:300px; text-align:left;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
 					{% endfor %}
 			</div>
 			<div class ="col-xs-4 col-centered">
-				<h4 style="margin:15x;"> My current lesson </h4>
+				<div style="margin:15x;"> My current module </div>
 					{% for module in current_module %}
-						<p><a class= "btn btn-info" style = "width:250px; text-align:left;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
+						<p><a class= "btn btn-info" style = "white-space: normal !important; width:300px; text-align:left;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
 					{% endfor %}
 			</div>
 			<div class ="col-xs-4 col-centered">
-				<h4 style="margin:15x;"> Future lessons </h4>
+				<div style="margin:15x;"> Future modules </div>
 					{% for module in future_modules %}
-						<p><a class= "btn btn-info disabled" style = "width:250px; text-align:left;" >{{module.index}}. {{ module.name }}</a></p>
+						<p><a class= "btn btn-info disabled" style = "white-space: normal !important; width:300px; text-align:left;" >{{module.index}}. {{ module.name }}</a></p>
 					{% endfor %}
 			</div>
 		</div>

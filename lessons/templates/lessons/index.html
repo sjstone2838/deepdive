@@ -14,13 +14,13 @@
 	</div>
 	<div class = "courseDisplayBlock">
 	{% if mycourses %}
-		<div style = "max-height: 70vh; max-width: 100%; overflow: auto;">
+		<div style = "max-height: 75vh; max-width: 100%; overflow: auto;">
 		{% for course in mycourses %}
 			
 			<div class = "courseTile">
 				<a style = "color: black; text-align: left; text-decoration:none;" href='/lessons/course/{{course.pk}}' >
 					<div class = "courseTileHeader">
-						<div style = "padding: 0px 30px 0px 0px; font-size: 24pt;height: 50px; overflow: auto;"> {{course.name}} </div>
+						<div class = "truncate" style = "padding: 0px 30px 0px 0px; font-size: 24pt;height: 50px;"> {{course.name}} </div>
 						<div style = "height: 40px;">
 						{% if course.rating == "Not yet rated" %}
 							<span style = "font-style: italic;"> {{course.rating}} </span>
@@ -69,11 +69,9 @@
 						</div>
 					</div>
 					<div class = "courseTileHalf courseTileLeft">
-						<p class = "courseTileRow"> Genre: <strong>{{course.genre}} </strong></p>
-						<div style="padding: 10px 0px 10px 0px;">
-							<img src='{{course.logo}}' style = "height: 150px; width: 230px; overflow: none;">
-						</div>
-						<p class = "courseTileRow"> Instructor: <strong>{{course.instructor | safe }} </strong></p>
+						<img src='{{course.logo}}' style = "height: 150px; width: 230px; overflow: none;">
+						<p class = "courseTileRow truncate"> Genre: <strong>{{course.genre}} </strong></p>
+						<p class = "courseTileRow truncate"> Instructor: <strong>{{course.instructor | safe }} </strong></p>
 						<p class = "courseTileRow"> Published: <strong>{{course.date_created}} </strong></p>
 						<p class = "courseTileRow"> Students: <strong>{{course.enrolled}} </strong></p>
 						<!--<p class = "courseTileRow"> Modules: <strong>{{course.modules}} </strong></p>-->

@@ -5,11 +5,15 @@
 <script type="text/javascript"> var answerKey = {{answer_key|safe}}; </script>
 
 <div style = "margin-left: 40%; margin-top: 5px; width: 20%;">
-		<a class ='btn btn-default' style = "width: 100%; display: block; white-space: nowrap; text-overflow: ellipsis;  overflow: hidden;" href = "/lessons/course/{{course.pk}}/">Course Overview: {{course.name}} </a>
+		<a class ='btn btn-default' style = "width: 100%; display: block; white-space: nowrap; text-overflow: ellipsis;  overflow: hidden;" href = "/lessons/course/{{course.pk}}/">Course Home: {{course.name}} </a>
 </div>
 	
 <div class = "statusBar">
-	<div class = "statusText"> Module {{module.index}} | {{module.name}} | <span id = "percentProgress"></span></div>
+	<div class = "statusText" style = "height: 30px;"> 
+		<span class = "truncate" style = "display: inline-block; max-width: 400px; "> Module {{module.index}} | </span>
+		<span class = "truncate" style = "display: inline-block; max-width: 400px; "> {{module.name}} </span>
+		<span class = "truncate" style = "display: inline-block; max-width: 400px; "> | </span>
+		<span id = "percentProgress" class = "truncate" style = "display: inline-block; max-width: 400px;"></span></div>
 </div>
 <div class = "lessonControl text-center">
 	<div class = "lessonButton Back btn btn-default">Back</div>
@@ -17,12 +21,14 @@
 </div>
 	{{ content|safe|escape }}
 
+{% if hints != "" %}
 <div class = "lessonHintsHeader btn">
 	<div class = ""> Lesson Hints </div>
 </div>
 <div class = "lessonHintsContent Hide">
 	{{hints|safe|escape}}
 </div>
+{% endif %}
 
 <div style="display:none" id="lesson_id"> {{lesson_id}} </div>
 

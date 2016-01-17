@@ -18,11 +18,9 @@
 <body>
     <div class="header container-fluid">
         <div class="row vertical-align" style="padding: 10px;" >
-        <img src ="{% static 'mysite/images/ocean2bar.JPG' %}" style = "position: absolute; top:0px; left: 0px; width: 100%; height: 112px;"> 
+        <img src ="{% static 'mysite/images/ocean2bar.JPG' %}" style = "position: absolute; top:0px; left: 0px; width: 100%; height: 65px;"> 
             <div class ="col-md-3">
-               <div class = "logo">
-                    <img src = "{% static 'mysite/images/ColorLogo.PNG' %}" alt="diver logo" style="width: 400px; display: inline-block;">
-                </div>                             
+                <img src = "{% static 'mysite/images/ColorLogoSmall.PNG' %}" alt="diver logo" style="width: 270px; display: inline-block; margin-top: -5px;">
            </div>
                
                 {% if user.username%}
@@ -40,8 +38,8 @@
                     </ul>
                 </div>
                 <div class="dropdown btn-row" style = "position: relative; z-index: 1;"><a class="btn btn-primary highlight" id = "analyzeBtn" role="button" href="/lessons/analyze"> Analyze </a></div>
-                <div class="dropdown btn-row"><a class="btn btn-default" role="button"href="/lessons/profile/">Profile</a></div>
-                <div class="dropdown btn-row">
+                <div class="dropdown btn-row" style =""><a class="btn btn-default" role="button"href="/lessons/profile/">Profile</a></div>
+                <div class="dropdown btn-row" style ="">
                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">About
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu">

@@ -96,14 +96,6 @@ body.background{
 
 }
 
-.logo {
-    font-size: 36pt; 
-    font-style: none; 
-    vertical-align: center;
-    font-family: impact; 
-    font-weight: none;
-}
-
 .vertical-align {
     display: flex;
     align-items: center;
@@ -146,10 +138,12 @@ body.background{
     right: -50%;
     width: 50%;
     display:none;
-    padding: 30px;
+    padding: 15px;
     font-size: 14pt;
     border-radius: 10px;
     background-color: #f1f1f4;
+    max-height: 75vh;
+    overflow: auto;
 }
 
 .testResult{
@@ -170,23 +164,22 @@ body.background{
     margin: auto;
     background-color: #f1f1f4;
     margin-top: 10px;
-    height: 50px; 
+    height: 30px; 
     font-size: 0px;
     border-radius: 10px;
 }
 
 .statusText{
     width: 1000px; 
-    height: 50px;
+    height: 30px;
     text-align: center;
     vertical-align: center;
     position: absolute;
     left: 50%;
     margin-left: -500px;
-    margin-top: 10px;
+    margin-top: 5px;
     color: black;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 14px;
     /*font-style: italic;*/
 }
 
@@ -452,7 +445,7 @@ table.styledTable{
     box-sizing: border-box; 
     margin-left: 10%;
     width: 80%;
-    margin-top: 30px;
+    margin-top: 15px;
     margin-bottom: 0px;
     padding: 0px;
 }
@@ -543,7 +536,7 @@ input{
 }
 
 .courseTileRow{
-    height: 12px;
+    margin-bottom: 0px;
 }
 
 .courseTileLeft{
@@ -641,7 +634,7 @@ input{
     box-sizing: border-box; 
     margin-left: 5%;
     width: 80%;
-    margin-top: 30px;
+    margin-top: 15px;
     margin-bottom: 0px;
     padding: 0px;
 }
@@ -703,4 +696,10 @@ input{
     border-radius: 10px;
     background-color: #f1f1f4;
     text-align: center;
+}
+
+.truncate{
+    white-space: nowrap;  
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
