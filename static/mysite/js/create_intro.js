@@ -1,24 +1,25 @@
 $(document).ready(function(){
-	/* increment login count to 1 in views.py, so that welcome does not reappear on refresh
-	$.ajax({
-        type: 'POST',
-        url: '/lessons/increment_logins/',
-	});
-	*/
-
-	var welcomeIndex = 0;
-
 	function showOrientation(){
 		$(".welcomeBackground").css("z-index","2").fadeIn(2000);
 		$(".welcomeBlock").css("z-index","2").fadeIn(2000);
-		console.log("line1");
+		$("#welcomeCloseBox").fadeIn(2000);
 	}
 
-	showOrientation();
+	//increment createvisits count to 1 in views.py, so that orientation does not reappear on refresh
+	$.ajax({
+        type: 'POST',
+        url: '/lessons/increment_createvisits/',
+        success: function(response) {
+        	if (response.visitcount == 1){
+        		showOrientation();
+        	}
+		}
+	});
+
+	var welcomeIndex = 0;
 
 	$("#courseHelp").click(function(){
 		showOrientation();
-		$("#welcomeCloseBox").fadeIn(2000);
 	});
 
 	$('#welcomeCloseBox').click(function(){

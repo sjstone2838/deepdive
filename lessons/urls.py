@@ -25,13 +25,12 @@ urlpatterns = patterns('lessons.views',
 	(r'^/?analyze/$','analyze'),
 	(r'^/?course_rate/$','course_rate'),
 	(r'^/?increment_logins/$','increment_logins'),
+	(r'^/?increment_createvisits/$','increment_createvisits'),
 	(r'^/?search/$','search'),
 	(r'^/?check_invite_code/$','check_invite_code'),
 	(r'^/?reset_password/$','reset_password'),
-
-	#(r'^/?list/$','list'),
-	#(r'^/?demo/$','demo'),
 ) 
+
 #for using bootstrap / static files, 
 # per http://www.effectivedjango.com/tutorial/static.html
 urlpatterns += staticfiles_urlpatterns()

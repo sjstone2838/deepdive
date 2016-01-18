@@ -69,7 +69,7 @@ class CourseRatingAdmin(admin.ModelAdmin):
 
 class UserAdmin(admin.ModelAdmin):
 	#model = UserProfile
-	list_display =('id','user','points','logins')
+	list_display =('id','user','points','logins',"createvisits")
 	filter_horizontal = ('courses_enrolled','courses_managed')
 
 class DocumentAdmin(admin.ModelAdmin):

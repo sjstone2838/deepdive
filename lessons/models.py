@@ -79,6 +79,7 @@ class UserProfile(models.Model):
 	# Should get ride of points, as it is replicated in ModuleStatus
 	points = models.IntegerField(default=0)
 	logins = models.IntegerField(default=0)
+	createvisits = models.IntegerField(default=0)
 	courses_enrolled = models.ManyToManyField(Course, related_name='courses_enrolled_in')
 	courses_managed = models.ManyToManyField(Course, related_name='courses_managed')
 	

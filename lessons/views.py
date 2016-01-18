@@ -165,7 +165,13 @@ def increment_logins(request):
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
 	user_profile.logins += 1
 	user_profile.save()
-	print "line1"
+
+def increment_createvisits(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	user_profile.createvisits += 1
+	user_profile.save()
+	return JsonResponse({'visitcount': user_profile.createvisits})	
 
 @login_required(login_url = '/lessons/login/')
 def course(request,course_pk):
