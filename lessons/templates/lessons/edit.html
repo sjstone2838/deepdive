@@ -70,23 +70,24 @@
         <div class = 'editResponseText btn-row' id = 'course-Response'></div>
 	</div>
 	<div class = "module editBlock Hide">
+		<div class = "current btn btn-primary btn-row" id = "module-Current"> Edit existing module </div>
+		<div class = "add btn btn-primary btn-row grey" id = "module-New"> Add new module </div><p></p>
 		<div>
 			<select class = 'input roundedInput disabled' type='text' id = 'moduleSelect' disabled>
 		   		<option value='' disabled selected>Select module...</option>
 	    	</select>
     	</div>
-		<div class = "current btn btn-primary btn-row" id = "module-Current"> Edit existing module </div>
-		<div class = "add btn btn-info btn-row" id = "module-New"> Add new module </div><p></p>
 		<div style="width: 90px; display: inline-block;"> Index: </div> 
 		<div class = "btn-row" id = "module_index"> </div><br>
 		<div style="width: 90x; display: inline-block;"> Name: </div> 
 		<input style="width: 320px;" id = "module_name"> <p></p>
 		<div style="width: 320px; display: inline-block;"> Minimum Passing Score (1-100): </div> 
 		<input style="width: 60px;" id = "module_passing_score"> <p></p>
+		<div> Hints (if blank, hints bar will not show) </div>
 		<div>
 			<!--<div style="width: 90px; display: inline-block; vertical-align: top;">Hints: </div>-->
 			<div style="display: inline-block;">
-				<textarea style="display: inline-block;" id="module_hints"></textarea>
+				<textarea style="display: inline-block;" id="module_hints">Fill in Module Hints (or delete to leave blank)</textarea>
 		        <script>
 		            CKEDITOR.replace( 'module_hints',{
 		            	toolbar: ckeditor_toolbar
@@ -106,13 +107,13 @@
         <div class = 'editResponseText btn-row' id = 'module-Response'></div>
 	</div>
 	<div class = "moduleElement editBlock Hide">
+		<div class = "current btn btn-primary btn-row" id = "moduleElement-Current"> Edit existing module element </div>
+		<div class = "add btn btn-primary btn-row grey" id = "moduleElement-New"> Add new module element </div><p></p>
 		<div>
 			<select class = 'input roundedInput disabled' type='text' id = 'moduleElementSelect' disabled>
 			   	<option value="" disabled selected>Select module element...</option>
 		    </select>
 	    </div>
-		<div class = "current btn btn-primary btn-row" id = "moduleElement-Current"> Edit existing module element </div>
-		<div class = "add btn btn-info btn-row" id = "moduleElement-New"> Add new module element </div><p></p>
 		<div style="width: 90px; display: inline-block;"> Index: </div> 
 		<div class = "btn-row" id = "moduleElement_index"></div> <br>
 		<div style="width: 90px; display: inline-block;"> Name: </div> 
@@ -147,13 +148,13 @@
         <div class = 'editResponseText btn-row' id = 'moduleElement-Response'></div>
 	</div>
 	<div class = "question editBlock Hide">
+		<div class = "current btn btn-primary btn-row" id = "question-Current"> Edit existing question </div>
+		<div class = "add btn btn-primary grey btn-row" id = "question-New"> Add new question </div><p></p>
 		<div>
 			<select class = 'input roundedInput disabled' type='text' id = 'questionSelect' disabled>
 			   	<option value="" disabled selected>Select question...</option>
 		    </select>
 	    </div>
-		<div class = "current btn btn-primary btn-row" id = "question-Current"> Edit existing question </div>
-		<div class = "add btn btn-info btn-row" id = "question-New"> Add new question </div><p></p>
 		<div style="width: 90px; display: inline-block;"> Index: </div> 
 		<div class = "btn-row" id = "question_index"></div><br>
 		<div style="width: 90px; display: inline-block;"> Type: </div> 
@@ -188,6 +189,8 @@
         <div class = 'editResponseText btn-row' id = 'question-Response'></div>
 	</div>
 </div>
+
+
 
 {% endblock %}
 

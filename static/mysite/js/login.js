@@ -76,6 +76,23 @@ $(document).ready(function(){
 		$(this).parent().fadeOut("slow");
 	});
 
+	$('#reset_pw').click(function(){
+		$('#resetpw').fadeIn("slow");
+	});
+
+	$('#resetpwBtn').click(function(){
+		var email = $('#resetpw_email').val();
+		console.log (email);
+		$.ajax({
+	        type: 'POST',
+	        url: '/lessons/reset_password/',
+	        data: {'email': email},
+	        success: function(response) {
+	        	$("#resetpwSuccess").text(response.status);
+			}
+		});
+	});
+
 	$('#create_account').click(function(){
 		invite_code = $("#invite_code").val();
 		first_name = $('#new_first_name').val();

@@ -194,9 +194,9 @@ var questionIndex = "";
 
 	// add new element type
 	$('.add').click(function(){
-		$(this).removeClass("btn-info").addClass("btn-primary");
+		$(this).removeClass("grey");
 		object_type = $(this).attr("id").split("-")[0];
-		$('#'+object_type+"-Current").removeClass("btn-primary").addClass("btn-info");
+		$('#'+object_type+"-Current").addClass("grey");
 		$('#'+object_type+"-EditButtons").addClass("Hide");
 		$('#'+object_type+"-CreateButtons").removeClass("Hide");
 
@@ -224,23 +224,12 @@ var questionIndex = "";
 		}
 	});
 
-	// Append 4 answer choices if Radio question selected
-	$('#question_type').change(function(){
-		console.log("line1");
-		if ($(this).val() == "Radio"){
-			for (var i = 0; i < 4; i++){
-				$('#answerChoices').append('<p></p><div style="width: 90px; display: inline-block;"> Choice '+ (i+1)+ "</div><input class = 'answerChoice' style='width: 260px; display: inline-block;'>");
-			}
-		} else {
-			$('#answerChoices').html("");
-		}
-	});
-
+	
 	// edit currently shown element
 	$('.current').click(function(){
-		$(this).removeClass("btn-info").addClass("btn-primary");
+		$(this).removeClass("grey");
 		object_type = $(this).attr("id").split("-")[0];
-		$('#'+object_type+"-New").removeClass("btn-primary").addClass("btn-info");
+		$('#'+object_type+"-New").addClass("grey");
 		$('#'+object_type+"-CreateButtons").addClass("Hide");
 		$('#'+object_type+"-EditButtons").removeClass("Hide");
 
@@ -254,6 +243,19 @@ var questionIndex = "";
 			questionSelect(questionIndex,0);
 		}
 	});
+
+	// Append 4 answer choices if Radio question selected
+	$('#question_type').change(function(){
+		console.log("line1");
+		if ($(this).val() == "Radio"){
+			for (var i = 0; i < 4; i++){
+				$('#answerChoices').append('<p></p><div style="width: 90px; display: inline-block;"> Choice '+ (i+1)+ "</div><input class = 'answerChoice' style='width: 260px; display: inline-block;'>");
+			}
+		} else {
+			$('#answerChoices').html("");
+		}
+	});
+
 
 	// EDIT FUNCTIONS
 

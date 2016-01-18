@@ -8,12 +8,16 @@
 {% if message_type == "results" %}
 <div class = "wideBlock">
 
-	{{content|safe|escape}}
 
 	{% if passed == "yes" %}
-	<a class = "btn btn-info" href='/lessons/course/{{course.pk}}/{{next_module.index}}'> Onwards! </a>
+		<h2> Nice job, you passed! </h2>
+		{{banner|safe|escape}}
+		{{content|safe|escape}}
+		<a class = "btn btn-info" href='/lessons/course/{{course.pk}}/{{next_module.index}}'> Onwards! </a>
 	{% else %}
-	<a class = "btn btn-info" href='/lessons/course/{{course.pk}}/{{module.index}}'> Try module again </a>
+		{{banner|safe|escape}}
+		<h4 style = "font-style: italic;"> You need a score of at least {{passing_score}}% to pass this module </h4>
+		<a class = "btn btn-info" href='/lessons/course/{{course.pk}}/{{module.index}}'> Try module again </a>
 	{% endif %}
 </div>
 

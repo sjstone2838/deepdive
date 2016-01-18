@@ -3,6 +3,7 @@
 
 {% block content %}
 	<script src="{% static 'mysite/js/create.js' %}"></script>
+	
 	<!-- links to CKEDITOR and customization of CKEDITOR toolbar -->
 	<script src="{% static 'mysite/js/CKEditor/ckeditor.js' %}"></script>
 	<script src="{% static 'mysite/js/CKEditor/adapters/jquery.js' %}"></script>
@@ -33,36 +34,35 @@
 	  <option value="Form">
 	</datalist>
 	
-	<div class = "wideBlock Hide">
-		<div class = "verificationText" id = "jsonResponseMessage"></div>
-	</div>
+	
 	<div class = "wideBlock">
 		<h2 class = "sameLine"> Create New Course </h2> 
 		<div class = "courseFormDetails btn btn-info"> Expand </div>
 		<div class = "courseForm">
-		<form><table>
-			<tr>
-				<td style = "width: 15%;">Course Name</td> 
-				<td><input class = 'input course' type='text' id = 'courseName' name = 'course_name' placeholder = 'Name'> 
-					<p class = "verificationText red-text" id="courseNameError"></p></td>
-			</tr>
-			<tr>
-				<td> Genre </td>
-				<td> <input class = 'input course' type='text' id = 'courseGenre' name = 'course_genre' placeholder = 'Genre'> 
-				<p class = "verificationText red-text" id="courseGenreError"></p></td>
-			</tr>
-			<tr>
-				<td>Description </td>
-				<td> <textarea class = 'input course' type='textarea' id = 'courseDescription' name = 'course_description'style="width: 95%; height: 4em; font-size: 12pt;"></textarea>
-		        <script>
-		            CKEDITOR.replace( 'courseDescription',{
-		            	toolbar: ckeditor_toolbar
-					});
-		        </script>
-				<p class = "verificationText red-text" id="courseDescriptionError"></p> </td>
-			</tr>
-		</table></form>
-		<div class = "submitCourse btn btn-danger" style="margin: 5px;"> Create New Course </div>
+			<form><table>
+				<tr>
+					<td style = "width: 15%;">Course Name</td> 
+					<td><input class = 'input course' type='text' id = 'courseName' name = 'course_name' placeholder = 'Name'> 
+						<p class = "verificationText red-text" id="courseNameError"></p></td>
+				</tr>
+				<tr>
+					<td> Genre </td>
+					<td> <input class = 'input course' type='text' id = 'courseGenre' name = 'course_genre' placeholder = 'Genre'> 
+					<p class = "verificationText red-text" id="courseGenreError"></p></td>
+				</tr>
+				<tr>
+					<td>Description </td>
+					<td> <textarea class = 'input course' type='textarea' id = 'courseDescription' name = 'course_description'style="width: 95%; height: 4em; font-size: 12pt;"></textarea>
+			        <script>
+			            CKEDITOR.replace( 'courseDescription',{
+			            	toolbar: ckeditor_toolbar
+						});
+			        </script>
+					<p class = "verificationText red-text" id="courseDescriptionError"></p> </td>
+				</tr>
+			</table></form>
+			<div class = "submitCourse btn btn-danger" style="margin: 5px;"> Create New Course </div>
+			<div class = "verificationText Hide" id = "courseResponseMessage"></div>
 		</div>
 	</div>
 
@@ -83,7 +83,6 @@
 			<p class = "verificationText red-text" id="moduleNameError"></p>
 			<p class = "verificationText red-text" id="moduleCourseError"></p>
 			<p class = "verificationText red-text" id="modulePassingScoreError"></p>
-			<!--<div class = 'btn-row' style = "width: 200px;"> Hints </div>-->
 			<textarea class = 'input moduleHints btn-row' name = 'module_hints' id = "module_hints"> Fill in Module Hints (or delete to leave blank) </textarea>
 			<script>
 	            CKEDITOR.replace( 'module_hints',{
@@ -96,7 +95,104 @@
 			<div class = "moduleElementFormRemove btn btn-info SameLine"> Remove Last Module Element </div>
 			<p></p>
 			<div class = "submitModule btn btn-danger" style="width: 380px;"> Create New Module </div>
+			<div class = "verificationText Hide" id = "moduleResponseMessage"></div>
 		</div>
 	</div>
+
+	<script src="{% static 'mysite/js/create_intro.js' %}"></script>
+	<div id = "courseHelp">?</div>
+	<div class = "welcomeBackground"></div>
+	<div class = "welcomeBlock" style = "padding: 10px; height: 800px; top: 90px;">
+			<div style = "margin: 0% 5% 0% 5%;">
+				<div id = "welcomeBlock-0">
+					<h1 style = "margin-top: 40%;"> <strong> Course Creator Orientation </strong> </h1>	
+					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/logo.PNG' %}"></script><br><br>
+					<h2> A quick primer on how to create a DeepDive course </h2>
+				</div>
+				<div class = "Hide" id = "welcomeBlock-1">
+					<h1><strong> Initiate a new course</strong></h1>
+					<h3><code style = "padding: 5px">Teach>Create New</code></h3>
+					<h3 style = "color: grey; text-align: justify;"> Fill in a name, genre, and description. You can go back and edit these later. Your new course will be visible only to you until you make it public </h3>
+					<br><img style = "height: 400px; text-align: center;" src="{% static 'mysite/images/create_intro/create_course.PNG' %}"><br>
+				</div>
+				
+				<div class = "Hide" id = "welcomeBlock-2">
+					<h1><strong> Design the first module for your course </strong></h1>
+					<h3><code style = "padding: 5px">Teach>Create New</code></h3>
+					<h3 style = "color: grey; text-align: justify;"> Select which course your module will belong to, then add a name and a minimum passing score (1-100). You can also add hints, which will appear as a collapsible sidebar to users. If you leave hints blank, users will not see a sidebar </h3>
+					<br><img style = "width: 100%; text-align: center;" src="{% static 'mysite/images/create_intro/create_module.PNG' %}"><br>
+				</div>
+
+				<div class = "Hide" id = "welcomeBlock-3">
+					<h1><strong> Add a few module elements  </strong></h1>
+					<h3><code style = "padding: 5px">Teach>Create New</code></h3>
+					<h3 style = "color: grey; text-align: justify;"> Module elements are like slides – but in addition to “content” elements that contain text, pictures, and videos, you can add “quiz” and “test” elements that provide users real-time feedback through multiple choice and free-response questions </h3>
+					<br><img style = "width: 80%; text-align: center;" src="{% static 'mysite/images/create_intro/module_element.PNG' %}"><br>
+				</div>
+
+				<div class = "Hide" id = "welcomeBlock-4">
+					<h1><strong> Embed videos and pictures in your elements </strong></h1>
+					<h3><code style = "padding: 5px">Teach>Create New</code></h3>
+					<h3 style = "color: grey; text-align: justify;"> Use the video and picture icons shown below. You will need to supply a URL for embedded videos and pictures. If you want to attach your own locally-hosted documents… we’ll get to that in a few steps! </h3>
+					<br>
+					<img style = "height: 60px; text-align: center;" src="{% static 'mysite/images/create_intro/picture.PNG' %}">
+					<img style = "height: 60px; text-align: center; display: inline-block; margin-left: 20px;" src="{% static 'mysite/images/create_intro/video.PNG' %}">
+					<br>
+				</div>
+
+				<div class = "Hide" id = "welcomeBlock-5">
+					<h1><strong> Add a test element at the end of your module </strong></h1>
+					<h3><code style = "padding: 5px">Teach>Create New</code></h3>
+					<h3 style = "color: grey; text-align: justify;"> You can create unlimited content and quiz elements within a module. However, each module must have <span style = "font-weight: bold;"> one and only one </span> test element as the <span style = "font-weight: bold;">last </span> element in the module. This is because the test is the “gating mechanism” that determines whether a user can unlock the next module (or pass the course) </h3>
+				</div>
+
+				<div class = "Hide" id = "welcomeBlock-6">
+					<h1><strong> Hit “Create New Module” and preview your module </strong></h1>
+					<h3><code style = "padding: 5px">Teach>Create New</code></h3>
+					<h3 style = "color: grey; text-align: justify;"> Don’t worry if your module isn’t done. You’ll be able to edit your module and add, remove, or re-order elements later </h3>
+					<br>
+					<img style = "width: 80%; text-align: center; display: inline-block; margin-left: 20px;" src="{% static 'mysite/images/create_intro/create_module_button.PNG' %}">
+				</div>
+
+				<div class = "Hide" id = "welcomeBlock-7">
+					<h1><strong> Add media to your course  </strong></h1>
+					<h3><code style = "padding: 5px">Teach>Manage Media</code></h3>
+					<h3 style = "color: grey; text-align: justify;"> Upload a course logo, which users will see when your course appears in search results. You can also upload your own locally-hosted files as downloadable attachments to module elements </h3>
+					<br><img style = "width: 70%; text-align: center;" src="{% static 'mysite/images/create_intro/add_media.PNG' %}"><br>
+				</div>
+
+				<div class = "Hide" id = "welcomeBlock-8">
+					<h1><strong> The last step - make your course public </strong></h1>
+					<h3><code style = "padding: 5px">Teach>Editor</code></h3>
+					<h3 style = "color: grey; text-align: justify;"> You can return your course to private mode at any time, which will keep new users from seeing your course or enrolling (users already enrolled will still have access) </h3>
+					<br><img style = "width: 70%; text-align: center;" src="{% static 'mysite/images/create_intro/edit.PNG' %}"><br>
+				</div>
+
+				<div class = "Hide" id = "welcomeBlock-9">
+					<h1 style = "margin-top: 30%;"><strong> You've finished Course Creator orientation </strong></h1>
+					<div class = "btn-info endWelcome" style = "font-size: 20pt; border-radius: 15px; padding: 25px; margin: 50px 0px 30px 0px;">  Sounds good - let's get started </div>
+					<div class = "btn-info" style = "font-size: 20pt; border-radius: 15px; padding: 25px; margin: 50px 0px 30px 0px;">Take me through orientation one more time </div>
+				</div>
+			</div>
+			<div class = "indexBalls">
+				<div class = "indexBall indexBallHighlight" id = "indexBall-0">  </div>
+				<div class = "indexBall" id = "indexBall-1">  </div>
+				<div class = "indexBall" id = "indexBall-2">  </div>
+				<div class = "indexBall" id = "indexBall-3">  </div>
+				<div class = "indexBall" id = "indexBall-4">  </div>
+				<div class = "indexBall" id = "indexBall-5">  </div>
+				<div class = "indexBall" id = "indexBall-6">  </div>
+				<div class = "indexBall" id = "indexBall-7">  </div>
+				<div class = "indexBall" id = "indexBall-8">  </div>
+				<div class = "indexBall" id = "indexBall-9">  </div>
+			</div>
+			<div class= "btn" id = "backBtn" style = "z-index: 3; position: absolute; top: 47%; margin-left: -67%; color: white; font-size: 90px; border-radius: 30px grey solid;" > 
+				&#9668 
+			</div>
+			<div class= "btn" id = "nextBtn" style = "z-index: 3; position: absolute; top: 47%; margin-left: 50%; color: white; font-size: 90px;" > 
+				&#9658 
+			</div>
+	</div>
+	<div class= "btn" id = "welcomeCloseBox" style = "z-index: 3; top: 95px;" > X </div>
 
 {% endblock %}

@@ -18,20 +18,21 @@
 			<img src = "{% static 'mysite/images/ColorLogo.PNG' %}" alt="diver logo" style="width: 500px; display: inline-block;">
 		</div>
 		<p></p>
-		<a style = "color: white; font-size: 16pt; font-weight: normal;" class="btn" id = "aboutBtn" tabindex = "5"> About </a>
+		<button style = "color: white; font-size: 14pt; font-weight: normal;" class="btn btn-link" id = "aboutBtn"> About </button>
 		<br><br>
 		<div id = "loginForm">
 			<input class = "loginInput" type = "text" id = 'username' placeholder = "username" tabindex = "1"><p></p>
 			<input class = "loginInput" type = "password" id = 'password' placeholder = "password" tabindex = "2"> <p></p> 
 			<div class = "red-text" id = "error"></div> 
-			<button class="btn btn-info" id = "login" tabindex = "3"> Login </button>
-			<button class="btn btn-info" id = "new_user" tabindex = "4"> New User </button>
+			<button class="btn btn-link" style = "font-size: 12pt; padding: 4px; color: white;font-weight: normal;" id = "login" tabindex = "3"> Login </button>
+			<button class="btn btn-link" style = "font-size: 12pt; padding: 4px; color: white;font-weight: normal;" id = "reset_pw" tabindex = "4"> Forgot password </button>
+			<button class="btn btn-link" style = "font-size: 12pt; padding: 4px; color: white;font-weight: normal;" id = "new_user" tabindex = "5"> New User </button>
 		</div>
 	</div>
 
-	<div id = "newUserForm">
+	<div class = "loginBlock" id = "newUserForm">
 		<div id = "newUserBlock-0" style = "top: 500px;">
-			<p style = "text-align: center;"> DeepDive's alpha version is currently invite-only </p>
+			<p style = "text-align: center;"> DeepDive is currently invite-only </p>
 			<p style = "text-align: center;"> Please enter your invite code to proceed </p>
 			<input style = "width: 200px; margin-left: 100px; text-align: center;" class = "newUserInput" type = "text" id = 'invite_code' placeholder = "Invite Code">
 			<button style = "width: 80px;"class="btn btn-info btn-row" id = "check_invite_code"> Next </button>
@@ -53,8 +54,20 @@
 
 	<div id = "newUserSuccess">
 		<div style = "text-align: center;" id = "newUserSuccessMsg"></div>
-		<div style = "border: 1pt dotted grey; text-align: center; background-color: #f1f1f4; margin: 15px 0px 15px 0px;"> <code> Our alpha is not (yet) mobile-friendly - for a good experience, please view DeepDive on a large(ish) screen  </code> </div>
+		<div style = "border: 1pt dotted grey; text-align: center; background-color: #f1f1f4; margin: 15px 0px 15px 0px;"> <code> DeepDive is not yet mobile-friendly, so we recommend using DeepDive on a large(ish) screen  </code> </div>
 		<div> <a class="btn btn-info btn-row" href="/lessons/my_courses/"> Onwards! </a></div>
+	</div>
+
+	<div class = "loginBlock" id = "resetpw">
+		<br> 
+		<input type = "text" id = "resetpw_email" placeholder = "Email associated with your DeepDive account" style = "width: 85%; margin-left: 7.5%;">
+		<br> 
+		<br> 
+		<button class="btn btn-info" id = "resetpwBtn" style = "width: 40%; margin-left: 30%; "> Send me a new password </button>
+		<br> 
+		<br> 
+		<div id = "resetpwSuccess" style = "color: red; font-style: italic; text-align: center; font-size: 14pt; "> </div>
+		<div class= "btn closeBox"> X </div>
 	</div>
 
 	<div class = "about Hide" id = "about">

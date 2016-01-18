@@ -18,7 +18,7 @@
 </div>
 
 <div class = "wideBlock">
-	<h2> Add or Delete Documents Attached to a Module Element </h2>
+	<h2> Attach Documents to a Module Element </h2>
 	<form action="/lessons/add_media/" method="post" enctype="multipart/form-data">
 	    <!--{% csrf_token %}-->
 	    <p> <input type ="hidden" name = "post_type" value = "module_element"></p>
@@ -33,6 +33,8 @@
 	</form>
 	<p class = "editResponseText"> {{module_element_success}} </p>
 </div>
+
+
 	
 
 {% endblock %}

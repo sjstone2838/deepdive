@@ -49,6 +49,5 @@ $(document).ready(function(){
 		//$("#welcomeBlock-" + welcomeIndex).removeClass("Hide");
 		$("#indexBall-" + welcomeIndex).addClass("indexBallHighlight")
 		showHighlights(welcomeIndex);
-		//console.log ("line21");
 	});
 });

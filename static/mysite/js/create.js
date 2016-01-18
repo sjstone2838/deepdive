@@ -160,9 +160,8 @@ var answerChoiceArray = [];
 		        data: {'module':module},
 		        // display success or error message
 		        success: function(response) {
-	            	//	window.location.href = '/lessons/test_result/'
-	            	$('#jsonResponseMessage').html(response.jsonResponseMessage);
-	            	$('#jsonResponseMessage').parent().slideDown('slow');
+	            	$(".submitModule").remove();
+	            	$('#moduleResponseMessage').html(response.jsonResponseMessage).fadeIn("fast");
 	        	}
 		    });
 	    }
@@ -201,9 +200,9 @@ var answerChoiceArray = [];
 		        data: {'course':course},
 		        // display success or error message
 		        success: function(response) {
-	            	//	window.location.href = '/lessons/test_result/'
-	            	$('#jsonResponseMessage').html(response.jsonResponseMessage);
-	            	$('#jsonResponseMessage').parent().slideDown('slow');
+	            	$(".submitCourse").remove();
+	            	$('#courseResponseMessage').html(response.jsonResponseMessage).fadeIn("fast");
+	            	//$('#courseResponseMessage').parent().slideDown('slow');
 	        	}
 		    });
 	    }

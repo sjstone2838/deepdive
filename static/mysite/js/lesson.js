@@ -163,13 +163,13 @@ $(document).ready(function(){
 
 	    	function checkAnswer(form,answer,answerKey){
 	    		if (answer.toUpperCase() == answerKey.toUpperCase()){
-	    			$(form).find(".verificationText").text("Correct!");
-	    			$(form).css("color","green");
+	    			$(form).find(".verificationText").text("Correct!").css("color","green");
+	    			//$(form).css("color","green");
 	    			correctCount++;	
 	    		}
 	    		else {
-	    			$(form).find(".verificationText").text("Incorrect");
-	    			$(form).css("color","red");
+	    			$(form).find(".verificationText").text("Incorrect").css("color","red");
+	    			//$(form).css("color","red");
     			}
     			console.log("Answer was " + answer + " and key was " + answerKey)
 			}

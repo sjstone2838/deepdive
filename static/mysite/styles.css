@@ -18,7 +18,7 @@ body.background{
     padding: 100px;
 }
 
-#newUserForm{
+.loginBlock{
     position: absolute;
     top: 275px;
     left: 35%;
@@ -138,7 +138,7 @@ body.background{
     right: -50%;
     width: 50%;
     display:none;
-    padding: 15px;
+    padding: 30px;
     font-size: 14pt;
     border-radius: 10px;
     background-color: #f1f1f4;
@@ -578,6 +578,24 @@ input{
     z-index: 2;
 }
 
+#courseHelp{
+    position: absolute;
+    top: 100px;
+    left: 30px;
+    height: 35px;
+    width: 35px;
+    font-size: 20pt;
+    font-style: bold;
+    background-color: lightgrey;
+    padding: 0%;
+    border-radius: 50%;
+    cursor: pointer; 
+    cursor: hand;
+    text-align: center;
+    vertical-align: center;
+    color: white;
+}
+
 #welcomeCloseBox{
     position: absolute;
     top: 150px;
@@ -702,4 +720,19 @@ input{
     white-space: nowrap;  
     overflow: hidden; 
     text-overflow: ellipsis;
+}
+
+.current{
+    font-size: 14pt !important;
+    padding: 5px 10px 5px 10px !important;
+}
+.add{
+    font-size: 14pt !important;
+    padding: 10px;
+}
+
+.grey{
+    background-color: #f1f1f4 !important;
+    border: 1px solid lightgrey !important;
+    color: black !important;
 }

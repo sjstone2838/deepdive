@@ -26,21 +26,37 @@ from django.db.models import Count
 from .forms import *
 
 from django.core.mail import send_mail
-import smtplib
+import smtplib #is this necessary?
+import string
+import random
 
-def email(request):
-	print "line 1"
-	message = "<h1> This is the big title </h1> <h2> This is the little title </h2>"
-	send_mail('Testing McAloo', "this is simple text", 'invites@deepdive.us ', ['sjstone1987@gmail.com'], fail_silently=False, html_message = message)
-	print "line 2"
-	return redirect('/lessons/') 
+def reset_password(request):
+	email = request.POST['email']
+	print email
+	if User.objects.filter(email = email).count() != 1:
+		return JsonResponse({'status': "No such email found. Please try a different email or create a new account"})
+	else: 
+		def pw_generator(size=10, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
+		 	return ''.join(random.choice(chars) for _ in range(size))
+	 	new_pw = pw_generator()
+
+	 	user = User.objects.get(email = email)
+	 	user.set_password(new_pw)
+	 	user.save()
+	 	#print new_pw
+	 	# TODO 
+	 	subject = 'DeepDive - New Password'
+		message = "<h1> Your password has been reset </h1> <h2> Your new password is: " + new_pw + "</h2>"
+		send_mail(subject, message, 'invites@deepdive.us ', [email], fail_silently=False, html_message = message)
+	 	
+	 	return JsonResponse({'status': "Success! Please check your email for your new password"})
+	#return redirect('/lessons/') 
 
 @login_required(login_url = '/lessons/login/')
 def index(request):
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
 	courses_enrolled = user_profile.courses_enrolled.all().order_by('name')
-	#courses_managed = user_profile.courses_managed.all()
 
 	for course in courses_enrolled:
 		instructor = UserProfile.objects.filter(courses_managed = course)[0].user
@@ -227,15 +243,15 @@ def module(request,course_pk,module_index):
 					answer_key.append(question.answer)
 					#if form question
 					if question.question_type == "Form":
-						content+= "<h4>" + str(i+1) +". " + question.text + "</h4><form class='Question' type='text'><input type='text'><p class = 'verificationText'> </p></form>"
+						content+= "<h4><strong>" + str(i+1) +"</strong>. " + question.text + "</h4><form class='Question' type='text'><input type='text'><p class = 'verificationText'> </p></form><p style = 'height: 20px'></p>"
 					#if radio question
 					else:
-						content+="<h4>" + question.text + "</h4><form class='Question' type='radio'>"
+						content+="<h4><strong>" + str(i+1) +"</strong>. " + question.text + "</h4><form class='Question' type='radio'>"
 						answer_set = AnswerChoice.objects.filter(question=question)
 						for j in range(0,len(answer_set)):
 							content+="<input type='radio' name='Question" + str(i) +"' value='" + answer_set[j].text + "'> " + answer_set[j].text + "<br>"
-						content+= "<p class = 'verificationText'> </p></form>"
-				content+= "<br/><div class='submitButton btn btn-info'> Check Answers </div><br/></div>"
+						content+= "<p class = 'verificationText'> </p></form><p style = 'height: 20px'></p>"
+				content+= "<div class='submitButton btn btn-info'> Check Answers </div><br/></div>"
 
 			# append Test module elements - same as Quiz but no answer key passed to template
 			else:
@@ -249,18 +265,18 @@ def module(request,course_pk,module_index):
 					#answer_key.append(question.answer)
 					#if form question
 					if question.question_type == "Form":
-						content+= "<h4>" + str(i+1) + ". " + question.text + "</h4><input type='text' name='answer" + str(i+1) + "''>"
+						content+= "<h4><strong>" + str(i+1) + ". </strong>" + question.text + "</h4><input type='text' name='answer" + str(i+1) + "''><p style = 'height: 20px'></p>"
 					
 					#if radio question
 					else:
-						content+="<br><br><h4>" + str(i+1) + ". " + question.text + "</h4>"
+						content+="<h4><strong>" + str(i+1) + "</strong>. " + question.text + "</h4>"
 						answer_set = AnswerChoice.objects.filter(question=question)
 						#add hidden field with value "none", so that POST does not have an empty key-value pair
 						content+="<h4><input type='hidden' name='answer" + str(i+1) + "' value = 'none'></h4>"
 						for j in range(0,len(answer_set)):
 							content+="<h4><input type='radio' name='answer" + str(i+1) + "' value = '" +  answer_set[j].text + "'> " + answer_set[j].text + "</h4>"
-						content+="<br>"
-				content+= "<br><br><input class='testSubmit btn btn-info' type='submit' value='Submit'>"
+						content+="<p style = 'height: 20px'></p>"
+				content+= "<input class='testSubmit btn btn-info' type='submit' value='Submit'>"
 				content+= "</form></div>"
 
 
@@ -297,10 +313,24 @@ def new_user(request):
 		if request.POST['invite_code'] in INVITE_CODES:
 			#create new user
 			form = request.POST
+			domain = ""
+			suffix = ""
+			alias = form['email'].split("@")[0]
+			try: 
+				domain = (form['email'].split("@")[1]).split(".")[0]
+			except:
+				domain = ""
+			try: 
+				suffix = (form['email'].split("@")[1]).split(".")[1]
+			except:
+				suffix = ""
+			
 			if len(User.objects.filter(username__iexact=form['username'])) != 0:
 				status = "This username is taken. Please choose another username."
 			elif len(User.objects.filter(email__iexact=form['email'])) != 0:
-				status = "This email is taken. Please user another email."
+				status = "This email is taken. Please use another email."
+			elif len(alias) == 0 or len (domain) == 0 or len(suffix) == 0:
+				status = "Invalid email. Please use another email."
 			else:
 				def capitalize(string):
 					first_letter = string[0].upper()
@@ -319,18 +349,6 @@ def new_user(request):
 				user_profile = UserProfile(user = user, points = 0)
 				user_profile.save()
 				
-				# Add course #1-2 (demo) to all new users' accounts and matching CourseStatus object
-				"""demo = Course.objects.get(name ="Tennis Greats")
-				demo.save()
-				
-				courseStatus = CourseStatus.objects.create(
-					course = demo,
-					user = user_profile,
-					points = 0)
-				user_profile.courses_enrolled.add(demo)
-				user_profile.save()
-				"""
-
 				#must call authenticate before login, even though we just created the user 
 				user_login = authenticate(username=request.POST['username'], password=request.POST['password'])
 				login(request,user_login)
@@ -411,7 +429,8 @@ def test_result(request,course_pk,module_index):
 				content+= ("<td><h4>" + answer_key[i] + "</h4></td>")
 				content += ("<td><h4 class = 'verificationText' style='color: red;'> Incorrect </h4></td></tr>")
 		score = int((correct_count / len(questions)) * 100)
-		content += ("</table><h3> You answered " + str(correct_count) + " out of " + str(len(questions)) + " questions correctly (" +  str(score) + "%) </h3>")
+		content += "</table><h3>"
+		banner = " You answered " + str(correct_count) + " out of " + str(len(questions)) + " questions correctly (" +  str(score) + "%) </h3>"
 
 		if score >= module.passing_score:
 			passed = "yes"
@@ -443,10 +462,12 @@ def test_result(request,course_pk,module_index):
 		'user': user,
 		'course': course,
 		'content':content,
+		'banner': banner,
 		'module': module,
 		'next_module': next_module,
 		'message_type': message_type,
-		'passed': passed
+		'passed': passed,
+		'passing_score': module.passing_score
 	})
 
 #display lesson creation page
@@ -565,7 +586,7 @@ def create_module(request):
 						else:
 							answer_loop = False
 
-			jsonResponseMessage = "Success! You have created new module: <a class='btn btn-info' href='/lessons/course/" + str(course.pk) + "/" + str(module.index)  +"/'>" + module.name + "</a>"
+			jsonResponseMessage = "Success! Preview your new module: <a class='btn btn-info' href='/lessons/course/" + str(course.pk) + "/" + str(module.index)  +"/'>" + module.name + "</a>"
 			return JsonResponse({'jsonResponseMessage': jsonResponseMessage})
 
 	# if request.method = GET
@@ -612,7 +633,7 @@ def create_course(request):
 			)
 			user_profile.courses_enrolled.add(course)
 
-			jsonResponseMessage = "Success! You have created new course: <a class='btn btn-info' href='/lessons/course/" +str(course.pk)  +"/'>" + course.name + "</a>"
+			jsonResponseMessage = "Success! Preview your new course: <a class='btn btn-info' href='/lessons/course/" +str(course.pk)  +"/'>" + course.name + "</a>"
 			return JsonResponse({'jsonResponseMessage': jsonResponseMessage})
 
 	# if request.method = GET
