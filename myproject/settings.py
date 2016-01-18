@@ -185,3 +185,11 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.privateemail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'invites@deepdive.us'
+EMAIL_HOST_PASSWORD = ']bebickheEF8]'
+EMAIL_USE_TLS = False
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

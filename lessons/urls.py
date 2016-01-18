@@ -27,6 +27,7 @@ urlpatterns = patterns('lessons.views',
 	(r'^/?increment_logins/$','increment_logins'),
 	(r'^/?search/$','search'),
 	(r'^/?check_invite_code/$','check_invite_code'),
+	(r'^/?email/$','email'),
 
 	#(r'^/?list/$','list'),
 	#(r'^/?demo/$','demo'),

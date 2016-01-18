@@ -24,7 +24,16 @@ import re
 from lessons.models import *
 from django.db.models import Count
 from .forms import *
-#from chartit import DataPool, PivotDataPool, Chart, PivotChart
+
+from django.core.mail import send_mail
+import smtplib
+
+def email(request):
+	print "line 1"
+	message = "<h1> This is the big title </h1> <h2> This is the little title </h2>"
+	send_mail('Testing McAloo', "this is simple text", 'invites@deepdive.us ', ['sjstone1987@gmail.com'], fail_silently=False, html_message = message)
+	print "line 2"
+	return redirect('/lessons/') 
 
 @login_required(login_url = '/lessons/login/')
 def index(request):
