@@ -47,7 +47,7 @@ body.background{
 
 .about{
     position: absolute;
-    top: 140px;
+    top: 85px;
     left: 5%;
     width: 90%;
     background-color: white;
@@ -55,7 +55,7 @@ body.background{
     border-radius: 10px;
     border: 1px grey solid;
     display: relative;  
-    height: 700px;
+    height: 800px;
     overflow: auto;
 }
 

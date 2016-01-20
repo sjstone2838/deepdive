@@ -15,6 +15,11 @@ $(document).ready(function(){
 		$('#design').fadeIn("fast");
 	});
 
+	$('#contactsBtn').click(function(){
+		$(".about").css("display","none");
+		$('#contacts').fadeIn("fast");
+	});
+
 	$('.closeBox').click(function(){
 		$(this).parent().fadeOut("fast");
 	});

@@ -70,7 +70,7 @@
 							{% if course.status = "Not enrolled" %}
 							<span style = "margin-left: 30px; position: relative; z-index: 1;" class = "btn btn-primary addCourse highlight" id = "addCourse.{{course.pk}}"> Enroll </span>
 							{% else %}
-							<div style = "margin-left: 30px; position: relative; z-index: 1; width: 250px; display: inline-block; background-color: lightgreen; border-radius: 5px; padding: 5px; text-align: center;"> You are currently enrolled </div>
+							<div style = "margin-left: 30px; position: relative; width: 250px; display: inline-block; background-color: lightgreen; border-radius: 5px; padding: 5px; text-align: center;"> You are currently enrolled </div>
 							{% endif %}
 						</div>
 						<div class = "courseTileHalf courseTileLeft">
@@ -114,7 +114,7 @@
 					<h1><strong> Step 2: Teach Something </strong></h1>
 					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/training.JPG' %}"></script><br>
 					<h2 style = "text-align: justify;"> Create your own course! Include videos, pictures, and documents to spice up your content. Add quizzes and tests to ensure your students are learning </h2>
-					<h3 style = "color: grey; text-align: justify;"> You can find more details on how to create a course at Teach > Glossary </h3>
+					<h3 style = "color: grey; text-align: justify;"> You'll find a detailed Course Creator orientation when you head over to the Teach section for the first time  </h3>
 				</div>
 				<div class = "Hide" id = "welcomeBlock-3">
 					<h1><strong> Step 3: Analyze Your Data </strong></h1>
@@ -135,8 +135,15 @@
 				<div class = "indexBall" id = "indexBall-3">  </div>
 				<div class = "indexBall" id = "indexBall-4">  </div>
 			</div>
+			<div class= "btn" id = "backBtn" style = "z-index: 3; position: absolute; top: 47%; margin-left: -67%; color: white; font-size: 90px; border-radius: 30px grey solid;" > 
+				&#9668
+			</div>
+			<div class= "btn" id = "nextBtn" style = "z-index: 3; position: absolute; top: 47%; margin-left: 50%; color: white; font-size: 90px;" > 
+				&#9658 
+			</div>
+			<div class= "btn" id = "welcomeCloseBox" style = "z-index: 3; top: 10px; right: 10px" > X </div>
 		</div>
-		<div class= "btn" id = "welcomeCloseBox" style = "z-index: 3;" > X </div>
+		
 	{% endif %}
 
 {% endblock %}
