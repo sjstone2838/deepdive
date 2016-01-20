@@ -4,9 +4,8 @@
 {% block content %}
 <script type="text/javascript"> var answerKey = {{answer_key|safe}}; </script>
 
-<div style = "margin-left: 40%; margin-top: 5px; width: 20%;">
-		<a class ='btn btn-default' style = "width: 100%; display: block; white-space: nowrap; text-overflow: ellipsis;  overflow: hidden;" href = "/lessons/course/{{course.pk}}/">Course Home: {{course.name}} </a>
-</div>
+<a class = "btn btn-default" style = "display: block; margin: auto; margin-top: 5px; width: 33%; border-radius: 10px; white-space: nowrap; text-overflow: ellipsis;  overflow: hidden;" href = "/lessons/course/{{course.pk}}/">Course Home: {{course.name}} </a>
+
 	
 <div class = "statusBar">
 	<div class = "statusText" style = "height: 30px;"> 
@@ -15,10 +14,10 @@
 		<span class = "truncate" style = "display: inline-block; max-width: 400px; "> | </span>
 		<span id = "percentProgress" class = "truncate" style = "display: inline-block; max-width: 400px;"></span></div>
 </div>
-<div class = "lessonControl text-center">
-	<div class = "lessonButton Back btn btn-default">Back</div>
-	<div class = "lessonButton Next btn btn-default">Next</div>
-</div>
+
+<div class = "btn lessonControlBtn" id = "Back" style = "left: 19%;"> &#9668 </div>
+<div class = "btn lessonControlBtn" id = "Next" style = "right: 19%;" > &#9658 </div>
+
 	{{ content|safe|escape }}
 
 {% if hints != "" %}

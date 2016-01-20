@@ -122,27 +122,25 @@ body.background{
     margin-right:-0px;
 }
 
-.lessonControl{
-    width: auto;
-    margin: 10px;
-    color: red;
-}
-.lessonButton{
-    width: auto;
-    margin: auto;
+.lessonControlBtn{
+    position: absolute !important; 
+    top: 47% !important; 
+    font-size: 90px !important; 
+    color: lightgrey !important;
 }
 
 .lessonElement{
     box-sizing: border-box; 
     position: absolute;
+    margin-top: 15px;
     right: -50%;
     width: 50%;
     display:none;
-    padding: 30px;
+    padding: 15px 30px 30px 30px;
     font-size: 14pt;
     border-radius: 10px;
     background-color: #f1f1f4;
-    max-height: 75vh;
+    /*max-*/height: 80vh;
     overflow: auto;
 }
 

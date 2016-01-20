@@ -6,42 +6,25 @@ $(document).ready(function(){
     // Hide back button when when viewing first lesson 	
     function displayBack(){
     	if ( text_element == 1){
-    		$(".Back").css("display","none");	
+    		$("#Back").css("display","none");	
     	}
     	else {
-    		$(".Back").css("display","inline-block");
+    		$("#Back").css("display","inline-block");
     	}
     }
 
-    // Hide Quiz button except when viewing last lesson 
-    // EDITED OUT	
-    function displayQuiz(){
-    	if ( text_element != text_element_count){
-    		$(".Quiz").css("display","none");	
-    	}
-    	else {
-    		$(".Quiz").css("display","none");
-    	}
-	}
-
     // Hide Next button when viewing last lesson 	
     function displayNext(){
-    	if ( text_element == 1){
-	    	$(".Next").text("Next");	
-    		$(".Next").css("display","inline-block");
-	    }
-	    else if ( text_element < text_element_count){
-    		$(".Next").text("Next");
-    		$(".Next").css("display","inline-block");
+    	if ( text_element == text_element_count){
+    		$("#Next").css("display","none");
     	}
     	else {
-	    	$(".Next").css("display","none");	
+	    	$("#Next").css("display","inline-block");	
     	}
 	}
 
 	function displayLessonButtons(){
 		displayBack();
-		displayQuiz();
 		displayNext();
 	}
 
@@ -84,6 +67,7 @@ $(document).ready(function(){
 		var width = departingElement.outerWidth();
 		incomingElement.css("display","block").animate({right: '-='+(1.5*width)});
 		departingElement.animate({right: '-='+(1.5*width)});
+		departingElement.delay(0).queue(function() { $(this).css("display","none").dequeue();});
 	}
 
 	// override the natural absolute positioning (off-screen) of the first element
@@ -134,7 +118,7 @@ $(document).ready(function(){
 	addStatusElement();
 
     // Increment counter when Next clicked 	
-    $(".Next").click(function(){
+    $("#Next").click(function(){
 			if (text_element == text_element_count){
 				return;
 			}
@@ -146,7 +130,7 @@ $(document).ready(function(){
 	});
 
 	// Decrement counter when Back clicked 	
-    $(".Back").click(function(){
+    $("#Back").click(function(){
 			removeStatusElement();  
 			shiftLessonsRight();
 			displayLessonButtons();
