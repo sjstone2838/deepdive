@@ -246,18 +246,18 @@ def module(request,course_pk,module_index):
 				content+= "<div class = 'lessonElement' id = '" + str(i+1) +"'>" + module_element.text
 				content += getDocumentLinks(module_element) 
 				questions= Question.objects.filter(moduleElement=module_element)
-				for i in range(0,len(questions)):
-					question = Question.objects.get(moduleElement=module_element, index= i+1)
+				for k in range(0,len(questions)):
+					question = Question.objects.get(moduleElement=module_element, index= k+1)
 					answer_key.append(question.answer)
 					#if form question
 					if question.question_type == "Form":
-						content+= "<h4><strong>" + str(i+1) +"</strong>. " + question.text + "</h4><form class='Question' type='text'><input type='text'><p class = 'verificationText'> </p></form><p style = 'height: 20px'></p>"
+						content+= "<h4><strong>" + str(k+1) +"</strong>. " + question.text + "</h4><form class='Question' type='text'><input type='text'><p class = 'verificationText'> </p></form><p style = 'height: 20px'></p>"
 					#if radio question
 					else:
-						content+="<h4><strong>" + str(i+1) +"</strong>. " + question.text + "</h4><form class='Question' type='radio'>"
+						content+="<h4><strong>" + str(k+1) +"</strong>. " + question.text + "</h4><form class='Question' type='radio'>"
 						answer_set = AnswerChoice.objects.filter(question=question)
 						for j in range(0,len(answer_set)):
-							content+="<input type='radio' name='Question" + str(i) +"' value='" + answer_set[j].text + "'> " + answer_set[j].text + "<br>"
+							content+="<input type='radio' name='Question" + str(k) +"' id = 'Answer" + str(i) + "-"+ str(k) + "-" + str(j) +"' value='" + answer_set[j].text + "'><label for='Answer" + str(i) + "-"+ str(k) + "-" + str(j) + "'>" + answer_set[j].text + "</label><br>"
 						content+= "<p class = 'verificationText'> </p></form><p style = 'height: 20px'></p>"
 				content+= "<div class='submitButton btn btn-info'> Check Answers </div><br/></div>"
 
@@ -268,21 +268,21 @@ def module(request,course_pk,module_index):
 				content += getDocumentLinks(module_element)
 				questions= Question.objects.filter(moduleElement=module_element)
 				content+="<form action='/lessons/test_result/" + course_pk + "/" + module_index + "/' method='post'>"
-				for i in range(0,len(questions)):
-					question = Question.objects.get(moduleElement=module_element, index= i+1)
+				for k in range(0,len(questions)):
+					question = Question.objects.get(moduleElement=module_element, index= k+1)
 					#answer_key.append(question.answer)
 					#if form question
 					if question.question_type == "Form":
-						content+= "<h4><strong>" + str(i+1) + ". </strong>" + question.text + "</h4><input type='text' name='answer" + str(i+1) + "''><p style = 'height: 20px'></p>"
+						content+= "<h4><strong>" + str(k+1) + ". </strong>" + question.text + "</h4><input type='text' name='answer" + str(k+1) + "''><p style = 'height: 20px'></p>"
 					
 					#if radio question
 					else:
-						content+="<h4><strong>" + str(i+1) + "</strong>. " + question.text + "</h4>"
+						content+="<h4><strong>" + str(k+1) + "</strong>. " + question.text + "</h4>"
 						answer_set = AnswerChoice.objects.filter(question=question)
 						#add hidden field with value "none", so that POST does not have an empty key-value pair
-						content+="<h4><input type='hidden' name='answer" + str(i+1) + "' value = 'none'></h4>"
+						content+="<h4><input type='hidden' name='answer" + str(k+1) + "' value = 'none'></h4>"
 						for j in range(0,len(answer_set)):
-							content+="<h4><input type='radio' name='answer" + str(i+1) + "' value = '" +  answer_set[j].text + "'> " + answer_set[j].text + "</h4>"
+							content+="<h4><input type='radio' name='answer" + str(k+1) + "' id = 'Answer" +str(i) + "-"+ str(k) + "-" + str(j) +"' value = '" +  answer_set[j].text + "'><label for='Answer" + str(i) + "-"+ str(k) + "-" +str(j) + "'>" + answer_set[j].text + "</label></h4>"
 						content+="<p style = 'height: 20px'></p>"
 				content+= "<input class='testSubmit btn btn-info' type='submit' value='Submit'>"
 				content+= "</form></div>"
