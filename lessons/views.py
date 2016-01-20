@@ -39,24 +39,20 @@ def reset_password(request):
 		def pw_generator(size=10, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
 		 	return ''.join(random.choice(chars) for _ in range(size))
 	 	new_pw = pw_generator()
-
 	 	user = User.objects.get(email = email)
 	 	user.set_password(new_pw)
 	 	user.save()
-	 	#print new_pw
-	 	# TODO 
+
 	 	subject = 'DeepDive - New Password'
 		#message = "<body style = 'width: 100%; height: 100%; margin: 5%; padding 5%; background-color: lightgrey;>'"
 		message = "<h4><strong> Hi " + user.first_name + ", </strong></h4>" 
-		message += "<h4> Your DeepDive password has been reset </h4>" 
+		message += "<h4> Your DeepDive password has been reset. </h4>" 
 		message += "<h4 style = 'font-style: italic;'> Your new password is: <strong> " + new_pw + "</strong></h4>"
 		message += "<h4> Sincerely, </h4>"
 		message += "<h4> Captain Nemo </h4>"
 		message += "</body>"
 		send_mail(subject, message, 'invites@deepdive.us ', [email], fail_silently=False, html_message = message)
-	 	
 	 	return JsonResponse({'status': "Success! Please check your email for your new password"})
-	#return redirect('/lessons/') 
 
 @login_required(login_url = '/lessons/login/')
 def index(request):
