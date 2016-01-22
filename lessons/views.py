@@ -29,10 +29,10 @@ from django.core.mail import send_mail
 import smtplib #is this necessary?
 import string
 import random
+from django.template.loader import render_to_string
 
 def reset_password(request):
 	email = request.POST['email']
-	print email
 	if User.objects.filter(email = email).count() != 1:
 		return JsonResponse({'status': "No such email found. Please try a different email or create a new account"})
 	else: 
@@ -1194,7 +1194,76 @@ def course_rate(request):
 			'response': "response"
 		})
 
+# render publish page
+@login_required(login_url = '/lessons/login/')
+def publish(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+	"""
+	own_courses = user_profile.courses_managed.all()
+	courses = []
+	for course in own_courses:
+		courses.append(course)
+	"""
 
+	return render(request, 'lessons/publish.html', {
+		'user':user, 
+		'courses': Course.objects.exclude(pk = 1),
+	})
+
+# send invitations to potential new users to joing DeepDive
+@login_required(login_url = '/lessons/login/')
+def invite(request):
+	user = request.user
+	user_profile = get_object_or_404(UserProfile, user_id = user.id)
+
+	# convert json string into python array, convert from unicode to python string
+	emails =  request.POST['emails']
+	emails = re.sub('["]', '', emails)
+	emails = emails.split("[")[1]
+	emails = emails.split("]")[0]
+	emails = emails.split(",")
+	emails = [email.encode('ascii','ignore') for email in emails]
+	
+	email_data = {
+		'type' : request.POST['type'],
+		'invitor' : user,
+		'course' : Course.objects.get(pk = request.POST['coursepk']).name,
+		'invite_code': INVITE_CODES[0],
+	}
+
+	subject = user.first_name + " " + user.last_name + "'s invited you to try a course on DeepDive"
+	message = render_to_string('lessons/emails/new_user_invite.html', email_data)
+	send_mail(subject, message, 'invites@deepdive.us ', emails, fail_silently=False, html_message = message)
+	return JsonResponse({'status':'Invitations sent'})
+
+# search for courses by title, description, genre
+@login_required(login_url = '/lessons/login/')
+def search_users(request):
+	search_array = re.split('\W+',request.POST['search'].upper())
+	selected_users = []
+	temp = {}
+	
+	def append_user(temp,user,selected_users):
+		temp["email"] = user.email
+		temp["first_name"] = user.first_name
+		temp["last_name"] = user.last_name
+		selected_users.append(temp)
+
+	for user in User.objects.all():
+		# if search input is just one word
+		if len(search_array) == 1:
+			if re.search(search_array[0],user.first_name.upper()) is not None or re.search(search_array[0],user.last_name.upper()) is not None:
+				append_user(temp,user,selected_users)
+		# if search term is multiple words
+		else:
+			for i in range(0,len(search_array)):
+				if re.search(search_array[i],user.first_name.upper()) is not None:
+					for j in range(0,len(search_array)):
+						if re.search(search_array[j],user.last_name.upper()) is not None:
+							append_user(temp,user,selected_users)
+
+	return JsonResponse({'selected_users': selected_users})
 
 
 

@@ -27,8 +27,11 @@ urlpatterns = patterns('lessons.views',
 	(r'^/?increment_logins/$','increment_logins'),
 	(r'^/?increment_createvisits/$','increment_createvisits'),
 	(r'^/?search/$','search'),
+	(r'^/?search_users/$','search_users'),
 	(r'^/?check_invite_code/$','check_invite_code'),
 	(r'^/?reset_password/$','reset_password'),
+	(r'^/?publish/$','publish'),
+	(r'^/?invite/$','invite'),
 ) 
 
 #for using bootstrap / static files, 

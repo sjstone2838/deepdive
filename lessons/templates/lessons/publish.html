@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="{% static 'mysite/js/publish.js' %}"></script>
+
+<div class = "wideBlock" style = "width: 80%; margin-top: 20px; margin; margin-left: auto; margin-right: auto;">
+	<div class = "numberBall"> 1 </div> Select course to publish <br>
+	
+	<select name = "coursepk" id = 'courseSelect' style = "margin-top: 15px; margin-left: 50px;">
+		<option value='' disabled selected style="text-align: center;"> Choose a course ...</option>
+		{% for course in courses %}
+		<option value='{{course.pk}}' style="text-align: center;"> {{course.name}}</option>
+		{% endfor %}
+	</select>
+</div>
+
+<div class = "wideBlock" style = "width: 80%; margin-top: 20px; margin; margin-left: auto; margin-right: auto;">
+	<div class = "numberBall"> 2 </div> Choose friends to invite to take your course
+	<div class = "editTabs" style = "margin-top: 10px; margin-left: 0px;">
+		<div class = "tab btn-row" id = "courseInviteTab">
+			<div class = "btn btn-link" style = "font-size: 14pt; font-weight: bold;"> Search users </div>
+		</div> 
+		<div class = "tab btn-row"  id = "newUserInviteTab" style = "background-color: #f1f1f4; border-top:2px solid lightgrey; border-left: 2px solid lightgrey; border-right: 2px solid lightgrey">
+			<div class = "btn btn-link" style = "font-size: 14pt; font-weight: bold;"> Add by email address</div>
+			
+		</div> 
+	</div>
+
+	<div class = "analyzeBlock"  style = "width: 100%; margin: auto; background-color: lightgrey;" id = "courseInviteBlock">
+        <input class = "searchInput" type = "text" id = "searchUsers" placeholder = "&#128270 Search users">
+		<div style = "margin-top: 15px;"> Search Results</div>
+		<div style = "margin-top: 15px; border-radius: 10px; background-color: white;" id = "searchResults">
+		</div>
+		<div style = "margin-top: 15px;"> Selected Users </div>
+		<div style = "margin-top: 15px; border-radius: 10px; background-color: white;" id ="selectedUsers">
+		</div>
+	</div>
+
+	<div class = "analyzeBlock Hide" style = "width: 100%; margin: auto; background-color: lightgrey;"  id = "newUserInviteBlock">
+		 <input class = "searchInput" type = "text" id = "newUserEmailEntry" placeholder = "Add invitee emails">
+		 <div style = "background-color: white; border-radius: 10px; margin-top: 20px;" id = "newUserEmails"> </div>
+	</div>
+</div>
+
+<div class = "wideBlock" style = "width: 80%; margin-top: 20px; margin; margin-left: auto; margin-right: auto;" id = "publishBlock">
+	 <div class = "numberBall"> 3 </div>
+	 <div class = "publish" style = "background-color:blue; display: inline-block;" id = "publishCourseInvites"> Send invitations </div>
+	 <div class = "publish" style = "background-color: green; display: none;" id = "publishNewUserInvites"> Send invitations </div>
+	 <div style = "color: green; font-style: italic; display: inline-block;" id = "verificationText"> </div>
+	 <div style = "color: red; font-style: italic; display: inline-block;" id = "errorText"> </div>
+</div>
+	
+{% endblock %}

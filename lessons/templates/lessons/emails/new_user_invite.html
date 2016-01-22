@@ -1,0 +1,28 @@
+{% load staticfiles %}
+
+<div style = "background-color: #8080ff; margin: 1%; padding: 1%; border-radius: 10px;"> 
+	<div style = "background-color: white; margin: 0px; padding: 1%; border-radius: 10px;"> 
+		<div style = "background-color: lightgrey; margin: 0%; padding: .5%; border-radius: 10px;width: 260px;"> 
+			<a style = "text-decoration: none;" href = "http://www.deepdive.us">
+				<div style = "font-family: 'Franklin Gothic Medium'; color: #000066; font-size: 58px; text-align:center;"> DeepDive</div>
+				<div style = "font-family: 'Franklin Gothic Medium'; color: #8080ff; font-size: 25px;text-align:center;"> Learn. Teach. Analyze</div>
+			</a>
+		</div>
+		<h3 style = "margin-bottom:0px; margin-left: 5px;">
+			<p> {{invitor.first_name}} {{invitor.last_name}} has invited you to try out the course <span style = "color: #8080ff; font-size: 20pt;">{{course}}</span> on DeepDive. 
+			{% if type == "newUserInvite" %}
+			
+			DeepDive is a new platform for online learning,  supporting both students and teachers. To check out {{course}}, use the invite code <span style = "font-style: italic;"> {{invite_code}} </span> to register
+				<a href = "http://www.deepdive.us"> here </a> 
+
+			{% endif %}	
+			</p>
+			<p>Good luck and let us know if you have any questions!</p>
+			<p style = "margin-bottom: 0px;">Best,</p>
+			<p style = "margin-top: 0px; margin-bottom: 0px;">Team DeepDive</p>
+		</h3>
+	</div>
+</div>
+<div style = "position: absolute; bottom: 5px; width: 100%; text-align:center; color: grey; font-size: 8pt;"> 
+    © 2016
+</div>
