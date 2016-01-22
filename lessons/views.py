@@ -254,7 +254,7 @@ def module(request,course_pk,module_index):
 					#if radio question
 					else:
 						content+="<h4><strong>" + str(k+1) +"</strong>. " + question.text + "</h4><form class='Question' type='radio'>"
-						answer_set = AnswerChoice.objects.filter(question=question)
+						answer_set = AnswerChoice.objects.filter(question=question).order_by('pk')
 						for j in range(0,len(answer_set)):
 							content+="<input type='radio' name='Question" + str(k) +"' id = 'Answer" + str(i) + "-"+ str(k) + "-" + str(j) +"' value='" + answer_set[j].text + "'><label for='Answer" + str(i) + "-"+ str(k) + "-" + str(j) + "'>" + answer_set[j].text + "</label><br>"
 						content+= "<p class = 'verificationText'> </p></form><p style = 'height: 20px'></p>"
@@ -277,7 +277,7 @@ def module(request,course_pk,module_index):
 					#if radio question
 					else:
 						content+="<h4><strong>" + str(k+1) + "</strong>. " + question.text + "</h4>"
-						answer_set = AnswerChoice.objects.filter(question=question)
+						answer_set = AnswerChoice.objects.filter(question=question).order_by('pk')
 						#add hidden field with value "none", so that POST does not have an empty key-value pair
 						content+="<h4><input type='hidden' name='answer" + str(k+1) + "' value = 'none'></h4>"
 						for j in range(0,len(answer_set)):
@@ -824,7 +824,7 @@ def edit_data(request):
 				module = Module.objects.get(course=course,index=moduleIndex)
 				moduleElement = ModuleElement.objects.get(module=module,index=moduleElementIndex)
 				questionobj = Question.objects.get(moduleElement=moduleElement,index = questionIndex)
-				answer_set = AnswerChoice.objects.filter(question=questionobj)
+				answer_set = AnswerChoice.objects.filter(question=questionobj).order_by('pk')
 
 				question = {}
 				question['type'] = questionobj.question_type
