@@ -65,7 +65,7 @@
 									<span>&#9734</span>
 								{% endif  %}
 								</span>
-								<span style = "font-style: italic; margin-left: 5px;"> ({{course.rating}} / 5) </span>
+								<span style = "font-style: italic; margin-left: 5px;"> ({{course.rating}} / 5.0) </span>
 							{% endif %}
 							{% if course.status = "Not enrolled" %}
 							<span style = "margin-left: 30px; position: relative; z-index: 1;" class = "btn btn-primary addCourse highlight" id = "addCourse.{{course.pk}}"> Enroll </span>
@@ -113,7 +113,7 @@
 				<div class = "Hide" id = "welcomeBlock-2">
 					<h1><strong> Step 2: Teach Something </strong></h1>
 					<br><img style = "height: 150px; text-align: center;" src="{% static 'mysite/images/welcome/training.JPG' %}"></script><br>
-					<h2 style = "text-align: justify;"> Create your own course! Include videos, pictures, and documents to spice up your content. Add quizzes and tests to ensure your students are learning </h2>
+					<h2 style = "text-align: justify;"> Create your own course and invite your friends to take it! Include videos, pictures, and documents to spice up your content. Add quizzes and tests to ensure your students are learning </h2>
 					<h3 style = "color: grey; text-align: justify;"> You'll find a detailed Course Creator orientation when you head over to the Teach section for the first time  </h3>
 				</div>
 				<div class = "Hide" id = "welcomeBlock-3">

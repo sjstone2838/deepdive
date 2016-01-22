@@ -12,21 +12,21 @@
 		<hr style = "border: 1px grey solid">
 		<div class = "row">
 		    <div class ="col-xs-4 col-centered">
-				<div style="margin:15x;"> Completed modules </div>
+				<div style="font-weight: bold;"> Completed modules </div> <p style = "margin:10px;"></p>
 					{% for module in completed_modules %}
-						<p><a class= "btn btn-info " style = "white-space: normal !important; width:300px; text-align:left;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
+						<p><a class= "btn btn-info " style = "white-space: normal !important; width:300px; text-align:center; font-size: 14pt;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
 					{% endfor %}
 			</div>
 			<div class ="col-xs-4 col-centered">
-				<div style="margin:15x;"> My current module </div>
+				<div style="font-weight: bold;"> My current module </div> <p style = "margin:10px;"></p>
 					{% for module in current_module %}
-						<p><a class= "btn btn-info" style = "white-space: normal !important; width:300px; text-align:left;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
+						<p><a class= "btn btn-info" style = "white-space: normal !important; width:300px; text-align:center; font-size: 14pt;" href="/lessons/course/{{course.pk}}/{{ module.index }}/">{{module.index}}. {{ module.name }}</a></p>
 					{% endfor %}
 			</div>
 			<div class ="col-xs-4 col-centered">
-				<div style="margin:15x;"> Future modules </div>
+				<div style="font-weight: bold;"> Future modules </div> <p style = "margin:10px;"></p>
 					{% for module in future_modules %}
-						<p><a class= "btn btn-info disabled" style = "white-space: normal !important; width:300px; text-align:left;" >{{module.index}}. {{ module.name }}</a></p>
+						<p><a class= "btn btn-info disabled" style = "white-space: normal !important; width:300px; text-align:center; font-size: 14pt;" >{{module.index}}. {{ module.name }}</a></p>
 					{% endfor %}
 			</div>
 		</div>

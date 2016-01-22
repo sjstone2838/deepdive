@@ -394,8 +394,46 @@ def validate_user(request):
 def profile(request):
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
-	completions = Completion.objects.filter (user = user_profile)
-	return render_to_response('lessons/profile.html', {'user':user, 'user_profile': user_profile, 'completions':completions})
+	courses_managed_array = user_profile.courses_managed.all()
+	courses_enrolled_array = user_profile.courses_enrolled.all()
+	courses_managed = ""
+	courses_enrolled = ""
+	
+	def course_array_to_string(array):
+		string = "" 
+		if len(array) == 1:
+			string += array[0].name
+		else: 
+			for i in range(0, len(array)):
+				if i < (len(array) - 1):
+					string += "<strong>(" + str(i + 1) + ")</strong> " + array[i].name + ", "
+				else:
+					string += "and <strong>(" + str(i + 1) + ")</strong> " + array[i].name
+		return string
+
+	courses_managed = course_array_to_string(courses_managed_array)
+	courses_enrolled = course_array_to_string(courses_enrolled_array)
+
+	completions = []
+	for course in courses_enrolled_array:
+		temp = {}
+		temp['name'] = course.name
+		temp['data'] = Completion.objects.filter(user = user_profile, name = Module.objects.filter(course=course).order_by('index'))
+		if len(temp['data']) == Module.objects.filter(course = course).count():
+			temp['header'] = "You've completed this course"
+		elif len(temp['data']) == 0:
+			temp['header'] = "You're on Module 1"
+		else:
+			temp['header'] = "You're on Module " + str(len(temp['data'])) + " of " + str(Module.objects.filter(course = course).count())
+		completions.append(temp)
+
+	return render_to_response('lessons/profile.html', {
+		'user':user, 
+		'user_profile': user_profile,
+		'courses_managed': courses_managed, 
+		'courses_enrolled': courses_enrolled, 
+		'completions':completions
+	})
 
 #displays test results
 @login_required(login_url = '/lessons/login/')	

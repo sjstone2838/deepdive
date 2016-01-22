@@ -24,9 +24,25 @@ $(document).ready(function(){
 		$.each(response.enrollees, function(i){
 			var header = "";
 			var details = "";
-			header += "<div><table class = 'dataHeader' style = 'table-layout: fixed; margin: 0px;'> <tr style = 'margin: 0px'> <td style = 'width: 25%;'> <span class = 'arrow'> &#9660</span>" + $(this)[0].name + "</td>";
+			header += "<div><table"
+			if ($(this)[0].completion_data.length != 0){
+				header += " class = 'dataHeader' style = 'table-layout: fixed; margin: 0px;'> <tr style = 'margin: 0px'> <td style = 'width: 25%;'>"
+			} else {
+				header += " style = 'table-layout: fixed; margin: 0px;'> <tr style = 'margin: 0px'> <td style = 'width: 25%;'>"
+			}
+			
+			if ($(this)[0].completion_data.length != 0){
+				header += " <span class = 'arrow'> &#9660</span>"; 
+			}
+
+			header += $(this)[0].name + "</td>";
 			header += "<td style = 'width: 25%;'>" + $(this)[0].date_enrolled+ "</td>";
-			header += "<td style = 'width: 25%;'>" + $(this)[0].date_dropped+ "</td>";
+			
+			if ($(this)[0].completion_data.length == 0){
+				header += "<td style = 'width: 25%;'> Yet to pass first module </td>";
+			} else {
+				header += "<td style = 'width: 25%;'> Completed Module " + $(this)[0].completion_data.length + "</td>";
+			}
 
 			var enrollee_score_sum = 0;
 			details += "<table class = 'dataDetails Hide' style = 'table-layout: fixed'><tr><th> Module </th><th> Score </th><th> Date </th></tr>" 

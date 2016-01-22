@@ -42,7 +42,7 @@ $(document).ready(function(){
 		//$("#welcomeBlock-" + welcomeIndex).toggle("slide", {direction:'left'}) // For slide action; requires jQuery-UI
 		$("#welcomeBlock-" + welcomeIndex).addClass("Hide");
 		welcomeIndex ++;
-		welcomeIndex = welcomeIndex % 10;
+		welcomeIndex = welcomeIndex % 11;
 		//$("#welcomeBlock-" + welcomeIndex).delay(300).toggle("slide", {direction:'right'}); // For slide action; requires jQuery-UI
 		$("#welcomeBlock-" + welcomeIndex).removeClass("Hide");
 		$("#indexBall-" + welcomeIndex).addClass("indexBallHighlight")
@@ -55,7 +55,7 @@ $(document).ready(function(){
 		$("#welcomeBlock-" + welcomeIndex).addClass("Hide");
 		welcomeIndex --;
 		if (welcomeIndex == -1){
-			welcomeIndex = 9;
+			welcomeIndex = 10;
 		}
 		//$("#welcomeBlock-" + welcomeIndex).delay(300).toggle("slide", {direction:'right'}); // For slide action; requires jQuery-UI
 		$("#welcomeBlock-" + welcomeIndex).removeClass("Hide");

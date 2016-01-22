@@ -43,10 +43,13 @@ $(document).ready(function(){
 	    	 incomingElement = $(this);
 	    	}
     	});
-		var width = departingElement.outerWidth();
-		departingElement.animate({right: '+='+(1.5*width)});
-		incomingElement.css("display","block").animate({right: '+='+(1.5*width)});
-		departingElement.delay(0).queue(function() { $(this).css("display","none").dequeue();});
+		// ANIMATE RIGHT AND LEFT DO NOT WORK ON SAFARI - REPLACED WITH FADEIN / FADEOUT
+		//var width = departingElement.outerWidth();
+		//departingElement.animate({right: '+='+(1.5*width)});
+		//incomingElement.css("display","block").animate({right: '+='+(1.5*width)});
+		//departingElement.delay(0).queue(function() { $(this).css("display","none").dequeue();});
+		incomingElement.css("right","25%").fadeIn(750);
+		departingElement.fadeOut(750);
 	}
 
 	// call when hitting back button
@@ -64,10 +67,13 @@ $(document).ready(function(){
 	    	 incomingElement = $(this);
 	    	}
     	});
-		var width = departingElement.outerWidth();
-		incomingElement.css("display","block").animate({right: '-='+(1.5*width)});
-		departingElement.animate({right: '-='+(1.5*width)});
-		departingElement.delay(0).queue(function() { $(this).css("display","none").dequeue();});
+		// ANIMATE RIGHT AND LEFT DO NOT WORK ON SAFARI - REPLACED WITH FADEIN / FADEOUT
+		//var width = departingElement.outerWidth();
+		//incomingElement.css("display","block").animate({right: '-='+(1.5*width)});
+		//departingElement.animate({right: '-='+(1.5*width)});
+		//departingElement.delay(0).queue(function() { $(this).css("display","none").dequeue();});
+		incomingElement.css("right","25%").fadeIn(750);
+		departingElement.fadeOut(750);
 	}
 
 	// override the natural absolute positioning (off-screen) of the first element

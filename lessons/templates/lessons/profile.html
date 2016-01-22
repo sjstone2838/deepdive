@@ -3,31 +3,71 @@
 {% block content %}
 
 <div class = "profileBlock">
-	<h2> User Details </h2>
+	<h1 style = "text-align: center; margin-top: -15px"> User Details </h1>
 	<table class="table col-md-6">
+		<tr>
+			<td> <strong> Name:  </strong></td>
+			<td> {{user.first_name}} {{user.last_name}} </td>
+		</tr>	
 		<tr> 
-			<td> Username: </td> 
+			<td> <strong> Username: </strong></td> 
 			<td> {{user.username}} </td>
 		</tr>
 		<tr>
-			<td> Name:  </td>
-			<td> {{user.first_name}} {{user.last_name}} </td>
-		</tr>	
-		<tr>
-			<td> Email: </td>
+			<td> <strong> Email: </strong></td>
 			<td> {{user.email}} </td>
+		</tr>
+		<tr>
+			<td> <strong> Date joined: </strong></td>
+			<td> {{user.date_joined}} </td>
+		</tr>
+		<tr>
+			<td> <strong> Courses managed: </strong></td>
+			<td> 
+			{% if courses_managed %}
+			{{courses_managed|safe|escape}}
+			{% else %}
+			None
+			{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td> <strong> Courses enrolled: </strong></td>
+			<td> 
+			{% if courses_enrolled %}
+			{{courses_enrolled|safe|escape}}
+			{% else %}
+			None
+			{% endif %}
+			</td>
 		</tr>
 	</table>
 </div>
+
 <div class = "profileBlock">
-	<h2> Courses Completed: </h2>
-	<table class ="table col-md-6">
-		
-			{% for completion in completions %}
-				<tr><td>You passed {{completion.name }} with a score of {{completion.score}} on {{completion.date.date}}</td></tr>
-			{% endfor %}
-		
-	</table>
+	<h1 style = "text-align: center; margin-top: -15px"> Course Performance </h1>
+	{% for completion in completions %}
+		<div style = "border-radius: 10px; border: 2px solid grey; margin: 10px 0px 0px 0px; padding: 10px;">
+			<p style = "margin-bottom: 0px;"> <strong> Course: {{completion.name}} </strong> </p>
+			<p style = "margin: 0px 0px 10px 0px; color: grey; font-style: italic;"> <strong> {{completion.header}} </strong> </p>
+			{% if completion.data %}
+				<table style = "margin-top: -10px;">
+				<tr>  
+					<th> Module </th>
+					<th> Score </th>
+					<th> Date Completed </th>
+				</tr>
+				{% for completion in completion.data %}
+				<tr>  
+					<td> {{completion.name}} </td>
+					<td> {{completion.score}}% </td>
+					<td> {{completion.date.date}} </td>
+				</tr>
+				{% endfor %}
+				</table>
+			{% endif %}
+		</div>	
+	{% endfor %}
 </div>
 
 {% endblock %}

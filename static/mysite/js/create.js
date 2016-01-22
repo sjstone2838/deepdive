@@ -7,16 +7,16 @@ var answerChoiceArray = [];
 
 	// show or hide Module Form
 	$(".moduleFormDetails").click(function(){
-		if (moduleDetails == false) {
-			$(".moduleForm").css("display","relative").slideDown('slow');
-			$(".moduleFormDetails").text("Hide Details");
-			moduleDetails = true;
-		}
+		//if (moduleDetails == false) {
+			$(".moduleForm").slideDown('slow');
+			//$(".moduleFormDetails").text("Hide Details");
+			//moduleDetails = true;
+		/*}
 		else {
 			$(".moduleForm").slideUp('slow').queue(function() { $(this).css("display","none").dequeue();});
 			$(".moduleFormDetails").text("Expand");
 			moduleDetails = false;	
-		}
+		}*/
 	});
 
 	// show or hide Course Form
