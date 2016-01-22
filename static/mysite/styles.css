@@ -57,6 +57,7 @@ body.background{
     display: relative;  
     height: 800px;
     overflow: auto;
+    z-index: 3;
 }
 
 .aboutHeader{

@@ -13,22 +13,25 @@ $(document).ready(function(){
 		left = Math.sin(i * 5 / Math.PI) * 8;
 	}
 
-	$('#login').click(function(){
-		username = $('#username').val();
-		password = $('#password').val();
-		$.ajax({
-	        type: 'POST',
-	        url: '/lessons/login/',
-	        data: {'username': username, 'password': password},
-	        success: function(response) {
-	        	if (response.status == "success") {
-					location.href = "/lessons/";
-	        	}
-	        	else {
-	        		$("#error").html(response.status);
-        		}
-			}
-		});
+	$('#password').keypress(function (e) {
+		var key = e.which;
+		if(key == 13 && $(this).val() != ""){
+			username = $('#username').val();
+			password = $(this).val();
+			$.ajax({
+		        type: 'POST',
+		        url: '/lessons/login/',
+		        data: {'username': username, 'password': password},
+		        success: function(response) {
+		        	if (response.status == "success") {
+						location.href = "/lessons/";
+		        	}
+		        	else {
+		        		$("#error").html(response.status);
+	        		}
+				}
+			});
+		}
 	});
 
 	$('#new_user').click(function(){

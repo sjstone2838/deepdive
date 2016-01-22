@@ -40,9 +40,15 @@
                 </div>
                 <div class="dropdown btn-row" style = "position: relative; z-index: 1;"><a class="btn btn-primary highlight" id = "analyzeBtn" role="button" href="/lessons/analyze"> Analyze </a></div>
                 <!--<div class="dropdown btn-row" style =""><a class="btn btn-default" role="button"href=>Profile</a></div>-->
+                
+                <script>
+                    function send() {document.search.submit()}
+                </script>
+                <form style = "display: inline-block;" name = "search" action="/lessons/search/" method="post">
+                    <input class = "searchInput" type = "text" name = "search_input" placeholder = "&#128270 Search courses" onUnfocus="send()">
+                </form>
                 <div class="dropdown btn-row" style ="">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">About
-                    <span class="caret"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">&#9776 </button>
                     <ul class="dropdown-menu">
                         <li><a href = "/lessons/profile/"> My Profile </a></li>
                         <li><a href = "#" id = "overviewBtn"> Overview </a></li>
@@ -50,12 +56,6 @@
                         <!--<li><a href = "#" id = "designBtn"> Design </a></li>-->
                     </ul>
                 </div>
-                <script>
-                    function send() {document.search.submit()}
-                </script>
-                <form style = "display: inline-block;" name = "search" action="/lessons/search/" method="post">
-                    <input class = "searchInput" type = "text" name = "search_input" placeholder = "&#128270 Search courses" onUnfocus="send()">
-                </form>
             </div> 
             <div class ="col-md-3" style="text-align:right;"> 
                 <a style="color:white;"> <code> {{user.username}} </code></a>

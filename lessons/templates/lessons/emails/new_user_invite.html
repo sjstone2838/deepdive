@@ -1,11 +1,11 @@
 {% load staticfiles %}
 
-<div style = "background-color: #8080ff; margin: 1%; padding: 1%; border-radius: 10px;"> 
+<div style = "background-color: #6666ff; margin: 1%; padding: 1%; border-radius: 10px;"> 
 	<div style = "background-color: white; margin: 0px; padding: 1%; border-radius: 10px;"> 
-		<div style = "background-color: lightgrey; margin: 0%; padding: .5%; border-radius: 10px;display: inline-block;"> 
+		<div style = "background-color: #f1f1f4; padding: .5%; border-radius: 10px;display: inline-block;"> 
 			<a style = "text-decoration: none;" href = "http://www.deepdive.us">
 				<div style = "font-family: 'Franklin Gothic Medium'; color: #000066; font-size: 48px; text-align:center;"> DeepDive</div>
-				<div style = "font-family: 'Franklin Gothic Medium'; color: #8080ff; font-size: 20px;text-align:center;"> Learn. Teach. Analyze</div>
+				<div style = "font-family: 'Franklin Gothic Medium'; color: #6666ff; font-size: 20px;text-align:center;"> Learn. Teach. Analyze</div>
 			</a>
 		</div>
 		<h3 style = "margin-bottom:0px; margin-left: 5px;">
@@ -14,10 +14,10 @@
 			<p> Hi {{invitee}}, </p>
 			{% endif %}
 
-			<p> {{invitor.first_name}} {{invitor.last_name}} has invited you to try out the course <span style = "color: #8080ff; font-size: 16pt;">{{course}}</span> on <a style = "text-decoration: none;" href = "http://www.deepdive.us"> Deepdive. </a>
+			<p> {{invitor.first_name}} {{invitor.last_name}} has invited you to try out the course <span style = "color: #6666ff; font-size: 16pt;">{{course}}</span> on <a style = "text-decoration: none;" href = "http://www.deepdive.us"> Deepdive. </a>
 			
 			{% if type == "newUserInvite" %}
-			DeepDive is a new platform for online learning,  supporting both students and teachers. To check out <span style = "color: #8080ff;">{{course}} </span>, use the invite code <span style = "font-style: italic;"> {{invite_code}} </span> to register
+			DeepDive is a new platform for online learning,  supporting both students and teachers. To check out <span style = "color: #6666ff;">{{course}} </span>, use the invite code <span style = "font-style: italic;"> {{invite_code}} </span> to register
 				<a style = "text-decoration: none;" href = "http://www.deepdive.us"> here </a> 
 			{% endif %}
 
