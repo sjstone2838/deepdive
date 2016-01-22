@@ -44,8 +44,7 @@ def reset_password(request):
 	 	user.save()
 
 	 	subject = 'DeepDive - New Password'
-		#message = "<body style = 'width: 100%; height: 100%; margin: 5%; padding 5%; background-color: lightgrey;>'"
-		message = "<h4><strong> Hi " + user.first_name + ", </strong></h4>" 
+		message = "<h4> Hi " + user.first_name + ",</h4>" 
 		message += "<h4> Your DeepDive password has been reset. </h4>" 
 		message += "<h4 style = 'font-style: italic;'> Your new password is: <strong> " + new_pw + "</strong></h4>"
 		message += "<h4> Sincerely, </h4>"
@@ -1225,16 +1224,23 @@ def invite(request):
 	emails = emails.split(",")
 	emails = [email.encode('ascii','ignore') for email in emails]
 	
-	email_data = {
-		'type' : request.POST['type'],
-		'invitor' : user,
-		'course' : Course.objects.get(pk = request.POST['coursepk']).name,
-		'invite_code': INVITE_CODES[0],
-	}
+	for email in emails:
+		invitee = ""
+		if request.POST['type'] == "courseInvite":
+			invitee = User.objects.get(email = email).first_name
 
-	subject = user.first_name + " " + user.last_name + "'s invited you to try a course on DeepDive"
-	message = render_to_string('lessons/emails/new_user_invite.html', email_data)
-	send_mail(subject, message, 'invites@deepdive.us ', emails, fail_silently=False, html_message = message)
+		email_data = {
+			'type' : request.POST['type'],
+			'invitor' : user,
+			'invitee' : invitee,
+			'course' : Course.objects.get(pk = request.POST['coursepk']).name,
+			'invite_code': INVITE_CODES[0],
+		}
+
+		subject = user.first_name + " " + user.last_name + "'s invited you to try a course on DeepDive"
+		message = render_to_string('lessons/emails/new_user_invite.html', email_data)
+		send_mail(subject, message, 'invites@deepdive.us ', [email], fail_silently=False, html_message = message)
+	
 	return JsonResponse({'status':'Invitations sent'})
 
 # search for courses by title, description, genre
