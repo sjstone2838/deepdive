@@ -1236,16 +1236,10 @@ def course_rate(request):
 def publish(request):
 	user = request.user
 	user_profile = get_object_or_404(UserProfile, user_id = user.id)
-	"""
-	own_courses = user_profile.courses_managed.all()
-	courses = []
-	for course in own_courses:
-		courses.append(course)
-	"""
 
 	return render(request, 'lessons/publish.html', {
 		'user':user, 
-		'courses': Course.objects.exclude(pk = 1),
+		'courses': Course.objects.exclude(pk = 1).filter(privacy = "Public"),
 	})
 
 # send invitations to potential new users to joing DeepDive
