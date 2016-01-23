@@ -1,3 +1,5 @@
+from secret import *
+
 """
 Django settings for myproject project on Heroku. Fore more info, see:
 https://github.com/heroku/heroku-django-template
@@ -19,14 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "!0%hy+&1*3%&jn-@_-(3j)^g1gazb+8^&ds8#3(@^8^nq_7=0u"
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-#TEMPLATE_DEBUG = True
-
 
 # Application definition
 
@@ -62,7 +58,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
-        #'TEMPLATE_DEBUG':True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -75,32 +70,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-"""
-#for development
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-"""
-# for deployment: learndeepdive
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dehj4pksdu060c',
-        'USER': 'uapimyobhggbww',
-        'PASSWORD': 'Lo5jZbbVVgF9prc6bWxvyykISf',
-        'HOST': 'ec2-54-204-8-138.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -165,10 +134,6 @@ AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
         'Cache-Control': 'max-age=94608000',
     }
 
-AWS_STORAGE_BUCKET_NAME = 'learndeepdive'
-AWS_ACCESS_KEY_ID = 'AKIAIVJ2WZWX3HSAQESQ'
-AWS_SECRET_ACCESS_KEY = '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'
-
 # Tell django-storages that when coming up with the URL for an item in S3 storage, keep
 # it simple - just use this domain plus the path. (If this isn't set, things get complicated).
 # This controls how the `static` template tag from `staticfiles` gets expanded, if you're using it.
@@ -186,10 +151,4 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.privateemail.com'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = 'invites@deepdive.us'
-EMAIL_HOST_PASSWORD = ']bebickheEF8]'
-EMAIL_USE_TLS = False
-#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
